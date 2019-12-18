@@ -1,4 +1,4 @@
-// Слабоумие и отвага
+// asdadСлабоумие и отвага
 //var hostname_oil = /http:\/\/(.+)\//.exec(document.getElementsByTagName("script")[document.getElementsByTagName("script").length - 1].src);
 var hostname_oil = "cdn.jsdelivr.net/gh/spriteololo/DaC" //TODO
 console.log(hostname_oil)
