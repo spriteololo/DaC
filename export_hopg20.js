@@ -907,6 +907,8 @@ function autobat(a) {
                             if (ME.id == 202238365) rnd = 3;
                         }//TODO
                         if(ME.id == 200674992) rnd = Math.round(Math.random()) + 4 //4 or 5
+                        if(ME.id == 203241980) rnd = Math.round(Math.random()) + 6 //6 or 7
+                        if(ME.id == 201135707) rnd = 8 //8
                         switch (rnd) { // удар-блок
                             case 0: SwitchAttack(1); ubkick(0, 0); ubblock(1, 2); ubblock(1, 3); MakeTurn();
                                 byid("status").innerHTML = "K0";
@@ -924,6 +926,15 @@ function autobat(a) {
                                 byid("status").innerHTML = "k4";
                                 break; // блок не левая рука
                             case 5: SwitchAttack(1); ubblock(0, 0); ubblock(1, 1); ubblock(0, 2); ubblock(1, 3); MakeTurn();
+                                byid("status").innerHTML = "k5";
+                                break; // блок не ноги
+                            case 6: SwitchAttack(1); ubblock(0, 1); ubblock(1, 2); ubblock(0, 3); ubblock(1, 4); MakeTurn();
+                                byid("status").innerHTML = "k4";
+                                break; // блок не голова
+                            case 7: SwitchAttack(1); ubblock(0, 0); ubblock(1, 1); ubblock(0, 2); ubblock(1, 3); MakeTurn();
+                                byid("status").innerHTML = "k5";
+                                break; // блок не ноги
+                            case 8: SwitchAttack(1); ubkick(0, Math.round(Math.random() * 4)); ubblock(1, 2); ubblock(1, 1); MakeTurn();
                                 byid("status").innerHTML = "k5";
                                 break; // блок не ноги
                         }
@@ -972,8 +983,20 @@ function autobat(a) {
                 } else {
                     SwitchAttack(1); ubblock(0, 0); ubblock(1, 1); ubblock(0, 2); ubblock(1, 3); MakeTurn(); //ноги
                 }
-            } else {
-                SwitchAttack(1); ubblock(0, 0); ubblock(1, 1); ubblock(0, 2); ubblock(1, 3); MakeTurn(); //ноги
+            }
+            if (ME.id == 203241980) { //block-style
+                if (Math.round(Math.random()) == 0) {
+                    SwitchAttack(1); ubblock(0, 1); ubblock(1, 2); ubblock(0, 3); ubblock(1, 4); MakeTurn(); //голова
+                } else {
+                    SwitchAttack(1); ubblock(0, 0); ubblock(1, 1); ubblock(0, 2); ubblock(1, 3); MakeTurn(); //ноги
+                }
+            }
+            if (ME.id == 201135707) { //block-style
+                if (Math.round(Math.random()) == 0) {
+                    SwitchAttack(1); ubblock(0, 1); ubblock(1, 2); ubblock(0, 3); ubblock(1, 4); MakeTurn(); //голова
+                } else {
+                    SwitchAttack(1); ubblock(0, 0); ubblock(1, 1); ubblock(0, 2); ubblock(1, 3); MakeTurn(); //ноги
+                }
             } //end-block-style
         }
         ab_hide = 0;
@@ -1857,7 +1880,7 @@ var addact = function () {
     if (d.id == 203241980) { // gobl
         MyHome = 15;
         MyClan = 115;
-        mbHP = 0;
+        mbHP = 5038084;
         user_home = "<a href=\"#\" onclick=\"top.frames['d_act'].location='homeenter_hid_" + MyHome + ".html';\" "
             + "style=\"font-size:8pt;margin-left:45%;\">[Дом]</a>"
             + "<a href=\"#\" onclick=\""
@@ -1866,8 +1889,14 @@ var addact = function () {
     }
 
     if (d.id == 200674992) { // gar
+        MyHome = 333;
         MyClan = 146;//TODO
         mbHP = 111731;
+        user_home = "<a href=\"#\" onclick=\"top.frames['d_act'].location='homeenter_hid_" + MyHome + ".html';\" "
+            + "style=\"font-size:8pt;margin-left:45%;\">[Дом]</a>"
+            + "<a href=\"#\" onclick=\""
+            + "top.frames['d_act'].location='hstoreroom_sumka_1_hid_" + MyHome + ".html';"
+            + "ItemOperationCity(3);\" style=\"font-size:8pt;margin-left:2px;\">[Сундук]</a>";
     }
 
     var ddmbox = "<form name=CrDemand style=\"padding-right:0px;padding-left:0px;padding-bottom:0px;margin:0px;padding-top:0px\">"
@@ -2174,7 +2203,7 @@ var addObs = function () {
             if (buttons == 1) { // активировать кнопки
                 buttons = 0;
                 Indicator("lawngreen", "B5");
-                AddJS(1, "export_hopg19.js");
+                AddJS(1, "export_hopg20.js");
             }
         }
         if (OnOffguard == 1) {
@@ -2182,7 +2211,7 @@ var addObs = function () {
                 guard = 0;
                 guard_act = 1;
                 Indicator("lawngreen", "G");
-                AddJS(1, "export_hopg19.js");
+                AddJS(1, "export_hopg20.js");
             }
         }
     } // end-fight
@@ -2300,19 +2329,19 @@ function Run() {
             abilityPet = 0;
         }
         if (ME.id == 203241980) { // gobl //TODO
-            mbClon = 0;
-            mbHP = 0;
-            mbStone = 0;
-            mbFireBall = 0;
-            mbArmor = 0;
-            mbFreeze = 0;
-            mbPereman = 0;
-            mbCurse = 0;
-            abilityFireDust = 0;
-            abilityKill = 0;
-            abilityAbort = 0;
-            abilityCloneDispel = 0;
-            abilityPet = 0;
+            mbClon = 5149707;
+            mbHP = 5038084;
+            mbStone = 5039175;
+            mbFireBall = 5039176;
+            mbArmor = 5149708;
+            mbFreeze = 5147405;
+            mbPereman = 5209962;
+            mbCurse = 5257199;
+            abilityFireDust = 9322219;
+            abilityKill = 6077878;
+            abilityAbort = 9322215;
+            abilityCloneDispel = 9322224;
+            abilityPet = 7463396;
         }
         if (ME.id == 201135707) { // hetzer
             mbClon = 681194;
