@@ -130,8 +130,10 @@ function ChangeAstralLevel(a) { // ASTRAL
                 setTimeout(""
                     + "byid('astral1').style.visibility='visible';"
                     + "byid('astral1').innerHTML='astral '+(ME.astral_level+1);", 188000);
-                astral_tm = setTimeout("ChangeAstralLevel(1)", 188000);
+                astral_tm = setTimeout("ChangeAstralLevel(0)", 188000);
             }
+        } else {
+            ChangeAstralLevel(1)
         }
         if (OnOffguard == 0) setTimeout("actReload()", 1500);
     }
@@ -426,7 +428,7 @@ function MapClick(ev) { // js-game
         top.frames["d_pers"].document.CrDemand.abMoveClick.value == 1) {
         byid("status").style.backgroundColor = "yellow";
         byid("status").innerHTML = "move";
-        PrepareReq("bid=" + BID + "&x=" + EX + "&y=" + EY + "&actBattle-Move=1");
+        PrepareReq("bid=" + BID + "&x=" + EX + "&y=" + EY + "&cmd=Move");
         move_round = 0; yes_mbCast = 1;
     }
     // end-move-click
@@ -457,7 +459,7 @@ function AddIFrame(name) {
     ifchannel.style.visibility = "hidden";
     ifchannel.style.width = "1px";
     ifchannel.style.height = "1px";
-    document.body.appendChild(ifchannel);
+    document.head.appendChild(ifchannel);
 }
 AddIFrame("channel_3");
 
@@ -1095,7 +1097,7 @@ function MoveRandom(a, b) {
             byid("status").innerHTML = b;
             byid("status").style.backgroundColor = "yellow";
             byid("logc").innerHTML = "&#936; <b>Иду на врага!</b>";
-            PrepareReq("bid=" + BID + "&x=" + MyX + "&y=" + MyY + "&actBattle-Move=1");
+            PrepareReq("bid=" + BID + "&x=" + MyX + "&y=" + MyY + "&cmd=Move");
             tmID[0] = setTimeout("autobat(2)", 500);
         }
     } // END-A1
@@ -1569,7 +1571,7 @@ var obj_hover_2 = "onmouseover=\"this.style.backgroundColor='gold';\" onmouseout
 var obj_hover_3 = "onmouseover=\"this.style.backgroundColor='skyblue';\" onmouseout=\"this.style.backgroundColor='#E8EEEC';\"";
 
 var addscript = function () {
-    if (ME.id == 200674992) { // gar //TODO
+    if (ME.id == 200674992 || ME.id == 203241980) { // gar gobl //TODO
         var btn_name_0 = "МагУдар";
         var btn_name_1 = "Заморозь";
         var btn_name_2 = "Прокля";
@@ -1607,7 +1609,7 @@ var addscript = function () {
     //< !----------------------------------------------------->
     //< !------- BATTLEFIELD BUTTONS WARRIOR-------->
     //< !----------------------------------------------------->
-    if (false) {
+    if (ME.id == 201135707) { //hetzer
         var btn_name_0 = "Разрушить";
         var btn_name_1 = "Напугать";
         var btn_name_2 = "Клич";
@@ -1844,8 +1846,18 @@ var addact = function () {
     // END-SOCLAN-READY
     if (d.id == 201135707) { // hetzer
         MyHome = 997;
-        MyClan = 146;
+        MyClan = 8;
         mbHP = 464505;
+        user_home = "<a href=\"#\" onclick=\"top.frames['d_act'].location='homeenter_hid_" + MyHome + ".html';\" "
+            + "style=\"font-size:8pt;margin-left:45%;\">[Дом]</a>"
+            + "<a href=\"#\" onclick=\""
+            + "top.frames['d_act'].location='hstoreroom_sumka_1_hid_" + MyHome + ".html';"
+            + "ItemOperationCity(3);\" style=\"font-size:8pt;margin-left:2px;\">[Сундук]</a>";
+    }
+    if (d.id == 203241980) { // gobl
+        MyHome = 15;
+        MyClan = 115;
+        mbHP = 0;
         user_home = "<a href=\"#\" onclick=\"top.frames['d_act'].location='homeenter_hid_" + MyHome + ".html';\" "
             + "style=\"font-size:8pt;margin-left:45%;\">[Дом]</a>"
             + "<a href=\"#\" onclick=\""
@@ -2101,7 +2113,7 @@ var addObs = function () {
                 text.innerHTML = "msg";
                 element.parentNode.insertBefore(text, element);
                 // end-msg-log
-                AddJS(1, "auto_demand11.js");
+                AddJS(1, "auto_demand12.js");
             }
             if (!LocSite("name", "INPUT", "Battle{vall}") && nform != 0) { // в лечебницу (от бандита)
                 top.frames["d_act"].location = "arena_room_1_bmode_3.html";
@@ -2162,7 +2174,7 @@ var addObs = function () {
             if (buttons == 1) { // активировать кнопки
                 buttons = 0;
                 Indicator("lawngreen", "B5");
-                AddJS(1, "export_hopg15.js");
+                AddJS(1, "export_hopg19.js");
             }
         }
         if (OnOffguard == 1) {
@@ -2170,7 +2182,7 @@ var addObs = function () {
                 guard = 0;
                 guard_act = 1;
                 Indicator("lawngreen", "G");
-                AddJS(1, "export_hopg15.js");
+                AddJS(1, "export_hopg19.js");
             }
         }
     } // end-fight
@@ -2282,6 +2294,36 @@ function Run() {
             mbPereman = 231031;
             mbCurse = 11895148;
             abilityFireDust = 0;
+            abilityKill = 0;
+            abilityAbort = 0;
+            abilityCloneDispel = 0;
+            abilityPet = 0;
+        }
+        if (ME.id == 203241980) { // gobl //TODO
+            mbClon = 0;
+            mbHP = 0;
+            mbStone = 0;
+            mbFireBall = 0;
+            mbArmor = 0;
+            mbFreeze = 0;
+            mbPereman = 0;
+            mbCurse = 0;
+            abilityFireDust = 0;
+            abilityKill = 0;
+            abilityAbort = 0;
+            abilityCloneDispel = 0;
+            abilityPet = 0;
+        }
+        if (ME.id == 201135707) { // hetzer
+            mbClon = 681194;
+            mbHP = 464505;
+            mbStone = 464506;
+            mbFireBall = 657540;
+            mbArmor = 681193;
+            mbFreeze = 660931;
+            mbPereman = 3558028;
+            mbCurse = 3558029;
+            abilityFireDust = 10707146;
             abilityKill = 0;
             abilityAbort = 0;
             abilityCloneDispel = 0;
