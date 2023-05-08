@@ -2203,7 +2203,7 @@ var addObs = function () {
             if (buttons == 1) { // активировать кнопки
                 buttons = 0;
                 Indicator("lawngreen", "B5");
-                AddJS(1, "export_hopg20.js");
+                AddJS(1, "export_hopg21.js");
             }
         }
         if (OnOffguard == 1) {
@@ -2211,7 +2211,7 @@ var addObs = function () {
                 guard = 0;
                 guard_act = 1;
                 Indicator("lawngreen", "G");
-                AddJS(1, "export_hopg20.js");
+                AddJS(1, "export_hopg21.js");
             }
         }
     } // end-fight
@@ -2344,17 +2344,17 @@ function Run() {
             abilityPet = 7463396;
         }
         if (ME.id == 201135707) { // hetzer
-            mbClon = 681194;
+            mbClon = 11972363;
             mbHP = 464505;
-            mbStone = 464506;
-            mbFireBall = 657540;
-            mbArmor = 681193;
-            mbFreeze = 660931;
+            mbStone = 11972368;
+            mbFireBall = 11972367;
+            mbArmor = 11972365;
+            mbFreeze = 11972366;
             mbPereman = 3558028;
-            mbCurse = 3558029;
-            abilityFireDust = 10707146;
-            abilityKill = 0;
-            abilityAbort = 0;
+            mbCurse = 11972364;
+            abilityFireDust = 10880542;
+            abilityKill = 11460141;
+            abilityAbort = 11417264;
             abilityCloneDispel = 0;
             abilityPet = 0;
         }
