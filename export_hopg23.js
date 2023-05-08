@@ -908,7 +908,7 @@ function autobat(a) {
                         }//TODO
                         if(ME.id == 200674992) rnd = Math.round(Math.random()) + 4 //4 or 5
                         if(ME.id == 203241980) rnd = Math.round(Math.random()) + 6 //6 or 7
-                        if(ME.id == 201135707) rnd = 8 //8
+                        if(ME.id == 201135707) rnd = Math.round(Math.random()) + 5// 5 or 6
                         switch (rnd) { // удар-блок
                             case 0: SwitchAttack(1); ubkick(0, 0); ubblock(1, 2); ubblock(1, 3); MakeTurn();
                                 byid("status").innerHTML = "K0";
@@ -984,20 +984,13 @@ function autobat(a) {
                     SwitchAttack(1); ubblock(0, 0); ubblock(1, 1); ubblock(0, 2); ubblock(1, 3); MakeTurn(); //ноги
                 }
             }
-            if (ME.id == 203241980) { //block-style
+            if (ME.id == 203241980 || ME.id == 201135707) { //block-style
                 if (Math.round(Math.random()) == 0) {
                     SwitchAttack(1); ubblock(0, 1); ubblock(1, 2); ubblock(0, 3); ubblock(1, 4); MakeTurn(); //голова
                 } else {
                     SwitchAttack(1); ubblock(0, 0); ubblock(1, 1); ubblock(0, 2); ubblock(1, 3); MakeTurn(); //ноги
                 }
             }
-            if (ME.id == 201135707) { //block-style
-                if (Math.round(Math.random()) == 0) {
-                    SwitchAttack(1); ubblock(0, 1); ubblock(1, 2); ubblock(0, 3); ubblock(1, 4); MakeTurn(); //голова
-                } else {
-                    SwitchAttack(1); ubblock(0, 0); ubblock(1, 1); ubblock(0, 2); ubblock(1, 3); MakeTurn(); //ноги
-                }
-            } //end-block-style
         }
         ab_hide = 0;
         var speed_autobat = (ab_move) ? 3000 : 5555;
@@ -2203,7 +2196,7 @@ var addObs = function () {
             if (buttons == 1) { // активировать кнопки
                 buttons = 0;
                 Indicator("lawngreen", "B5");
-                AddJS(1, "export_hopg21.js");
+                AddJS(1, "export_hopg23.js");
             }
         }
         if (OnOffguard == 1) {
@@ -2211,7 +2204,7 @@ var addObs = function () {
                 guard = 0;
                 guard_act = 1;
                 Indicator("lawngreen", "G");
-                AddJS(1, "export_hopg21.js");
+                AddJS(1, "export_hopg23.js");
             }
         }
     } // end-fight
