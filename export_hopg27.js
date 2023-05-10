@@ -2208,7 +2208,7 @@ var addObs = function () {
             if (buttons == 1) { // активировать кнопки
                 buttons = 0;
                 Indicator("lawngreen", "B5");
-                AddJS(1, "export_hopg26.js");
+                AddJS(1, "export_hopg27.js");
             }
         }
         if (OnOffguard == 1) {
@@ -2216,7 +2216,7 @@ var addObs = function () {
                 guard = 0;
                 guard_act = 1;
                 Indicator("lawngreen", "G");
-                AddJS(1, "export_hopg26.js");
+                AddJS(1, "export_hopg27.js");
             }
         }
     } // end-fight
@@ -2235,50 +2235,9 @@ var addObs = function () {
         var xhl = new RegExp(health, "g");
         if (xhl.test(e3)) { // в лечебницу
             // msg-fun-log
-            var script = top.frames["d_act"].document.createElement("script");
-            script.type = "text/javascript";
-            script.text = "function msgBadEvent() {"
-                + "var bad_event=/осталось/.test(top.frames['d_pers'].document.getElementById('dinjcell').innerHTML);"
-                + "if(bad_event) {"
-                + "document.getElementById('dinjcell2').innerHTML="
-                + "top.frames['d_pers'].document.getElementById('dinjcell').getElementsByTagName('td')[2].innerHTML;"
-                + "let inj = top.frames['d_pers'].document.getElementById('dinjcell').getElementsByTagName('td')[0].innerHTML;"
-                + "let injPattern;"
-                + "if (/Легк/.test(inj)) { injPattern = /легк/ }"
-                + "if (/Средн/.test(inj)) { injPattern = /средн/ }"
-                + "if (/Тяжел/.test(inj)) { injPattern = /тяж/ }"
-                + "if (injPattern) { "
-                + "     var res;"
-                + "     for (i = 0; i < top.frames['d_act'].document.getElementsByClassName('item').length; i++) {"
-                + "         let item = top.frames['d_act'].document.getElementsByClassName('item')[i];"
-                + "         if (item.tagName == 'TR' && injPattern.test(item.innerHTML)) {"
-                + "             let searchIn = item.lastChild;"
 
-                + "             for (j = 0; j < searchIn.getElementsByTagName('input').length; j++){"
-                + "                 var result = searchIn.getElementsByTagName('input')[j];"
-                + "                 if(result.value == 'Использовать'){"
-                + "                     res = result;"
-                + "                 }"
-                + "             }"
-                + "         }"
-                + "     }"
-                + "     if(res) res.click();"
-                + "}"
-                + "setTimeout('msgBadEvent()',1500);"
-                + "} else {"
-                + "document.getElementById('dinjcell2').innerHTML='<span style=background-color:red;color:white;>CASTLE</span>';"
-                + "top.frames['d_act'].location='" + castle_room + "';"
-                + "}"
-                + "}"
-                + "setTimeout('msgBadEvent()',1500);";
-            top.frames["d_act"].document.getElementsByTagName("head")[0].appendChild(script);
-            // end-msg-fun-log
-            var control_text = ""
-                + "MOVE-<span style=background-color:green;color:white;>MEDROOM</span>"
-                + ":<span style=color:green;>WAIT:<span style=background-color:black;color:white; id=dinjcell2>NaN</span>"
-                + "<input type=hidden value=Log><br>";
-            top.frames["d_act"].document.getElementById("control_msg").innerHTML = control_text;
             top.frames["d_act"].location = db_svitki_room;
+            setTimeout(healInj, 1500)
         } else { // к замку
             // msg-fun-log
             var script = top.frames["d_act"].document.createElement("script");
@@ -2309,6 +2268,43 @@ var addObs = function () {
     } // end-look-castle
     demand = 0;
     setTimeout(addObs, 10000);
+}
+
+function healInj(){
+    var script = top.frames["d_act"].document.createElement("script");
+    script.type = "text/javascript";
+    script.text = "function msgBadEvent() {"
+        + "var bad_event=/осталось/.test(top.frames['d_pers'].document.getElementById('dinjcell').innerHTML);"
+        + "if(bad_event) {"
+        + "let inj = top.frames['d_pers'].document.getElementById('dinjcell').getElementsByTagName('td')[0].innerHTML;"
+        + "let injPattern;"
+        + "if (/Легк/.test(inj)) { injPattern = /легк/ }"
+        + "if (/Средн/.test(inj)) { injPattern = /средн/ }"
+        + "if (/Тяжел/.test(inj)) { injPattern = /тяж/ }"
+        + "if (injPattern) { "
+        + "     var res;"
+        + "     for (i = 0; i < top.frames['d_act'].document.getElementsByClassName('item').length; i++) {"
+        + "         let item = top.frames['d_act'].document.getElementsByClassName('item')[i];"
+        + "         if (item.tagName == 'TR' && injPattern.test(item.innerHTML)) {"
+        + "             let searchIn = item.lastChild;"
+
+        + "             for (j = 0; j < searchIn.getElementsByTagName('input').length; j++){"
+        + "                 var result = searchIn.getElementsByTagName('input')[j];"
+        + "                 if(result.value == 'Использовать'){"
+        + "                     res = result;"
+        + "                 }"
+        + "             }"
+        + "         }"
+        + "     }"
+        + "     if(res) res.click();"
+        + "}"
+        + "setTimeout('msgBadEvent()',1500);"
+        + "} else {"
+        + "top.frames['d_act'].location='" + castle_room + "';"
+        + "}"
+        + "}"
+        + "setTimeout('msgBadEvent()',1500);";
+    top.frames["d_act"].document.getElementsByTagName("head")[0].appendChild(script);
 }
 
 var addtm = function () {
