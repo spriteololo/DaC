@@ -2208,7 +2208,7 @@ var addObs = function () {
             if (buttons == 1) { // активировать кнопки
                 buttons = 0;
                 Indicator("lawngreen", "B5");
-                AddJS(1, "export_hopg24.js");
+                AddJS(1, "export_hopg25.js");
             }
         }
         if (OnOffguard == 1) {
@@ -2216,7 +2216,7 @@ var addObs = function () {
                 guard = 0;
                 guard_act = 1;
                 Indicator("lawngreen", "G");
-                AddJS(1, "export_hopg24.js");
+                AddJS(1, "export_hopg25.js");
             }
         }
     } // end-fight
@@ -2255,14 +2255,14 @@ var addObs = function () {
                 + "             let searchIn = item.lastChild;"
 
                 + "             for (j = 0; j < searchIn.getElementsByTagName('input').length; j++){"
-                + "                 var result = searchIn.getElementsByTagName('input')[j]"
+                + "                 var result = searchIn.getElementsByTagName('input')[j];"
                 + "                 if(result.value == 'Использовать'){"
-                + "                     res = result"
+                + "                     res = result;"
                 + "                 }"
                 + "             }"
                 + "         }"
                 + "     }"
-                + "     if(res) res.click()"
+                + "     if(res) res.click();"
                 + "}"
                 + "setTimeout('msgBadEvent()',1500);"
                 + "} else {"
