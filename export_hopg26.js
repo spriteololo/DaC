@@ -2208,7 +2208,7 @@ var addObs = function () {
             if (buttons == 1) { // активировать кнопки
                 buttons = 0;
                 Indicator("lawngreen", "B5");
-                AddJS(1, "export_hopg25.js");
+                AddJS(1, "export_hopg26.js");
             }
         }
         if (OnOffguard == 1) {
@@ -2216,7 +2216,7 @@ var addObs = function () {
                 guard = 0;
                 guard_act = 1;
                 Indicator("lawngreen", "G");
-                AddJS(1, "export_hopg25.js");
+                AddJS(1, "export_hopg26.js");
             }
         }
     } // end-fight
@@ -2267,7 +2267,7 @@ var addObs = function () {
                 + "setTimeout('msgBadEvent()',1500);"
                 + "} else {"
                 + "document.getElementById('dinjcell2').innerHTML='<span style=background-color:red;color:white;>CASTLE</span>';"
-                + "frames[0].location='" + castle_room + "';"
+                + "top.frames['d_act'].location='" + castle_room + "';"
                 + "}"
                 + "}"
                 + "setTimeout('msgBadEvent()',1500);";
@@ -2278,7 +2278,7 @@ var addObs = function () {
                 + ":<span style=color:green;>WAIT:<span style=background-color:black;color:white; id=dinjcell2>NaN</span>"
                 + "<input type=hidden value=Log><br>";
             top.frames["d_act"].document.getElementById("control_msg").innerHTML = control_text;
-            frames[0].location = db_svitki_room;
+            top.frames["d_act"].location = db_svitki_room;
         } else { // к замку
             // msg-fun-log
             var script = top.frames["d_act"].document.createElement("script");
