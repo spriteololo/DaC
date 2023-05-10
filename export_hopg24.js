@@ -62,6 +62,7 @@ var abilityPet = 0;
 
 var castle_room = "castle_room_1_cid_" + MyClan + ".html";
 var med_room = "medroom_cid_" + MyClan + ".html";
+var db_svitki_room = "room_mode_0_type_12.chtml";
 
 RoomReg = new Array();
 RoomReg[0] = new RegExp("castle_room_1_cid_" + MyClan);
@@ -2146,11 +2147,11 @@ var addObs = function () {
                 text.innerHTML = "msg";
                 element.parentNode.insertBefore(text, element);
                 // end-msg-log
-                AddJS(1, "auto_demand14.js");
+                AddJS(1, "auto_demand15.js");
             }
             if (!LocSite("name", "INPUT", "Battle{vall}") && nform != 0) { // в лечебницу (от бандита)
                 top.frames["d_act"].location = "arena_room_1_bmode_3.html";
-                // top.frames["d_pers"].setTimeout("top.frames['d_pers'].frames['channel_3'].location=med_room", 1500);
+                top.frames["d_pers"].setTimeout("top.frames['d_pers'].frames['channel_3'].location=med_room", 1500);
             }
             if (!LocSite("name", "INPUT", "Battle{vall}") && LocSite("title", "BUTTON", "Просмотр повтора")) { // в лечебниц? (от бандита)
                 top.frames["d_act"].location = "arena_room_1_bmode_3.html";
@@ -2158,7 +2159,7 @@ var addObs = function () {
             }
             if (!LocSite("name", "INPUT", "Battle{vall}") && LocSite("value", "INPUT", "Присесть")) { // в лечебниц? (от бандита)
                 top.frames["d_act"].location = "arena_room_1_bmode_3.html";
-                // top.frames["d_pers"].setTimeout("top.frames['d_pers'].frames['channel_3'].location=med_room", 1500);
+                top.frames["d_pers"].setTimeout("top.frames['d_pers'].frames['channel_3'].location=med_room", 1500);
             }
         } // end-move-demand
     } // end-active-demand
@@ -2207,7 +2208,7 @@ var addObs = function () {
             if (buttons == 1) { // активировать кнопки
                 buttons = 0;
                 Indicator("lawngreen", "B5");
-                AddJS(1, "export_hopg22.js");
+                AddJS(1, "export_hopg24.js");
             }
         }
         if (OnOffguard == 1) {
@@ -2215,7 +2216,7 @@ var addObs = function () {
                 guard = 0;
                 guard_act = 1;
                 Indicator("lawngreen", "G");
-                AddJS(1, "export_hopg22.js");
+                AddJS(1, "export_hopg24.js");
             }
         }
     } // end-fight
@@ -2241,6 +2242,28 @@ var addObs = function () {
                 + "if(bad_event) {"
                 + "document.getElementById('dinjcell2').innerHTML="
                 + "top.frames['d_pers'].document.getElementById('dinjcell').getElementsByTagName('td')[2].innerHTML;"
+                + "let inj = top.frames['d_pers'].document.getElementById('dinjcell').getElementsByTagName('td')[0].innerHTML;"
+                + "let injPattern;"
+                + "if (/Легк/.test(inj)) { injPattern = /легк/ }"
+                + "if (/Средн/.test(inj)) { injPattern = /средн/ }"
+                + "if (/Тяжел/.test(inj)) { injPattern = /тяж/ }"
+                + "if (injPattern) { "
+                + "     var res;"
+                + "     for (i = 0; i < top.frames['d_act'].document.getElementsByClassName('item').length; i++) {"
+                + "         let item = top.frames['d_act'].document.getElementsByClassName('item')[i];"
+                + "         if (item.tagName == 'TR' && injPattern.test(item.innerHTML)) {"
+                + "             let searchIn = item.lastChild;"
+
+                + "             for (j = 0; j < searchIn.getElementsByTagName('input').length; j++){"
+                + "                 var result = searchIn.getElementsByTagName('input')[j]"
+                + "                 if(result.value == 'Использовать'){"
+                + "                     res = result"
+                + "                 }"
+                + "             }"
+                + "         }"
+                + "     }"
+                + "     if(res) res.click()"
+                + "}"
                 + "setTimeout('msgBadEvent()',1500);"
                 + "} else {"
                 + "document.getElementById('dinjcell2').innerHTML='<span style=background-color:red;color:white;>CASTLE</span>';"
@@ -2255,7 +2278,7 @@ var addObs = function () {
                 + ":<span style=color:green;>WAIT:<span style=background-color:black;color:white; id=dinjcell2>NaN</span>"
                 + "<input type=hidden value=Log><br>";
             top.frames["d_act"].document.getElementById("control_msg").innerHTML = control_text;
-            frames[0].location = med_room;
+            frames[0].location = db_svitki_room;
         } else { // к замку
             // msg-fun-log
             var script = top.frames["d_act"].document.createElement("script");

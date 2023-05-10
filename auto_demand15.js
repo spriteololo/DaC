@@ -131,6 +131,6 @@ function AddDemand() {
 
 AddDemand();
 
-// if (persIframe.soclanList.length > 1) { // в лечебницу
-//     persIframe.setTimeout("top.frames[1].frames['channel_3'].location.href=top.frames[1].med_room;", 1500);
-// }
+if (persIframe.soclanList.length > 1) { // в лечебницу
+    persIframe.setTimeout("top.frames[1].frames['channel_3'].location.href=top.frames[1].med_room;", 1500);
+}
