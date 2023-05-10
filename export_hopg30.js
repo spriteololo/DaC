@@ -2208,7 +2208,7 @@ var addObs = function () {
             if (buttons == 1) { // активировать кнопки
                 buttons = 0;
                 Indicator("lawngreen", "B5");
-                AddJS(1, "export_hopg29.js");
+                AddJS(1, "export_hopg30.js");
             }
         }
         if (OnOffguard == 1) {
@@ -2216,7 +2216,7 @@ var addObs = function () {
                 guard = 0;
                 guard_act = 1;
                 Indicator("lawngreen", "G");
-                AddJS(1, "export_hopg29.js");
+                AddJS(1, "export_hopg30.js");
             }
         }
     } // end-fight
@@ -2236,6 +2236,11 @@ var addObs = function () {
         if (xhl.test(e3)) { // в лечебницу
             // msg-fun-log
 
+            var control_text = ""
+                + "MOVE-<span style=background-color:green;color:white;>MEDROOM</span>"
+                + ":<span style=color:green;>WAIT:<span style=background-color:black;color:white; id=dinjcell2>NaN</span>"
+                + "<input type=hidden value=Log><br>";
+            top.frames["d_act"].document.getElementById("control_msg").innerHTML = control_text;
             frames[0].location = db_svitki_room;
             setTimeout(healInj, 1500)
         } else { // к замку
@@ -2298,7 +2303,7 @@ function healInj(){
         + "     }"
         + "     if(res) res.click();"
         + "}"
-        + "setTimeout('msgBadEvent()',1500);"
+        + "setTimeout('msgBadEvent()',5000);"
         + "} else {"
         + "document.getElementById('dinjcell2').innerHTML='<span style=background-color:red;color:white;>CASTLE</span>';"
         + "top.frames['d_pers'].frames[0].location='" + castle_room + "';"
