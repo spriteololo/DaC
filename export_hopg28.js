@@ -2208,7 +2208,7 @@ var addObs = function () {
             if (buttons == 1) { // активировать кнопки
                 buttons = 0;
                 Indicator("lawngreen", "B5");
-                AddJS(1, "export_hopg27.js");
+                AddJS(1, "export_hopg28.js");
             }
         }
         if (OnOffguard == 1) {
@@ -2216,7 +2216,7 @@ var addObs = function () {
                 guard = 0;
                 guard_act = 1;
                 Indicator("lawngreen", "G");
-                AddJS(1, "export_hopg27.js");
+                AddJS(1, "export_hopg28.js");
             }
         }
     } // end-fight
@@ -2236,7 +2236,7 @@ var addObs = function () {
         if (xhl.test(e3)) { // в лечебницу
             // msg-fun-log
 
-            top.frames["d_act"].location = db_svitki_room;
+            frames[0].location = db_svitki_room;
             setTimeout(healInj, 1500)
         } else { // к замку
             // msg-fun-log
@@ -2283,8 +2283,8 @@ function healInj(){
         + "if (/Тяжел/.test(inj)) { injPattern = /тяж/ }"
         + "if (injPattern) { "
         + "     var res;"
-        + "     for (i = 0; i < top.frames['d_act'].document.getElementsByClassName('item').length; i++) {"
-        + "         let item = top.frames['d_act'].document.getElementsByClassName('item')[i];"
+        + "     for (i = 0; i < frames[0].document.getElementsByClassName('item').length; i++) {"
+        + "         let item = frames[0].document.getElementsByClassName('item')[i];"
         + "         if (item.tagName == 'TR' && injPattern.test(item.innerHTML)) {"
         + "             let searchIn = item.lastChild;"
 
@@ -2300,7 +2300,8 @@ function healInj(){
         + "}"
         + "setTimeout('msgBadEvent()',1500);"
         + "} else {"
-        + "top.frames['d_act'].location='" + castle_room + "';"
+        + "document.getElementById('dinjcell2').innerHTML='<span style=background-color:red;color:white;>CASTLE</span>';"
+        + "frames[0].location='" + castle_room + "';"
         + "}"
         + "}"
         + "setTimeout('msgBadEvent()',1500);";
