@@ -2208,7 +2208,7 @@ var addObs = function () {
             if (buttons == 1) { // активировать кнопки
                 buttons = 0;
                 Indicator("lawngreen", "B5");
-                AddJS(1, "export_hopg32.js");
+                AddJS(1, "export_hopg33.js");
             }
         }
         if (OnOffguard == 1) {
@@ -2216,7 +2216,7 @@ var addObs = function () {
                 guard = 0;
                 guard_act = 1;
                 Indicator("lawngreen", "G");
-                AddJS(1, "export_hopg32.js");
+                AddJS(1, "export_hopg33.js");
             }
         }
     } // end-fight
@@ -2271,8 +2271,6 @@ function healHp(){
         + "MOVE-"
         + (d.mp >= 50 ? "<span style=color:red;>HP</span>-" : "HP-")
         + "<span style=background-color:red;color:white;>CASTLE</span>"
-        + "-<span style=color:blue;>MMP:85%:</span><span style=background-color:blue;color:white;>" + minmp + "</span>"
-        + "-<span style=color:#BC2EEA;>MHP:75%:</span><span style=background-color:#BC2EEA;color:white;>" + minhp + "</span>"
         + "<input type=hidden value=Log>"
         + "<img src=magbook.html" + (d.mp >= 50 ? "?actUser-UseCast=" + mbHP : "") + " "
         + "onError=\"frames[0].location='" + castle_room + "';\" width=1 height=1><br>";
