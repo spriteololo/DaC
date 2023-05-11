@@ -2208,7 +2208,7 @@ var addObs = function () {
             if (buttons == 1) { // активировать кнопки
                 buttons = 0;
                 Indicator("lawngreen", "B5");
-                AddJS(1, "export_hopg31.js");
+                AddJS(1, "export_hopg32.js");
             }
         }
         if (OnOffguard == 1) {
@@ -2216,7 +2216,7 @@ var addObs = function () {
                 guard = 0;
                 guard_act = 1;
                 Indicator("lawngreen", "G");
-                AddJS(1, "export_hopg31.js");
+                AddJS(1, "export_hopg32.js");
             }
         }
     } // end-fight
@@ -2256,16 +2256,7 @@ var addObs = function () {
                 + "setTimeout('msgBadEvent()',7000);";
             top.frames["d_act"].document.getElementsByTagName("head")[0].appendChild(script);
             // end-msg-fun-log
-            var control_text = ""
-                + "MOVE-"
-                + (d.mp >= 50 ? "<span style=color:red;>HP</span>-" : "HP-")
-                + "<span style=background-color:red;color:white;>CASTLE</span>"
-                + "-<span style=color:blue;>MMP:85%:</span><span style=background-color:blue;color:white;>" + minmp + "</span>"
-                + "-<span style=color:#BC2EEA;>MHP:75%:</span><span style=background-color:#BC2EEA;color:white;>" + minhp + "</span>"
-                + "<input type=hidden value=Log>"
-                + "<img src=magbook.html" + (d.mp >= 50 ? "?actUser-UseCast=" + mbHP : "") + " "
-                + "onError=\"frames[0].location='" + castle_room + "';\" width=1 height=1><br>";
-            top.frames["d_act"].document.getElementById("control_msg").innerHTML = control_text;
+            healHp()
         }
     } // end-log-back
     if (document.CrDemand.act_castle.value == 0) { // look-castle
@@ -2275,40 +2266,56 @@ var addObs = function () {
     setTimeout(addObs, 10000);
 }
 
+function healHp(){
+    var control_text = ""
+        + "MOVE-"
+        + (d.mp >= 50 ? "<span style=color:red;>HP</span>-" : "HP-")
+        + "<span style=background-color:red;color:white;>CASTLE</span>"
+        + "-<span style=color:blue;>MMP:85%:</span><span style=background-color:blue;color:white;>" + minmp + "</span>"
+        + "-<span style=color:#BC2EEA;>MHP:75%:</span><span style=background-color:#BC2EEA;color:white;>" + minhp + "</span>"
+        + "<input type=hidden value=Log>"
+        + "<img src=magbook.html" + (d.mp >= 50 ? "?actUser-UseCast=" + mbHP : "") + " "
+        + "onError=\"frames[0].location='" + castle_room + "';\" width=1 height=1><br>";
+    top.frames["d_act"].document.getElementById("control_msg").innerHTML = control_text;
+
+}
+
 function healInj(){
     var script = top.frames["d_act"].document.createElement("script");
     script.type = "text/javascript";
     script.text = "function msgBadEvent() {"
-        + "var bad_event=/осталось/.test(top.frames['d_pers'].document.getElementById('dinjcell').innerHTML);"
-        + "if(bad_event) {"
-        + "let inj = top.frames['d_pers'].document.getElementById('dinjcell').getElementsByTagName('td')[0].innerHTML;"
-        + "let injPattern;"
-        + "if (/Легк/.test(inj)) { injPattern = /легк/ }"
-        + "if (/Средн/.test(inj)) { injPattern = /средн/ }"
-        + "if (/Тяжел/.test(inj)) { injPattern = /тяж/ }"
-        + "if (injPattern) { "
-        + "     var res;"
-        + "     for (i = 0; i < top.frames['d_pers'].frames[0].document.getElementsByClassName('item').length; i++) {"
-        + "         let item = top.frames['d_pers'].frames[0].document.getElementsByClassName('item')[i];"
-        + "         if (item.tagName == 'TR' && injPattern.test(item.innerHTML)) {"
-        + "             let searchIn = item.lastChild;"
+        + "     var bad_event=/осталось/.test(top.frames['d_pers'].document.getElementById('dinjcell').innerHTML);"
+        + "     if(bad_event) {"
+        + "         let inj = top.frames['d_pers'].document.getElementById('dinjcell').getElementsByTagName('td')[0].innerHTML;"
+        + "         let injPattern;"
+        + "         if (/Легк/.test(inj)) { injPattern = /легк/ }"
+        + "         if (/Средн/.test(inj)) { injPattern = /средн/ }"
+        + "         if (/Тяжел/.test(inj)) { injPattern = /тяж/ }"
+        + "         if (injPattern) { "
+        + "             var res;"
+        + "             for (i = 0; i < top.frames['d_pers'].frames[0].document.getElementsByClassName('item').length; i++) {"
+        + "                 let item = top.frames['d_pers'].frames[0].document.getElementsByClassName('item')[i];"
+        + "                 if (item.tagName == 'TR' && injPattern.test(item.innerHTML)) {"
+        + "                     let searchIn = item.lastChild;"
 
-        + "             for (j = 0; j < searchIn.getElementsByTagName('input').length; j++){"
-        + "                 var result = searchIn.getElementsByTagName('input')[j];"
-        + "                 if(result.value == 'Использовать'){"
-        + "                     res = result;"
+        + "                     for (j = 0; j < searchIn.getElementsByTagName('input').length; j++){"
+        + "                         var result = searchIn.getElementsByTagName('input')[j];"
+        + "                         if(result.value == 'Использовать'){"
+        + "                             res = result;"
+        + "                         }"
+        + "                     }"
         + "                 }"
         + "             }"
+        + "             if(res) res.click();"
         + "         }"
+        + "         setTimeout('msgBadEvent()',5000);"
+        + "     } else {"
+        + "         document.getElementById('dinjcell2').innerHTML='<span style=background-color:red;color:white;>CASTLE</span>';"
+        + "         top.frames['d_pers'].frames[0].location='" + castle_room + "';"
+        + "         setTimeout('drinkMana()',1777);"
+        + "         setTimeout('healHp()',4777);"
+        + "         setTimeout('document.location.reload()',7777);"
         + "     }"
-        + "     if(res) res.click();"
-        + "}"
-        + "setTimeout('msgBadEvent()',5000);"
-        + "} else {"
-        + "document.getElementById('dinjcell2').innerHTML='<span style=background-color:red;color:white;>CASTLE</span>';"
-        + "top.frames['d_pers'].frames[0].location='" + castle_room + "';"
-        + "setTimeout('drinkMana()',1777);"
-        + "}"
         + "}"
         + "function checkFountainNotEmpty() {"
         + "    let result = false;"
