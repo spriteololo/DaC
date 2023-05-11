@@ -1303,7 +1303,7 @@ function autotest() {
             top.frames["d_pers"].document.CrDemand.act_castle.click();
             return abAudio("achtung.mp3");
         }
-        if (FLDY > 3 && FLDX + FLDY != 27 && amountfriend <= amountenemy) { // astral-up
+        if (FLDY > 3 && FLDX + FLDY != 27) { // astral-up
             ChangeAstralLevel(0);
         } // end-astral-up
         if (amountenemy == 1) { // limit
@@ -2208,7 +2208,7 @@ var addObs = function () {
             if (buttons == 1) { // активировать кнопки
                 buttons = 0;
                 Indicator("lawngreen", "B5");
-                AddJS(1, "export_hopg33.js");
+                AddJS(1, "export_hopg34.js");
             }
         }
         if (OnOffguard == 1) {
@@ -2216,7 +2216,7 @@ var addObs = function () {
                 guard = 0;
                 guard_act = 1;
                 Indicator("lawngreen", "G");
-                AddJS(1, "export_hopg33.js");
+                AddJS(1, "export_hopg34.js");
             }
         }
     } // end-fight
