@@ -2208,7 +2208,7 @@ var addObs = function () {
             if (buttons == 1) { // активировать кнопки
                 buttons = 0;
                 Indicator("lawngreen", "B5");
-                AddJS(1, "export_hopg35.js");
+                AddJS(1, "export_hopg36.js");
             }
         }
         if (OnOffguard == 1) {
@@ -2216,7 +2216,7 @@ var addObs = function () {
                 guard = 0;
                 guard_act = 1;
                 Indicator("lawngreen", "G");
-                AddJS(1, "export_hopg35.js");
+                AddJS(1, "export_hopg36.js");
             }
         }
     } // end-fight
@@ -2308,7 +2308,7 @@ function healInj(){
         + "             setTimeout('if(top.frames[\"d_act\"].actReload) top.frames[\"d_act\"].actReload(); else console.log(\"doesnt exist3\");', 7777);"
         + "         }"
         + "     } else {"
-        + "         " + currentFrame +".location = " + db_svitki_room + ";"
+        + "         " + currentFrame +".location = '" + db_svitki_room + "';"
         + "         setTimeout('msgBadEvent()',1777);"
         + "     }"
         + "}"
