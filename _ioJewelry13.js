@@ -10,7 +10,19 @@ function goOgran(id) {
             + "</form>";
         frames["channel_Jewelry"].document.getElementsByTagName("head")[0].appendChild(addform);
         var chform = frames["channel_Jewelry"].document.forms[0];
-       // chform.submit();
+        frames["channel_Jewelry"].onload = function () {
+            let result;
+            for (i = 0; i < frames["channel_Jewelry"].contentDocument.getElementsByTagName("img").length; i++) {
+                let item = frames["channel_Jewelry"].contentDocument.getElementsByTagName("img")[i]
+                if (/captcha/.test(item.src)) {
+                    result = item.src;
+                    item.src = ""
+                    break;
+                }
+            }
+            console.log(result)
+        };
+        chform.submit();
 // END-FORM-Ogran
     }
 
