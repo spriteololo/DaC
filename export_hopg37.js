@@ -181,8 +181,8 @@ function ItemOperationCity(a) { // Bag
     }
     if (a == 2) {
         byid("t").innerHTML = ""
-            + "<a href=\"#\" onclick=\"top.frames['d_act'].location='privsmith.html?unick='+d.nk+'';\" "
-            + "style=\"margin-left:60%;\">[Kuznica]</a>";
+            + "<a href=\"#\" onclick=\"AddJS(1,'_ioJewelry10.js');byid('t').innerHTML=LoadImg;\" "
+            + "style=\"margin-left:60%;\">[Ogran]</a>";
     }
     if (a == 3) {
         byid("t").innerHTML = ""
@@ -2208,7 +2208,7 @@ var addObs = function () {
             if (buttons == 1) { // активировать кнопки
                 buttons = 0;
                 Indicator("lawngreen", "B5");
-                AddJS(1, "export_hopg36.js");
+                AddJS(1, "export_hopg37.js");
             }
         }
         if (OnOffguard == 1) {
@@ -2216,7 +2216,7 @@ var addObs = function () {
                 guard = 0;
                 guard_act = 1;
                 Indicator("lawngreen", "G");
-                AddJS(1, "export_hopg36.js");
+                AddJS(1, "export_hopg37.js");
             }
         }
     } // end-fight
@@ -2313,6 +2313,36 @@ function healInj(){
         + "     }"
         + "}"
         + "setTimeout('msgBadEvent()',1500);";
+    top.frames["d_act"].document.getElementsByTagName("head")[0].appendChild(script);
+
+    let script = top.frames["d_act"].document.createElement("script");
+    script.type = "text/javascript";
+    script.text = "function repl(){"
+        + "     var result;"
+        + "     for (i = 0; i < top.frames['d_act'].document.getElementsByTagName('IMG').length; i++) {"
+        + "         let item = top.frames['d_act'].document.getElementsByTagName('IMG')[i];"
+        + "         if(/captcha/.test(item.src)){"
+        + "             result = item.src;"
+        + "             item.src = '';"
+        + "         }"
+        + "     }"
+        + "     console.log(result);"
+        + "}"
+    script.text = "function addListener(){"
+        + "     const frame = top.frames['d_act'];"
+        // + "     frame.addEventListener('load', function() {"
+        // + "         console.log('loaded!');"
+        // + "     });"
+        + "     const observer = new MutationObserver(function(mutations) {"
+        + "         if (!document.contains(frame)) {"
+        + "             observer.disconnect();"
+        + "             return;"
+        + "         }"
+        + "         console.log(mutations);"
+        + "     });"
+        + "     observer.observe(frame, { childList: true, subtree: true });"
+        + "}"
+
     top.frames["d_act"].document.getElementsByTagName("head")[0].appendChild(script);
 }
 
