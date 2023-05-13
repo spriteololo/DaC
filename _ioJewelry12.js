@@ -1,21 +1,3 @@
-// msg-log
-var element = document.getElementsByTagName("b")[1];
-var text = document.createElement("span");
-text.id = "control_msg";
-text.style.background = "white";
-text.innerHTML = "<br>";
-element.parentNode.insertBefore(text, element);
-// end-msg-log
-
-let iframe = document.createElement("iframe");
-iframe.name = "channel_Jewelry";
-iframe.id = "channel_Jewelry";
-iframe.style.visibility = "hidden";
-iframe.style.width = "100px";
-iframe.style.height = "100px";
-document.body.appendChild(iframe);
-
-
 function goOgran(id) {
 // FORM-Ogran
     let myId = top.frames['d_pers'].d.id
@@ -49,11 +31,24 @@ let title = document.getElementsByClassName("title")[0].innerText.trim()
 if (location.host == "forest.apeha.ru" || !/Ваши/.test(title) || !/камни/.test(title)) {
     top.frames["d_pers"].document.getElementById("t").innerHTML = "Error «Кузница» not found.";
 } else {
-    top.frames["d_pers"].document.getElementById("t").innerHTML = top.frames["d_pers"].LoadImg;
+    // msg-log
+    var element = document.getElementsByTagName("b")[1];
+    var text = document.createElement("span");
+    text.id = "control_msg";
+    text.style.background = "white";
+    text.innerHTML = "<br>";
+    element.parentNode.insertBefore(text, element);
+// end-msg-log
 // READY-Ogran
-    let a_iframe = document.getElementsByTagName("iframe")["channel_Jewelry"];
-    a_iframe.onload = function () {
+    let iframe = document.createElement("iframe");
+    iframe.name = "channel_Jewelry";
+    iframe.id = "channel_Jewelry";
+    iframe.style.visibility = "hidden";
+    iframe.style.width = "100px";
+    iframe.style.height = "100px";
+    iframe.onload = function () {
         top.frames["d_act"].find_Stone();
     };
+    document.body.appendChild(iframe);
 // END-READY-Ogran
 }
