@@ -11,6 +11,7 @@ function goOgran(id) {
         frames["channel_Jewelry"].document.getElementsByTagName("head")[0].appendChild(addform);
         var chform = frames["channel_Jewelry"].document.forms[0];
         frames["channel_Jewelry"].onload = function () {
+            console.log("onload second")
             let result;
             for (i = 0; i < frames["channel_Jewelry"].contentDocument.getElementsByTagName("img").length; i++) {
                 let item = frames["channel_Jewelry"].contentDocument.getElementsByTagName("img")[i]
@@ -22,6 +23,7 @@ function goOgran(id) {
             }
             console.log(result)
         };
+        console.log("submit")
         chform.submit();
 // END-FORM-Ogran
     }
@@ -29,10 +31,12 @@ function goOgran(id) {
 }
 
 function find_Stone() {
+    console.log("find stone")
     for (i = 0; i < document.getElementsByTagName("input").length; i++) {
         if (document.getElementsByTagName("input")[i].value == "Огранить") {
             let stoneId = document.getElementsByTagName("input")[i - 1].value;
             top.frames["d_pers"].document.getElementById("t").innerHTML = "found" + stoneId;
+            console.log("start go ogran")
             goOgran(stoneId);
             break;
         }
@@ -59,6 +63,7 @@ if (location.host == "forest.apeha.ru" || !/Ваши/.test(title) || !/камн�
     iframe.style.width = "100px";
     iframe.style.height = "100px";
     iframe.onload = function () {
+        console.log("first onLoad")
         top.frames["d_act"].find_Stone();
     };
     document.body.appendChild(iframe);
