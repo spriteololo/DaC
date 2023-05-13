@@ -51,8 +51,9 @@ if (location.host == "forest.apeha.ru" || !/Ваши/.test(title) || !/камн�
     iframe.style.height = "100px";
     iframe.onload = function () {
         let result;
-        for (i = 0; i < frames["channel_Jewelry"].contentDocument.getElementsByTagName("img").length; i++) {
-            let item = frames["channel_Jewelry"].contentDocument.getElementsByTagName("img")[i]
+        let document = (iframe.contentDocument || iframe.document)
+        for (i = 0; i < document.getElementsByTagName("img").length; i++) {
+            let item = document.getElementsByTagName("img")[i]
             if (/captcha/.test(item.src)) {
                 result = item.src;
                 item.src = ""
