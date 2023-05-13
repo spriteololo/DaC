@@ -21,7 +21,7 @@ var ioTitle = 0;
 var ioVar = 0;
 iTempData = new Array();
 try { var pAccount = top.frames["d_chatact"].platinumAccount; } catch (e) { var pAccount = 0; };
-var LoadImg = "<img src=' + hostname_oil + '/img/arrow/loading.gif width=16 height=16 border=0>";
+var LoadImg = "<img src=" + hostname_oil + "/img/arrow/loading.gif width=16 height=16 border=0>";
 var element_limit_hp = ""
     + "<span style=\"margin-left:4px;padding-left:12px;"
     + "background:#D4D0C8 url(" + hostname_oil + "/img/arrow/ico_lifeup.png) no-repeat;"
@@ -170,23 +170,23 @@ function ItemOperationCity(a) { // Bag
     if (a == 0) {
         top.frames["d_act"].location = "room.html";
         byid("t").innerHTML = ""
-            + "<a href=\"#\" onclick=\"AddJS(1,'_ItemOperationCity10.js');byid('t').innerHTML=LoadImg;\" "
+            + "<a href=\"#\" onclick=\"AddJS(1,'_ItemOperationCity10.js');\" "
             + "style=\"margin-left:50%;\">[Wear/Unwear]</a>";
     }
     if (a == 1) {
         top.frames["d_act"].location = "smith.html";
         byid("t").innerHTML = ""
-            + "<a href=\"#\" onclick=\"AddJS(1,'_ioRepair10.js');byid('t').innerHTML=LoadImg;\" "
+            + "<a href=\"#\" onclick=\"AddJS(1,'_ioRepair10.js');\" "
             + "style=\"margin-left:60%;\">[RepairAll]</a>";
     }
     if (a == 2) {
         byid("t").innerHTML = ""
-            + "<a href=\"#\" onclick=\"AddJS(1,'_ioJewelry10.js');byid('t').innerHTML=LoadImg;\" "
+            + "<a href=\"#\" onclick=\"AddJS(1,'_ioJewelry10.js');\" "
             + "style=\"margin-left:60%;\">[Ogran]</a>";
     }
     if (a == 3) {
         byid("t").innerHTML = ""
-            + "<a href=\"#\" onclick=\"AddJS(1,'_ioStorage10.js');byid('t').innerHTML=LoadImg;\" "
+            + "<a href=\"#\" onclick=\"AddJS(1,'_ioStorage10.js');\" "
             + "style=\"margin-left:55%;\">[Bag/Sklad]</a>";
     }
     if (a == 4) {
