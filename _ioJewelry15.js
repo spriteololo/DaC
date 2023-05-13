@@ -10,19 +10,6 @@ function goOgran(id) {
             + "</form>";
         frames["channel_Jewelry"].document.getElementsByTagName("head")[0].appendChild(addform);
         var chform = frames["channel_Jewelry"].document.forms[0];
-        frames["channel_Jewelry"].onload = function () {
-            console.log("onload second")
-            let result;
-            for (i = 0; i < frames["channel_Jewelry"].contentDocument.getElementsByTagName("img").length; i++) {
-                let item = frames["channel_Jewelry"].contentDocument.getElementsByTagName("img")[i]
-                if (/captcha/.test(item.src)) {
-                    result = item.src;
-                    item.src = ""
-                    break;
-                }
-            }
-            console.log(result)
-        };
         console.log("submit")
         chform.submit();
 // END-FORM-Ogran
@@ -63,8 +50,23 @@ if (location.host == "forest.apeha.ru" || !/Ваши/.test(title) || !/камн�
     iframe.style.width = "100px";
     iframe.style.height = "100px";
     iframe.onload = function () {
-        console.log("first onLoad")
-        top.frames["d_act"].find_Stone();
+        let result;
+        for (i = 0; i < frames["channel_Jewelry"].contentDocument.getElementsByTagName("img").length; i++) {
+            let item = frames["channel_Jewelry"].contentDocument.getElementsByTagName("img")[i]
+            if (/captcha/.test(item.src)) {
+                result = item.src;
+                item.src = ""
+                break;
+            }
+        }
+        if(result) {
+            console.log("onload second")
+            console.log(result)
+        } else {
+            console.log("first onLoad")
+            top.frames["d_act"].find_Stone();
+        }
+
     };
     document.body.appendChild(iframe);
 // END-READY-Ogran
