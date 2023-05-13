@@ -28,7 +28,7 @@ function goOgran(id) {
             + "</form>";
         frames["channel_Jewelry"].document.getElementsByTagName("head")[0].appendChild(addform);
         var chform = frames["channel_Jewelry"].document.forms[0];
-        chform.submit();
+       // chform.submit();
 // END-FORM-Ogran
     }
 
