@@ -47,8 +47,6 @@ if (location.host == "forest.apeha.ru" || !/Ваши/.test(title) || !/камн�
     iframe.name = "channel_Jewelry";
     iframe.id = "channel_Jewelry";
     iframe.style.display = "none";
-    iframe.style.width = "100px";
-    iframe.style.height = "100px";
     iframe.onload = function () {
         let result;
         let document = (iframe.contentDocument || iframe.document)
