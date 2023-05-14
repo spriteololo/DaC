@@ -56,7 +56,7 @@ if (location.host == "forest.apeha.ru" || !/Ваши/.test(title) || !/камн�
             let item = document.getElementsByTagName("img")[i]
             if (/captcha/.test(item.src)) {
                 result = item.src;
-                item.src = ""
+                item.src = "img/reload.gif"
                 break;
             }
         }
@@ -69,6 +69,6 @@ if (location.host == "forest.apeha.ru" || !/Ваши/.test(title) || !/камн�
         }
 
     };
-    document.body.appendChild(iframe);
+    document.head.appendChild(iframe);
 // END-READY-Ogran
 }
