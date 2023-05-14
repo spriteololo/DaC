@@ -49,6 +49,7 @@ if (location.host == "forest.apeha.ru" || !/Ваши/.test(title) || !/камн�
     iframe.style.display = "none";
     iframe.style.width = "0px";
     iframe.style.height = "0px";
+    iframe.title = "";
     iframe.tabIndex = -1;
     iframe.onload = function () {
         let result;
