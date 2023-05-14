@@ -56,7 +56,9 @@ if (location.host == "forest.apeha.ru" || !/Ваши/.test(title) || !/камн�
             let item = document.getElementsByTagName("img")[i]
             if (/captcha/.test(item.src)) {
                 result = item.src;
-                item.src = "img/reload.gif"
+                item.addEventListener('load', function() {
+                    item.removeAttribute('src');
+                });
                 break;
             }
         }
