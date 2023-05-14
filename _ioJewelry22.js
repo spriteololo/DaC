@@ -46,10 +46,10 @@ if (location.host == "forest.apeha.ru" || !/Ваши/.test(title) || !/камн�
     let iframe = document.createElement("iframe");
     iframe.name = "channel_Jewelry";
     iframe.id = "channel_Jewelry";
-    iframe.style.visibility = "hidden";
+    iframe.style.visibility = "none";
     iframe.style.width = "100px";
     iframe.style.height = "100px";
-    iframe.onloadstart = function () {
+    iframe.onload = function () {
         let result;
         let document = (iframe.contentDocument || iframe.document)
         for (i = 0; i < document.getElementsByTagName("img").length; i++) {
@@ -64,26 +64,6 @@ if (location.host == "forest.apeha.ru" || !/Ваши/.test(title) || !/камн�
         if(result) {
             console.log("onload second")
             console.log(result)
-        } else {
-        }
-
-    };
-    iframe.onload = function () {
-        let result;
-        let document = (iframe.contentDocument || iframe.document)
-        for (i = 0; i < document.getElementsByTagName("img").length; i++) {
-            let item = document.getElementsByTagName("img")[i]
-            if (/captcha/.test(item.src)) {
-                result = item.src;
-                // item.addEventListener('load', function() {
-                //     item.removeAttribute('src');
-                // });
-                break;
-            }
-        }
-        if(result) {
-            // console.log("onload second")
-            // console.log(result)
         } else {
             console.log("first onLoad")
             top.frames["d_act"].find_Stone();
