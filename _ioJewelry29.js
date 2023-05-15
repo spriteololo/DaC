@@ -1,8 +1,8 @@
-function goOgran(id) {
+function goOgran(btn) {
 // FORM-Ogran
     let myId = top.frames['d_pers'].d.id
     if(myId) {
-        const chform = top.frames['d_act'].document.forms[2];
+        const chform = btn.form;
         console.log("submit")
         chform.onsubmit = function(event){
             event.preventDefault()
@@ -24,7 +24,7 @@ function goOgran(id) {
                     frames["channel_Jewelry"].document.write(result)
                 })
         }
-        chform.submit();
+        btn.click();
 // END-FORM-Ogran
     }
 
@@ -34,10 +34,9 @@ function find_Stone() {
     console.log("find stone")
     for (i = 0; i < document.getElementsByTagName("input").length; i++) {
         if (document.getElementsByTagName("input")[i].value == "Огранить") {
-            let stoneId = document.getElementsByTagName("input")[i - 1].value;
-            top.frames["d_pers"].document.getElementById("t").innerHTML = "found" + stoneId;
+            let btn = document.getElementsByTagName("input")[i];
             console.log("start go ogran")
-            goOgran(stoneId);
+            goOgran(btn);
             break;
         }
     }
