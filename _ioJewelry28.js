@@ -18,6 +18,7 @@ function goOgran(id) {
                     const searchRegExp = /(https:\/\/kovcheg2\.apeha\.ru\/interface\/captcha\.fpl\/\d*)/gm;
                     const replaceWith = '';
                     const captcha = response.match(searchRegExp)[0];
+                    console.log(captcha)
                     const result = response.replace(searchRegExp, replaceWith);
 
                     frames["channel_Jewelry"].document.write(result)
