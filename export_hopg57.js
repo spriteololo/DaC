@@ -181,7 +181,7 @@ function ItemOperationCity(a) { // Bag
     }
     if (a == 2) {
         byid("t").innerHTML = ""
-            + "<a href=\"#\" onclick=\"AddJS(1,'_ioJewelry27.js');\" "
+            + "<a href=\"#\" onclick=\"AddJS(1,'_ioJewelry28.js');AddTess()\" "
             + "style=\"margin-left:60%;\">[Ogran]</a>";
     }
     if (a == 3) {
@@ -482,6 +482,12 @@ function AddJS(n, xfile) {
         script.src = hostname_oil + "/" + xfile;
         top.frames["d_act"].document.body.appendChild(script);
     }
+}
+function AddTess() {
+    let script = top.frames["d_act"].document.createElement("script");
+    script.type = "text/javascript";
+    script.src = 'https://cdn.jsdelivr.net/npm/tesseract.js@4/dist/tesseract.min.js';
+    top.frames["d_act"].document.body.appendChild(script);
 }
 
 function CreateDemand(map, minlvl, maxlvl, maxp) {
@@ -2219,7 +2225,7 @@ var addObs = function () {
             if (buttons == 1) { // активировать кнопки
                 buttons = 0;
                 Indicator("lawngreen", "B5");
-                AddJS(1, "export_hopg56.js");
+                AddJS(1, "export_hopg57.js");
             }
         }
         if (OnOffguard == 1) {
@@ -2227,7 +2233,7 @@ var addObs = function () {
                 guard = 0;
                 guard_act = 1;
                 Indicator("lawngreen", "G");
-                AddJS(1, "export_hopg56.js");
+                AddJS(1, "export_hopg57.js");
             }
         }
     } // end-fight

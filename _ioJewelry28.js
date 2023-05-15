@@ -2,15 +2,27 @@ function goOgran(id) {
 // FORM-Ogran
     let myId = top.frames['d_pers'].d.id
     if(myId) {
-        let jewelryPath = "jewelry_uid_" + myId + ".html"
-        let addform = frames["channel_Jewelry"].document.createElement("span");
-        addform.innerHTML = ""
-            + "<form method=post action=" + jewelryPath + ">"
-            + "<input type=hidden name=item value=" + id + ">"
-            + "</form>";
-        frames["channel_Jewelry"].document.getElementsByTagName("head")[0].appendChild(addform);
-        var chform = frames["channel_Jewelry"].document.forms[0];
+        const chform = top.frames['d_act'].document.forms[2];
         console.log("submit")
+        chform.onsubmit = function(event){
+            event.preventDefault()
+            const formData = new FormData(chform)
+            const data = new URLSearchParams(formData);
+            fetch(event.target.action, {
+                method: 'POST',
+                body: data
+            })
+                .then(response => response.text())
+                .then(function(response){
+                    console.log(typeof response)
+                    const searchRegExp = /(https:\/\/kovcheg2\.apeha\.ru\/interface\/captcha\.fpl\/\d*)/gm;
+                    const replaceWith = '';
+                    const captcha = response.match(searchRegExp)[0];
+                    const result = response.replace(searchRegExp, replaceWith);
+
+                    frames["channel_Jewelry"].document.write(result)
+                })
+        }
         chform.submit();
 // END-FORM-Ogran
     }
@@ -46,32 +58,9 @@ if (location.host == "forest.apeha.ru" || !/Ваши/.test(title) || !/камн�
     let iframe = document.createElement("iframe");
     iframe.name = "channel_Jewelry";
     iframe.id = "channel_Jewelry";
-    iframe.style.display = "none";
-    iframe.style.width = "0px";
-    iframe.style.height = "0px";
-    iframe.title = "empty";
-    iframe.tabIndex = -1;
-    iframe.onload = function () {
-        let result;
-        let document = (iframe.contentDocument || iframe.document)
-        for (i = 0; i < document.getElementsByTagName("img").length; i++) {
-            let item = document.getElementsByTagName("img")[i]
-            if (/captcha/.test(item.src)) {
-                console.log("removing src")
-                result = item.src;
-                item.src = ''
-                break;
-            }
-        }
-        if(result) {
-            console.log("onload second")
-            console.log(result)
-        } else {
-            console.log("first onLoad")
-            top.frames["d_act"].find_Stone();
-        }
-
-    };
+    iframe.style.width = "200px";
+    iframe.style.height = "100px";
     document.head.appendChild(iframe);
+    find_Stone()
 // END-READY-Ogran
 }
