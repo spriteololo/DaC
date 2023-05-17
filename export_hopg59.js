@@ -2225,7 +2225,7 @@ var addObs = function () {
             if (buttons == 1) { // активировать кнопки
                 buttons = 0;
                 Indicator("lawngreen", "B5");
-                AddJS(1, "export_hopg58.js");
+                AddJS(1, "export_hopg59.js");
             }
         }
         if (OnOffguard == 1) {
@@ -2233,7 +2233,7 @@ var addObs = function () {
                 guard = 0;
                 guard_act = 1;
                 Indicator("lawngreen", "G");
-                AddJS(1, "export_hopg58.js");
+                AddJS(1, "export_hopg59.js");
             }
         }
     } // end-fight
@@ -2321,7 +2321,7 @@ function healInj(){
         + "         } else {"
         + "             document.getElementById('dinjcell2').innerHTML='<span style=background-color:red;color:white;>Inj Healed</span>';"
         + "             setTimeout('if(top.frames[\"d_pers\"].healHp) top.frames[\"d_pers\"].healHp(); else console.log(\"doesnt exist1\");', 1777);"
-        + "             setTimeout('if(drinkMana) drinkMana(); else console.log(\"doesnt exist2\");',2777);"
+        + "             setTimeout('if(top.frames[\"d_act\"].drinkMana) top.frames[\"d_act\"].drinkMana(); else console.log(\"doesnt exist2\");',2777);"
         + "             setTimeout('if(top.frames[\"d_act\"].actReload) top.frames[\"d_act\"].actReload(); else console.log(\"doesnt exist3\");', 7777);"
         + "         }"
         + "     } else {"
