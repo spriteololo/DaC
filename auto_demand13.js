@@ -29,7 +29,12 @@ var mypers = {
     24: {nk: "~Фалкон~"},
     25: {nk: "~ZabaN~"},
     26: {nk: "Гоблин72"},
-    27: {nk: "Arimla"}
+    27: {nk: "Arimla"},
+    28: {nk: "-TheBoss-"},
+    29: {nk: "Шикарная стерва"},
+    30: {nk: "Пушкин.."},
+    31: {nk: "Смертельный_урон"},
+    32: {nk: "60pw4"},
 };
 var nform = document.forms.length - 1;
 var melvl = document.getElementsByTagName("select")["lvl"].selectedIndex;
