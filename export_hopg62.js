@@ -2275,7 +2275,7 @@ var addObs = function () {
             if (buttons == 1) { // активировать кнопки
                 buttons = 0;
                 Indicator("lawngreen", "B5");
-                AddJS(1, "export_hopg61.js");
+                AddJS(1, "export_hopg62.js");
             }
         }
         if (OnOffguard == 1) {
@@ -2283,7 +2283,7 @@ var addObs = function () {
                 guard = 0;
                 guard_act = 1;
                 Indicator("lawngreen", "G");
-                AddJS(1, "export_hopg61.js");
+                AddJS(1, "export_hopg62.js");
             }
         }
     } // end-fight
@@ -2322,7 +2322,7 @@ var addObs = function () {
         byid("act_castle").style.background = "#D4D0C8 url(https://apeha.ru/img/smode-3.gif) no-repeat";
     } // end-look-castle
     demand = 0;
-    setTimeout(addObs, 10000);
+    setTimeout(addObs, Math.floor(Math.random() * 100000) + 80000);
 }
 
 function healHp(){
