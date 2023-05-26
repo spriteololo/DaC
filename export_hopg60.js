@@ -758,6 +758,17 @@ function foundry(tm) {
             + "return false;\" "
             + "style=\"margin-left:2px;padding:0px;width:15px;height:22px;"
             + "color:#D4D0C8;background-color:#D4D0C8;border:1px solid black;\" title=\"Лимит HP\">"
+            + "<input name=\"fort\" type=\"button\" value=0 onclick=\""
+            + "if(this.value==0){"
+            + "this.value=1;"
+            + "this.style.color='gold';"
+            + "this.style.backgroundColor='gold';"
+            + "}else{"
+            + "this.value=0;"
+            + "this.style.color='#D4D0C8';"
+            + "this.style.backgroundColor='#D4D0C8';};\" "
+            + "style=\"margin-left:2px;padding:0px;width:15px;height:22px;"
+            + "color:#D4D0C8;background-color:#D4D0C8;border:1px solid black;\" title=\"Камни в форт\">"
             + "</td>"
             + "<td>"
             + "<div onclick=\"document.CrDemand.abMoveClick.click();\" "
@@ -2127,6 +2138,42 @@ var addObs = function () {
             wheeluck_day = Moscow_day;
         }
     } // end-wheeluck
+    if (document.CrDemand.fort.value == 1) {
+
+        let shieldNotActive = false;
+        for (let i = 0; i < top.frames['d_act'].document.getElementsByTagName('tr').length; i++) {
+            let item = top.frames['d_act'].document.getElementsByTagName('tr')[i]
+            if (/неактивен/.test(item.innerHTML)) {
+                shieldNotActive = true
+            }
+        }
+        let needToAddStone = false
+        if (shieldNotActive) {
+            for (let i = 0; i < top.frames['d_act'].document.getElementsByTagName('td').length; i++) {
+                let item = top.frames['d_act'].document.getElementsByTagName('td')[i]
+                if (/заряд/.test(item.textContent) && item.textContent.length < 100) {
+                    let text = item.textContent
+                    let newText = text.replace("неактивен, заряд:", "").trim()
+                    needToAddStone = newText.startsWith("0")
+                }
+            }
+        }
+
+        if (needToAddStone) {
+            for (let i = 0; i < top.frames['d_act'].document.getElementsByTagName('select').length; i++) {
+                let item = top.frames['d_act'].document.getElementsByTagName('select')[i]
+                if (/gemid/.test(item.name)) {
+                    item.getElementsByTagName('option')[1].selected = 'selected'
+                    top.frames['d_act'].document.forms[0].submit()
+                }
+            }
+        } else {
+            if (top.frames["d_act"].actReload) {
+                top.frames["d_act"].actReload()
+            }
+        }
+    }
+
     if (!top.frames["d_act"].document.getElementsByTagName("META")[0] &&
         !LocSite("value", "INPUT", "html") && document.CrDemand.act_castle.value == 1) { // meta
         byid("t").innerHTML = "html.META";
@@ -2225,7 +2272,7 @@ var addObs = function () {
             if (buttons == 1) { // активировать кнопки
                 buttons = 0;
                 Indicator("lawngreen", "B5");
-                AddJS(1, "export_hopg59.js");
+                AddJS(1, "export_hopg60.js");
             }
         }
         if (OnOffguard == 1) {
@@ -2233,7 +2280,7 @@ var addObs = function () {
                 guard = 0;
                 guard_act = 1;
                 Indicator("lawngreen", "G");
-                AddJS(1, "export_hopg59.js");
+                AddJS(1, "export_hopg60.js");
             }
         }
     } // end-fight
