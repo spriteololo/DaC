@@ -2154,7 +2154,8 @@ var addObs = function () {
                 if (/заряд/.test(item.textContent) && item.textContent.length < 100) {
                     let text = item.textContent
                     let newText = text.replace("неактивен, заряд:", "").trim()
-                    needToAddStone = newText.startsWith("0")
+                    console.log(newText)
+                    needToAddStone = newText.startsWith("2ч") //поменять
                 }
             }
         }
@@ -2163,11 +2164,13 @@ var addObs = function () {
             for (let i = 0; i < top.frames['d_act'].document.getElementsByTagName('select').length; i++) {
                 let item = top.frames['d_act'].document.getElementsByTagName('select')[i]
                 if (/gemid/.test(item.name)) {
+                    console.log("Adding one stone")
                     item.getElementsByTagName('option')[1].selected = 'selected'
                     top.frames['d_act'].document.forms[0].submit()
                 }
             }
         } else {
+            console.log("Not added, reloading...")
             if (top.frames["d_act"].actReload) {
                 top.frames["d_act"].actReload()
             }
@@ -2272,7 +2275,7 @@ var addObs = function () {
             if (buttons == 1) { // активировать кнопки
                 buttons = 0;
                 Indicator("lawngreen", "B5");
-                AddJS(1, "export_hopg60.js");
+                AddJS(1, "export_hopg61.js");
             }
         }
         if (OnOffguard == 1) {
@@ -2280,7 +2283,7 @@ var addObs = function () {
                 guard = 0;
                 guard_act = 1;
                 Indicator("lawngreen", "G");
-                AddJS(1, "export_hopg60.js");
+                AddJS(1, "export_hopg61.js");
             }
         }
     } // end-fight
@@ -2319,7 +2322,7 @@ var addObs = function () {
         byid("act_castle").style.background = "#D4D0C8 url(https://apeha.ru/img/smode-3.gif) no-repeat";
     } // end-look-castle
     demand = 0;
-    setTimeout(addObs, 10000);
+    setTimeout(addObs, 30000);
 }
 
 function healHp(){
