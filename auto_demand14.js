@@ -121,12 +121,7 @@ function AddDemand() {
         }
     }
 
-    if (melvl == 25) persIframe.CreateDemand(0, minLvl[rnd], 35, maxp[rnd]);
-    if (melvl == 26) persIframe.CreateDemand(0, minLvl[rnd], 35, maxp[rnd]);
-    if (melvl == 27) persIframe.CreateDemand(0, minLvl[rnd], 35, maxp[rnd]);
-    if (melvl == 28) persIframe.CreateDemand(0, minLvl[rnd], 35, maxp[rnd]);
-    if (melvl == 29) persIframe.CreateDemand(0, minLvl[rnd], 35, maxp[rnd]);
-    if (melvl == 30) persIframe.CreateDemand(0, minLvl[rnd], 35, maxp[rnd]);
+    if (melvl >= 19 && melvl <= 30) persIframe.CreateDemand(0, minLvl[rnd], 35, maxp[rnd]);
 }
 
 AddDemand();
