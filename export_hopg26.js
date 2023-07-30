@@ -1593,7 +1593,7 @@ var obj_hover_2 = "onmouseover=\"this.style.backgroundColor='gold';\" onmouseout
 var obj_hover_3 = "onmouseover=\"this.style.backgroundColor='skyblue';\" onmouseout=\"this.style.backgroundColor='#E8EEEC';\"";
 
 var addscript = function () {
-    if (ME.id == 200674992 || ME.id == 203241980) { // gar gobl //TODO
+    if (ME.id == 203241980) { // gobl
         var btn_name_0 = "МагУдар";
         var btn_name_1 = "Заморозь";
         var btn_name_2 = "Прокля";
@@ -1878,30 +1878,8 @@ var addact = function () {
     }
     if (d.id == 203241980) { // gobl
         MyHome = 15;
-        MyClan = 115;
+        MyClan = 114;
         mbHP = 5038084;
-        user_home = "<a href=\"#\" onclick=\"top.frames['d_act'].location='homeenter_hid_" + MyHome + ".html';\" "
-            + "style=\"font-size:8pt;margin-left:45%;\">[Дом]</a>"
-            + "<a href=\"#\" onclick=\""
-            + "top.frames['d_act'].location='hstoreroom_sumka_1_hid_" + MyHome + ".html';"
-            + "ItemOperationCity(3);\" style=\"font-size:8pt;margin-left:2px;\">[Сундук]</a>";
-    }
-
-    if (d.id == 200674992) { // gar
-        MyHome = 333;
-        MyClan = 146;//TODO
-        mbHP = 111731;
-        user_home = "<a href=\"#\" onclick=\"top.frames['d_act'].location='homeenter_hid_" + MyHome + ".html';\" "
-            + "style=\"font-size:8pt;margin-left:45%;\">[Дом]</a>"
-            + "<a href=\"#\" onclick=\""
-            + "top.frames['d_act'].location='hstoreroom_sumka_1_hid_" + MyHome + ".html';"
-            + "ItemOperationCity(3);\" style=\"font-size:8pt;margin-left:2px;\">[Сундук]</a>";
-    }
-
-    if (d.id == 202436630) { // jrinkaa
-        MyHome = 619;
-        MyClan = 146;//TODO
-        mbHP = 839435;
         user_home = "<a href=\"#\" onclick=\"top.frames['d_act'].location='homeenter_hid_" + MyHome + ".html';\" "
             + "style=\"font-size:8pt;margin-left:45%;\">[Дом]</a>"
             + "<a href=\"#\" onclick=\""
@@ -2213,7 +2191,7 @@ var addObs = function () {
             if (buttons == 1) { // активировать кнопки
                 buttons = 0;
                 Indicator("lawngreen", "B5");
-                AddJS(1, "export_hopg25.js");
+                AddJS(1, "export_hopg26.js");
             }
         }
         if (OnOffguard == 1) {
@@ -2221,7 +2199,7 @@ var addObs = function () {
                 guard = 0;
                 guard_act = 1;
                 Indicator("lawngreen", "G");
-                AddJS(1, "export_hopg25.js");
+                AddJS(1, "export_hopg26.js");
             }
         }
     } // end-fight
@@ -2387,21 +2365,6 @@ function Run() {
         } // end-chat
     }
     if (a > 0) { //TODO
-        if (ME.id == 200674992) { // garr //TODO
-            mbClon = 11895151;
-            mbHP = 111731;
-            mbStone = 11895152;
-            mbFireBall = 11895153;
-            mbArmor = 11895149;
-            mbFreeze = 11895154;
-            mbPereman = 231031;
-            mbCurse = 11895148;
-            abilityFireDust = 0;
-            abilityKill = 0;
-            abilityAbort = 0;
-            abilityCloneDispel = 0;
-            abilityPet = 0;
-        }
         if (ME.id == 203241980) { // gobl //TODO
             mbClon = 5149707;
             mbHP = 5038084;
