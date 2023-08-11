@@ -2275,7 +2275,7 @@ var addObs = function () {
             if (buttons == 1) { // активировать кнопки
                 buttons = 0;
                 Indicator("lawngreen", "B5");
-                AddJS(1, "export_hopg63.js");
+                AddJS(1, "export_hopg64.js");
             }
         }
         if (OnOffguard == 1) {
@@ -2283,7 +2283,7 @@ var addObs = function () {
                 guard = 0;
                 guard_act = 1;
                 Indicator("lawngreen", "G");
-                AddJS(1, "export_hopg63.js");
+                AddJS(1, "export_hopg64.js");
             }
         }
     } // end-fight
@@ -2442,7 +2442,11 @@ function Run() {
     if (b != 2 && b || !b) {
         setTimeout(addact, 100);
         if (location.host == "newforest.apeha.ru") {
-            AddJS(1, "_forest1.js");
+            if (top.frames["d_act"].window &&
+                top.frames["d_act"].window.global_data &&
+                top.frames["d_act"].window.global_data.my_group) {
+                AddJS(1, "_forest1.js");
+            }
         }
         if (location.host != "newforest.apeha.ru") { // chat
             parent.document.getElementsByTagName("frameset")[0].rows = "80%,*,31";
