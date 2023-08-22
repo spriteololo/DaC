@@ -93,7 +93,7 @@ function ChangeAstralLevel(a) { // ASTRAL
         byid("astral1").style.visibility = "hidden";
         if (ready_mb == 1) return setTimeout("ChangeAstralLevel(0)", 500);
         try {
-            var script = frames['channel_2'].document.createElement('script');
+            var script = frames['channel_5'].document.createElement('script');
             script.type = 'text/javascript';
             script.text = 'function getAstralLevel() {'
                 + 'if(document.forms.length!=0) {'
@@ -112,11 +112,11 @@ function ChangeAstralLevel(a) { // ASTRAL
                 + '}'
                 + '}'
                 + 'getAstralLevel();';
-            frames["channel_2"].document.getElementsByTagName("head")[0].appendChild(script);
+            frames["channel_5"].document.getElementsByTagName("head")[0].appendChild(script);
         } catch (e) {
             ready_mb = 1;
             byid("status").innerHTML = "OpenAstral";
-            frames["channel_2"].location = "ability.chtml";
+            frames["channel_5"].location = "ability.chtml";
             return setTimeout("ChangeAstralLevel(0)", 500);
         }
     } // end-loading
@@ -325,7 +325,7 @@ function UseMagCast(a, b, id, mb_x, mb_y) { // Magic-Book-Cast
         if (a == 2) {
             if (ready_mb == 0) {
                 ready_mb = 1;
-                frames["channel_2"].location = "ability.chtml";
+                frames["channel_5"].location = "ability.chtml";
             }
         } else {
             if (ready_mb == 0) {
@@ -468,6 +468,7 @@ function AddIFrame(name) {
     document.head.appendChild(ifchannel);
 }
 AddIFrame("channel_3");
+AddIFrame("channel_5");
 
 function AddJS(n, xfile) {
     if (n == 0) {
@@ -2275,7 +2276,7 @@ var addObs = function () {
             if (buttons == 1) { // активировать кнопки
                 buttons = 0;
                 Indicator("lawngreen", "B5");
-                AddJS(1, "export_hopg64.js");
+                AddJS(1, "export_hopg65.js");
             }
         }
         if (OnOffguard == 1) {
@@ -2283,7 +2284,7 @@ var addObs = function () {
                 guard = 0;
                 guard_act = 1;
                 Indicator("lawngreen", "G");
-                AddJS(1, "export_hopg64.js");
+                AddJS(1, "export_hopg65.js");
             }
         }
     } // end-fight
