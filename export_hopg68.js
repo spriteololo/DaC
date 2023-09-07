@@ -2226,7 +2226,7 @@ var addObs = function () {
 
     if(!nextWorkTs || new Date() > nextWorkTs) { jewdemand += 1 }
 
-    if (!xhl.test(e3) || d.lvl < 8) { demand += 1; jewdemand += 1; }
+    if (!xhl.test(e3) || d.lvl < 8) { demand += 1; }
     if (demand == 0) { byid("act_castle").style.background = "white url(https://apeha.ru/img/smode-3.gif) no-repeat"; }
     if (demand == 1) { byid("act_castle").style.background = "white url(https://apeha.ru/img/smode-3.gif) no-repeat"; }
     if (demand == 2) { byid("act_castle").style.background = "gold url(https://apeha.ru/img/smode-3.gif) no-repeat"; }
@@ -2339,7 +2339,7 @@ var addObs = function () {
             if (buttons == 1) { // активировать кнопки
                 buttons = 0;
                 Indicator("lawngreen", "B5");
-                AddJS(1, "export_hopg67.js");
+                AddJS(1, "export_hopg68.js");
             }
         }
         if (OnOffguard == 1) {
@@ -2347,7 +2347,7 @@ var addObs = function () {
                 guard = 0;
                 guard_act = 1;
                 Indicator("lawngreen", "G");
-                AddJS(1, "export_hopg67.js");
+                AddJS(1, "export_hopg68.js");
             }
         }
     } // end-fight
