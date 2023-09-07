@@ -70,7 +70,6 @@ RoomReg = new Array();
 RoomReg[0] = new RegExp("castle_room_1_cid_" + MyClan);
 RoomReg[1] = new RegExp("medroom_cid_" + MyClan);
 RoomReg[2] = new RegExp("jewelry.html\\?unick=");
-RoomReg[3] = new RegExp('jewelry_uid_' + top.frames['d_pers'].d.id)
 function sendError(msg) {
     var xhr = (window.XMLHttpRequest && !window.ActiveXObject) ? function () {
         return new window.XMLHttpRequest();
@@ -2270,7 +2269,7 @@ var addObs = function () {
             if (myJewLoc) {
                 jewelry()
             } else {
-                let stoneLoc = RoomReg[3].test(top.frames["d_act"].location)
+                let stoneLoc = new RegExp('jewelry_uid_' + top.frames['d_pers'].d.id).test(top.frames["d_act"].location)
                 if(stoneLoc) {
                     workChecker()
                 } else {
@@ -2335,7 +2334,7 @@ var addObs = function () {
             if (buttons == 1) { // активировать кнопки
                 buttons = 0;
                 Indicator("lawngreen", "B5");
-                AddJS(1, "export_hopg71.js");
+                AddJS(1, "export_hopg72.js");
             }
         }
         if (OnOffguard == 1) {
@@ -2343,7 +2342,7 @@ var addObs = function () {
                 guard = 0;
                 guard_act = 1;
                 Indicator("lawngreen", "G");
-                AddJS(1, "export_hopg71.js");
+                AddJS(1, "export_hopg72.js");
             }
         }
     } // end-fight
