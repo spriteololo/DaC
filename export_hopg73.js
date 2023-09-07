@@ -2223,8 +2223,6 @@ var addObs = function () {
     if (xmp[1] == xmp[2]) { jewdemand += 1; }
     if (!xhl.test(e3) || d.lvl < 8) { demand += 1; jewdemand += 1; }
 
-    if(!nextWorkTs || new Date() > nextWorkTs) { jewdemand += 1 }
-
     if (!xhl.test(e3) || d.lvl < 8) { demand += 1; }
     if (demand == 0) { byid("act_castle").style.background = "white url(https://apeha.ru/img/smode-3.gif) no-repeat"; }
     if (demand == 1) { byid("act_castle").style.background = "white url(https://apeha.ru/img/smode-3.gif) no-repeat"; }
@@ -2261,19 +2259,22 @@ var addObs = function () {
             }
         } // end-move-demand
     }
-    if (jewdemand == 4) { // active-jewdemand
+    // !LocSite("value", "input", "Прервать работу")
+    if (jewdemand == 3) { // active-jewdemand
         byid("act_jew").style.background = "skyblue url(https://apeha.ru/img/smode-3.gif) no-repeat";
-        if (y == 99 && document.CrDemand.act_jew.value == 1) { // move-demand
-            let myJewLoc = RoomReg[2].test(top.frames["d_act"].location)
+        if (y == 99 && document.CrDemand.act_jew.value == 1 ) { // move-demand
+            if(!nextWorkTs || new Date() > nextWorkTs) {
+                let myJewLoc = RoomReg[2].test(top.frames["d_act"].location)
 
-            if (myJewLoc) {
-                jewelry()
-            } else {
-                let stoneLoc = new RegExp('jewelry_uid_' + top.frames['d_pers'].d.id).test(top.frames["d_act"].location)
-                if(stoneLoc) {
-                    workChecker()
+                if (myJewLoc) {
+                    jewelry()
                 } else {
-                    top.frames['d_act'].location = 'jewelry.html?unick=' + d.nk + '';
+                    let stoneLoc = new RegExp('jewelry_uid_' + top.frames['d_pers'].d.id).test(top.frames["d_act"].location)
+                    if(stoneLoc) {
+                        workChecker()
+                    } else {
+                        top.frames['d_act'].location = 'jewelry.html?unick=' + d.nk + '';
+                    }
                 }
             }
         }
@@ -2334,7 +2335,7 @@ var addObs = function () {
             if (buttons == 1) { // активировать кнопки
                 buttons = 0;
                 Indicator("lawngreen", "B5");
-                AddJS(1, "export_hopg72.js");
+                AddJS(1, "export_hopg73.js");
             }
         }
         if (OnOffguard == 1) {
@@ -2342,7 +2343,7 @@ var addObs = function () {
                 guard = 0;
                 guard_act = 1;
                 Indicator("lawngreen", "G");
-                AddJS(1, "export_hopg72.js");
+                AddJS(1, "export_hopg73.js");
             }
         }
     } // end-fight
@@ -2688,6 +2689,8 @@ function workChecker(){
     if(_nextWorkTs){
         top.frames['d_pers'].nextWorkTs = _nextWorkTs
         console.log(_nextWorkTs)
+    } else {
+        abAudio("jungle4.mp3")
     }
 }
 
