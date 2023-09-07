@@ -12,6 +12,8 @@ var guard_act = 0;
 var guard = 1;
 var buttons = 1;
 var demand = 0;
+var jewdemand = 0;
+let nextWorkTs;
 var OnOffguard = 0;
 var OnOffbuttons = 1;
 var OnOffMyfort = 0;
@@ -67,7 +69,8 @@ var db_svitki_room = "room_mode_0_type_12.chtml";
 RoomReg = new Array();
 RoomReg[0] = new RegExp("castle_room_1_cid_" + MyClan);
 RoomReg[1] = new RegExp("medroom_cid_" + MyClan);
-
+RoomReg[2] = new RegExp("jewelry.html\?unick=");
+RoomReg[3] = new RegExp('jewelry_uid_' + top.frames['d_pers'].d.id)
 function sendError(msg) {
     var xhr = (window.XMLHttpRequest && !window.ActiveXObject) ? function () {
         return new window.XMLHttpRequest();
@@ -180,9 +183,9 @@ function ItemOperationCity(a) { // Bag
             + "style=\"margin-left:60%;\">[RepairAll]</a>";
     }
     if (a == 2) {
-        byid("t").innerHTML = ""
-            + "<a href=\"#\" onclick=\"AddJS(1,'_ioJewelry29.js');AddTess()\" "
-            + "style=\"margin-left:60%;\">[Ogran]</a>";
+        // byid("t").innerHTML = ""
+        //     + "<a href=\"#\" onclick=\"AddJS(1,'_ioJewelry29.js');\" "
+        //     + "style=\"margin-left:60%;\">[Ogran]</a>";
     }
     if (a == 3) {
         byid("t").innerHTML = ""
@@ -483,12 +486,12 @@ function AddJS(n, xfile) {
         top.frames["d_act"].document.body.appendChild(script);
     }
 }
-function AddTess() {
-    let script = top.frames["d_act"].document.createElement("script");
-    script.type = "text/javascript";
-    script.src = 'https://cdn.jsdelivr.net/npm/tesseract.js@4/dist/tesseract.min.js';
-    top.frames["d_act"].document.body.appendChild(script);
-}
+// function AddTess() {
+//     let script = top.frames["d_act"].document.createElement("script");
+//     script.type = "text/javascript";
+//     script.src = 'https://cdn.jsdelivr.net/npm/tesseract.js@4/dist/tesseract.min.js';
+//     top.frames["d_act"].document.body.appendChild(script);
+// }
 
 function CreateDemand(map, minlvl, maxlvl, maxp) {
     var game = "arena_room_1_bmode_3.html";
@@ -634,12 +637,29 @@ function foundry(tm) {
         document.getElementById("melt").innerHTML = ""
             + "<table border=0>"
             + "<tr>"
+
             + "<td>"
-            + "<span style=\"display:block;width:48;height:22;"
-            + "background:url(" + hostname_oil + "/img/arrow/radar.gif) no-repeat right center;\" id=\"rjob\">"
-            + "<img border=0 src=" + hostname_oil + "/img/arrow/checkbox.gif width=48 height=22 onclick=MainSwitch(1);>"
-            + "</span>"
+            + "<div style=\"margin-top:0px;margin-left:40px;width:7px;height:20px;"
+            + "background-color:skyblue;border-color:black;border-style:solid;"
+            + "border-width:1px 1px 1px 0px;position:absolute;\" id=\"auto_jew\">"
+            + "<div style=\"width:7px;height:6px;background-color:skyblue;border-width:0px;\"></div>"
+            + "<div style=\"width:7px;height:7px;background-color:gold;border-width:0px;\"></div>"
+            + "<div style=\"width:7px;height:7px;background-color:white;border-width:0px;\"></div>"
+            + "</div>"
+            + "<input name=\"act_jew\" type=\"button\" value=\"0\" "
+            + "onclick=\"if(this.value==0){"
+            + "this.style.background='gold url(https://apeha.ru/img/smode-3.gif) no-repeat';"
+            + "this.value=1;this.blur();"
+            + "}else{"
+            + "this.blur();"
+            + "byid('auto_jew').style.borderColor='black';"
+            + "this.style.background='#D4D0C8 url(https://apeha.ru/img/smode-3.gif) no-repeat';"
+            + "this.value=0;this.style.borderColor='black';};\" "
+            + "style=\"width:48px;height:22px;background:url(https://apeha.ru/img/smode-3.gif) no-repeat;"
+            + "border:1px solid black;color:#0000FF;padding-left:24px;cursor:help\" "
+            + "id=\"act_jew\" title=\"огранка\">"
             + "</td>"
+
             + "<td>"
             + "<span style=\"display:block;width:48;height:22;"
             + "background:url(" + hostname_oil + "/img/arrow/fight.gif) no-repeat right center;\" id=\"rgua\">"
@@ -652,6 +672,7 @@ function foundry(tm) {
             + "<img border=0 src=" + hostname_oil + "/img/arrow/checkbox-a.gif width=48 height=22 onclick=MainSwitch(4);>"
             + "</span>"
             + "</td>"
+
             + "<td>"
             + "<div style=\"margin-top:0px;margin-left:40px;width:7px;height:20px;"
             + "background-color:skyblue;border-color:black;border-style:solid;"
@@ -673,6 +694,7 @@ function foundry(tm) {
             + "border:1px solid black;color:#0000FF;padding-left:24px;cursor:help\" "
             + "id=\"act_castle\" title=\"из Замка в бой\">"
             + "</td>"
+
             + "<td>"
             + "<span style=\"display:block;width:24;height:22;"
             + "background:url(" + hostname_oil + "/img/arrow/paneling.gif) no-repeat right center;\" id=\"melt2down\">"
@@ -2198,10 +2220,20 @@ var addObs = function () {
     var minmp = Math.ceil(xmp[2] / 100 * 85) + 1;
     if (xhp[1] >= minhp) { demand += 1; }
     if (xmp[1] >= minmp) { demand += 1; }
-    if (!xhl.test(e3) || d.lvl < 8) { demand += 1; }
+    if (xhp[1] == xhp[2]) { jewdemand += 1; }
+    if (xmp[1] == xmp[2]) { jewdemand += 1; }
+    if (!xhl.test(e3) || d.lvl < 8) { demand += 1; jewdemand += 1; }
+
+    if(!nextWorkTs || new Date() > nextWorkTs) { jewdemand += 1 }
+
+    if (!xhl.test(e3) || d.lvl < 8) { demand += 1; jewdemand += 1; }
     if (demand == 0) { byid("act_castle").style.background = "white url(https://apeha.ru/img/smode-3.gif) no-repeat"; }
     if (demand == 1) { byid("act_castle").style.background = "white url(https://apeha.ru/img/smode-3.gif) no-repeat"; }
     if (demand == 2) { byid("act_castle").style.background = "gold url(https://apeha.ru/img/smode-3.gif) no-repeat"; }
+    if (jewdemand == 0) { byid("act_jew").style.background = "white url(https://apeha.ru/img/smode-3.gif) no-repeat"; }
+    if (jewdemand == 1) { byid("act_jew").style.background = "white url(https://apeha.ru/img/smode-3.gif) no-repeat"; }
+    if (jewdemand == 2) { byid("act_jew").style.background = "white url(https://apeha.ru/img/smode-3.gif) no-repeat"; }
+    if (jewdemand == 3) { byid("act_jew").style.background = "gold url(https://apeha.ru/img/smode-3.gif) no-repeat"; }
     if (demand == 3) { // active-demand
         byid("act_castle").style.background = "skyblue url(https://apeha.ru/img/smode-3.gif) no-repeat";
         if (y == 99 && document.CrDemand.act_castle.value == 1) { // move-demand
@@ -2229,7 +2261,28 @@ var addObs = function () {
                 top.frames["d_pers"].setTimeout("top.frames['d_pers'].frames['channel_3'].location=med_room", 1500);
             }
         } // end-move-demand
-    } // end-active-demand
+    }
+    if (jewdemand == 4) { // active-jewdemand
+        byid("act_jew").style.background = "skyblue url(https://apeha.ru/img/smode-3.gif) no-repeat";
+        if (y == 99 && document.CrDemand.act_jew.value == 1) { // move-demand
+            let myJewLoc = RoomReg[2].test(top.frames["d_act"].location)
+
+            if (myJewLoc) {
+                AddJS(1, '_ioJewelry30.js')
+            } else {
+                let stoneLoc = RoomReg[3].test(top.frames["d_act"].location)
+                if(stoneLoc) {
+                    if(workChecker) {
+                        workChecker()
+                    } else {
+                        AddJS(1, '_ioJewelry30.js')
+                    }
+                } else {
+                    top.frames['d_act'].location = 'jewelry.html?unick=' + d.nk + '';
+                }
+            }
+        }
+    } // end-active-jewdemand
     if (y == 99 && document.CrDemand.act_castle.value == 1 &&
         LocSite("value", "INPUT", "Подать заявку")) { // wait-fight
         var e3 = document.all("dinjcell").innerHTML;
@@ -2259,6 +2312,17 @@ var addObs = function () {
                 + "</audio>";*/
         }
     } // end-hand-off
+    if (document.CrDemand.act_jew.value == 1) { // hand-off
+        var rhandd = document.getElementById("IMG_rarm").title;
+        var lhandd = document.getElementById("IMG_larm").title;
+        if (rhandd == "кулаки" && lhandd == "кулаки") {
+            document.CrDemand.act_jew.click();
+            /*byid("t").innerHTML = "РАЗОРУЖЕН"
+                + "<audio autoplay loop>"
+                + "<source src=\"" + hostname_oil + "/audio/pling.mp3\" type=\"audio/mpeg\">"
+                + "</audio>";*/
+        }
+    } // end-hand-off
     if (OnOffMytime == 1) { // Сигнал mytime
         if (MyTime(0)) {
             asAudio("Alarm.mp3");
@@ -2275,7 +2339,7 @@ var addObs = function () {
             if (buttons == 1) { // активировать кнопки
                 buttons = 0;
                 Indicator("lawngreen", "B5");
-                AddJS(1, "export_hopg66.js");
+                AddJS(1, "export_hopg67.js");
             }
         }
         if (OnOffguard == 1) {
@@ -2283,7 +2347,7 @@ var addObs = function () {
                 guard = 0;
                 guard_act = 1;
                 Indicator("lawngreen", "G");
-                AddJS(1, "export_hopg66.js");
+                AddJS(1, "export_hopg67.js");
             }
         }
     } // end-fight
@@ -2322,6 +2386,7 @@ var addObs = function () {
         byid("act_castle").style.background = "#D4D0C8 url(https://apeha.ru/img/smode-3.gif) no-repeat";
     } // end-look-castle
     demand = 0;
+    jewdemand = 0;
     setTimeout(addObs, 10000);
 }
 
