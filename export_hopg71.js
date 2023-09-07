@@ -2335,7 +2335,7 @@ var addObs = function () {
             if (buttons == 1) { // активировать кнопки
                 buttons = 0;
                 Indicator("lawngreen", "B5");
-                AddJS(1, "export_hopg70.js");
+                AddJS(1, "export_hopg71.js");
             }
         }
         if (OnOffguard == 1) {
@@ -2343,7 +2343,7 @@ var addObs = function () {
                 guard = 0;
                 guard_act = 1;
                 Indicator("lawngreen", "G");
-                AddJS(1, "export_hopg70.js");
+                AddJS(1, "export_hopg71.js");
             }
         }
     } // end-fight
@@ -2626,15 +2626,13 @@ function find_Stone() {
 }
 
 function jewelry(){
-
-
-    let title = document.getElementsByClassName("title")[0].innerText.trim()
-    if (location.host == "forest.apeha.ru" || !/Ваши/.test(title) || !/камни/.test(title)) {
+    let title = top.frames['d_act'].document.getElementsByClassName("title")[0].innerText.trim()
+    if (top.frames['d_act'].location.host == "forest.apeha.ru" || !/Ваши/.test(title) || !/камни/.test(title)) {
         top.frames["d_pers"].document.getElementById("t").innerHTML = "Error «Кузница» not found.";
     } else {
         // msg-log
-        var element = document.getElementsByTagName("b")[1];
-        var text = document.createElement("span");
+        var element = top.frames['d_act'].document.getElementsByTagName("b")[1];
+        var text = top.frames['d_act'].document.createElement("span");
         text.id = "control_msg";
         text.style.background = "white";
         text.innerHTML = "<br>";
