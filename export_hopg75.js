@@ -14,6 +14,7 @@ var buttons = 1;
 var demand = 0;
 var jewdemand = 0;
 let nextWorkTs;
+let nextRestTs;
 var OnOffguard = 0;
 var OnOffbuttons = 1;
 var OnOffMyfort = 0;
@@ -2273,8 +2274,16 @@ var addObs = function () {
                     if(stoneLoc) {
                         workChecker()
                     } else {
+                        nextWorkTs = new Date()
                         top.frames['d_act'].location = 'jewelry.html?unick=' + d.nk + '';
                     }
+                }
+            }
+            if(nextRestTs && new Date() > nextRestTs) {
+                const element = findBy(top.frames['d_act'], "tag", "button", "title", "Обновить")
+                if(element) {
+                    element.click()
+                    nextRestTs = null;
                 }
             }
         }
@@ -2335,7 +2344,7 @@ var addObs = function () {
             if (buttons == 1) { // активировать кнопки
                 buttons = 0;
                 Indicator("lawngreen", "B5");
-                AddJS(1, "export_hopg74.js");
+                AddJS(1, "export_hopg75.js");
             }
         }
         if (OnOffguard == 1) {
@@ -2343,7 +2352,7 @@ var addObs = function () {
                 guard = 0;
                 guard_act = 1;
                 Indicator("lawngreen", "G");
-                AddJS(1, "export_hopg74.js");
+                AddJS(1, "export_hopg75.js");
             }
         }
     } // end-fight
@@ -2679,6 +2688,11 @@ function findBy(frame, byType, typeName, byAttribute, attributeName){
                     return element
                 }
                 break;
+            case "title":
+                if(element.title.includes(attributeName)) {
+                    return element
+                }
+                break;
             default: return ;
         }
     }
@@ -2697,10 +2711,10 @@ function workType() {
     const element = findBy(top.frames["d_pers"], "id", "IMG_rarm")
     if (element && element.title) {
         if (element.title.includes("огранщика")) {
-            return [2, 33, 0]
+            return [2, 48, 0]
         }
         if (element.title.includes("кузнеца")) {
-            return [1, 34, 0]
+            return [2, 6, 0]
         }
     }
     return [0, 0, 0]
@@ -2713,9 +2727,16 @@ function nextWorkTimeStamp(){
     if (workElement) {
         element = workElement
 
-        const workTimeShifts = workType()
+        const restTimeShifts = workType()
+        const workTimeShifts = parseTime(element.innerText.trim())
+        if(workTimeShifts) {
+            const timeStamp = createTimeStampWhenReady(workTimeShifts)
+            if(timeStamp) {
+                nextRestTs = timeStamp
+            }
+        }
         timeShifts = parseTime(element.innerText.trim()).map(function (value, index, array) {
-            return value + workTimeShifts[index]
+            return value + restTimeShifts[index]
         })
     } else {
         const restElement = findBy(top.frames["d_act"], "tag", "td", "innerText", "Вы устали")
