@@ -2265,12 +2265,14 @@ var addObs = function () {
         byid("act_jew").style.background = "skyblue url(https://apeha.ru/img/smode-3.gif) no-repeat";
         if (y == 99 && document.CrDemand.act_jew.value == 1 ) { // move-demand
             if(!nextWorkTs || new Date() > nextWorkTs) {
-                let myJewLoc = RoomReg[2].test(top.frames["d_act"].location)
+                let myJewLoc = findBy(top.frames['d_act'], "tag", "span", 'innerText', 'Ваши камни')
 
                 if (myJewLoc) {
                     jewelry()
                 } else {
-                    let stoneLoc = new RegExp('jewelry_uid_' + top.frames['d_pers'].d.id).test(top.frames["d_act"].location)
+                    let stoneLoc = findBy(top.frames['d_act'], "tag", "td", 'innerText', 'Вы готовы') ||
+                        findBy(top.frames["d_act"], "tag", "td", "innerText", "Осталось от текущей") ||
+                        findBy(top.frames["d_act"], "tag", "td", "innerText", "Вы устали")
                     if(stoneLoc) {
                         workChecker()
                     } else {
@@ -2344,7 +2346,7 @@ var addObs = function () {
             if (buttons == 1) { // активировать кнопки
                 buttons = 0;
                 Indicator("lawngreen", "B5");
-                AddJS(1, "export_hopg76.js");
+                AddJS(1, "export_hopg77.js");
             }
         }
         if (OnOffguard == 1) {
@@ -2352,7 +2354,7 @@ var addObs = function () {
                 guard = 0;
                 guard_act = 1;
                 Indicator("lawngreen", "G");
-                AddJS(1, "export_hopg76.js");
+                AddJS(1, "export_hopg77.js");
             }
         }
     } // end-fight
