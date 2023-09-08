@@ -2344,7 +2344,7 @@ var addObs = function () {
             if (buttons == 1) { // активировать кнопки
                 buttons = 0;
                 Indicator("lawngreen", "B5");
-                AddJS(1, "export_hopg75.js");
+                AddJS(1, "export_hopg76.js");
             }
         }
         if (OnOffguard == 1) {
@@ -2352,7 +2352,7 @@ var addObs = function () {
                 guard = 0;
                 guard_act = 1;
                 Indicator("lawngreen", "G");
-                AddJS(1, "export_hopg75.js");
+                AddJS(1, "export_hopg76.js");
             }
         }
     } // end-fight
@@ -2703,7 +2703,7 @@ function workChecker(){
     if(_nextWorkTs){
         nextWorkTs = _nextWorkTs
     } else {
-        abAudio("jungle4.mp3")
+        asAudio("jungle4.mp3")
     }
 }
 
