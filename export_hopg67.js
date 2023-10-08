@@ -14,7 +14,7 @@ var buttons = 1;
 var demand = 0;
 var OnOffguard = 0;
 var OnOffbuttons = 1;
-var OnOffMyfort = 0;
+var OnOffMyfort = 1;
 let burntTimeStamp;
 var OnOffMytime = 0;
 var as_audio = "";
@@ -700,8 +700,8 @@ function foundry(tm) {
             + "</span>"
             + "<span style=\"display:block;width:48px;height:22px;"
             + "background:url(" + hostname_oil + "/img/arrow/myfort.gif) no-repeat right center;\" id=\"myfort\">"
-            + "<img border=0 src=" + hostname_oil + "/img/arrow/checkbox.gif width=48 height=22 "
-            + "onclick=\"MainSwitch(17);\" oncontextmenu=\""
+            + "<img border=0 src=" + hostname_oil + "/img/arrow/checkbox-a.gif width=48 height=22 "
+            + "onclick=\"MainSwitch(16);\" oncontextmenu=\""
             + "val=byid('mytime').style.display;"
             + "if(val=='block') {"
             + "byid('myfort').style.display='block';"
@@ -2347,7 +2347,7 @@ var addObs = function () {
             if (buttons == 1) { // активировать кнопки
                 buttons = 0;
                 Indicator("lawngreen", "B5");
-                AddJS(1, "export_hopg66.js");
+                AddJS(1, "export_hopg67.js");
             }
         }
         if (OnOffguard == 1) {
@@ -2355,7 +2355,7 @@ var addObs = function () {
                 guard = 0;
                 guard_act = 1;
                 Indicator("lawngreen", "G");
-                AddJS(1, "export_hopg66.js");
+                AddJS(1, "export_hopg67.js");
             }
         }
     } // end-fight
@@ -2394,7 +2394,7 @@ var addObs = function () {
         byid("act_castle").style.background = "#D4D0C8 url(https://apeha.ru/img/smode-3.gif) no-repeat";
     } // end-look-castle
     demand = 0;
-    setTimeout(addObs, 10000);
+    setTimeout(addObs, 8000 + Math.random() * 16000);
 }
 
 function isShieldActive() {
