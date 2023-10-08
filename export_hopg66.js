@@ -2149,17 +2149,18 @@ var addObs = function () {
                     if (ttl) {
                         let needToAddStone = ttl.seconds == 0 && ttl.hours == 0 && ttl.minutes == 0
                         if (needToAddStone) {
-                            if(!isFortAttacked()) {
-                                top.frames["d_chatact"].chclear();
+                            if (!isFortAttacked()) {
                                 addStoneAndSubmit(1, 1)
-                            } else {
-                                console.log("Oh sh*t!")
                             }
                         } else {
-                            if (top.frames["d_act"].actReload) {
-                                top.frames["d_act"].actReload()
+                            if (!isFortAttacked()) {
+                                top.frames["d_chatact"].chclear();
+                            } else {
+                                if (top.frames["d_act"].actReload) {
+                                    top.frames["d_act"].actReload()
+                                }
+                                console.log("not needed to add stones, reloading...")
                             }
-                            console.log("not needed to add stones, reloading...")
                         }
                     } else {
                         console.log("couldn't get ttl")
@@ -2346,7 +2347,7 @@ var addObs = function () {
             if (buttons == 1) { // активировать кнопки
                 buttons = 0;
                 Indicator("lawngreen", "B5");
-                AddJS(1, "export_hopg65.js");
+                AddJS(1, "export_hopg66.js");
             }
         }
         if (OnOffguard == 1) {
@@ -2354,7 +2355,7 @@ var addObs = function () {
                 guard = 0;
                 guard_act = 1;
                 Indicator("lawngreen", "G");
-                AddJS(1, "export_hopg65.js");
+                AddJS(1, "export_hopg66.js");
             }
         }
     } // end-fight
