@@ -15,6 +15,7 @@ var demand = 0;
 var OnOffguard = 0;
 var OnOffbuttons = 1;
 var OnOffMyfort = 0;
+let burntTimeStamp;
 var OnOffMytime = 0;
 var as_audio = "";
 var ioTitle = 0;
@@ -758,17 +759,6 @@ function foundry(tm) {
             + "return false;\" "
             + "style=\"margin-left:2px;padding:0px;width:15px;height:22px;"
             + "color:#D4D0C8;background-color:#D4D0C8;border:1px solid black;\" title=\"Лимит HP\">"
-            + "<input name=\"fort\" type=\"button\" value=0 onclick=\""
-            + "if(this.value==0){"
-            + "this.value=1;"
-            + "this.style.color='gold';"
-            + "this.style.backgroundColor='gold';"
-            + "}else{"
-            + "this.value=0;"
-            + "this.style.color='#D4D0C8';"
-            + "this.style.backgroundColor='#D4D0C8';};\" "
-            + "style=\"margin-left:2px;padding:0px;width:15px;height:22px;"
-            + "color:#D4D0C8;background-color:#D4D0C8;border:1px solid black;\" title=\"Камни в форт\">"
             + "</td>"
             + "<td>"
             + "<div onclick=\"document.CrDemand.abMoveClick.click();\" "
@@ -809,24 +799,50 @@ function Indicator(c, txt) {
 }
 
 function LocSite(elem, tag, txt) {
+    const elems = top.frames["d_act"].document.getElementsByTagName(tag)
     if (elem == "title") {
-        for (i = 0; i < top.frames["d_act"].document.getElementsByTagName(tag).length; i++) {
-            if (top.frames["d_act"].document.getElementsByTagName(tag)[i].title == txt) {
+        for (i = 0; i < elems.length; i++) {
+            if (elems[i].title == txt) {
                 return true;
             }
         }
     }
     if (elem == "value") {
-        for (i = 0; i < top.frames["d_act"].document.getElementsByTagName(tag).length; i++) {
-            if (top.frames["d_act"].document.getElementsByTagName(tag)[i].value == txt) {
+        for (i = 0; i < elems.length; i++) {
+            if (elems[i].value == txt) {
                 return true;
             }
         }
     }
     if (elem == "name") {
-        for (i = 0; i < top.frames["d_act"].document.getElementsByTagName(tag).length; i++) {
-            if (top.frames["d_act"].document.getElementsByTagName(tag)[i].name == txt) {
+        for (i = 0; i < elems.length; i++) {
+            if (elems[i].name == txt) {
                 return true;
+            }
+        }
+    }
+}
+
+function LocSiteAndGet(elem, tag, txt) {
+    const elems = top.frames["d_act"].document.getElementsByTagName(tag)
+    if (elem == "title") {
+        for (i = 0; i < elems.length; i++) {
+            if (elems[i].title == txt) {
+                return elems[i];
+            }
+        }
+    }
+    if (elem == "value") {
+        for (i = 0; i < elems.length; i++) {
+            if (elems[i].value == txt) {
+                return elems[i];
+            }
+        }
+    }
+    if (elem == "name") {
+        for (i = 0; i < elems.length; i++) {
+            if (elems[i].name == txt) {
+                return elems[i];
             }
         }
     }
@@ -2124,6 +2140,67 @@ var addObs = function () {
         castle_room = "arena_room_1_bmode_1.html";
         med_room = "arena_room_1_bmode_1.html";
     }
+    if (top.frames["d_act"].location.host == "newforest.apeha.ru" && MyTime(1)) { //forest
+        if (/forpost\.html/.test(top.frames["d_act"].location)) {//inner room
+            if (burntTimeStamp == null) {
+                const shieldNotActive = !isShieldActive()
+                if (shieldNotActive) {
+                    const ttl = getCharge()
+                    if (ttl) {
+                        let needToAddStone = ttl.seconds == 0 && ttl.hours == 0 && ttl.minutes == 0
+                        if (needToAddStone) {
+                            if(!isFortAttacked()) {
+                                top.frames["d_chatact"].chclear();
+                                addStoneAndSubmit(1, 1)
+                            } else {
+                                console.log("Oh sh*t!")
+                            }
+                        } else {
+                            if (top.frames["d_act"].actReload) {
+                                top.frames["d_act"].actReload()
+                            }
+                            console.log("not needed to add stones, reloading...")
+                        }
+                    } else {
+                        console.log("couldn't get ttl")
+                    }
+
+                } else {
+                    const newTimeStamp = new Date(Date.now())
+                    const ttl = getCharge()
+                    if (ttl) {
+                        newTimeStamp.setHours(newTimeStamp.getHours() + ttl.hours)
+                        newTimeStamp.setMinutes(newTimeStamp.getMinutes() + ttl.minutes)
+                        newTimeStamp.setSeconds(newTimeStamp.getSeconds() + ttl.seconds)
+
+                        burntTimeStamp = newTimeStamp
+                    } else {
+                        console.log("couldn't get ttl")
+                    }
+                }
+            } else {
+                if (burntTimeStamp < Date.now()) {
+                    burntTimeStamp = null
+                    if (top.frames["d_act"].actReload) {
+                        top.frames["d_act"].actReload()
+                    }
+                } else {
+                    console.log("not yet burnt")
+                }
+            }
+        } else {
+            if (top.frames["d_act"].document.getElementById("rollingscroll") &&
+                top.frames["d_act"].document.getElementById("rollingscroll").title.includes("В очень странном месте")) { //прихожая
+                const fortName = getAttackedFortName()
+                if (fortName) {
+                    const enterFort = LocSiteAndGet("value", "input", fortName)
+                    if (enterFort) {
+                        enterFort.click()
+                    }
+                }
+            }
+        }
+    }
     // end-move-parm
     if (!LocSite("value", "input", "Прервать работу") &&
         !top.frames["d_act"].document.getElementById("buttons")) { // wheeluck
@@ -2138,44 +2215,6 @@ var addObs = function () {
             wheeluck_day = Moscow_day;
         }
     } // end-wheeluck
-    if (document.CrDemand.fort.value == 1) {
-
-        let shieldNotActive = false;
-        for (let i = 0; i < top.frames['d_act'].document.getElementsByTagName('tr').length; i++) {
-            let item = top.frames['d_act'].document.getElementsByTagName('tr')[i]
-            if (/неактивен/.test(item.innerHTML)) {
-                shieldNotActive = true
-            }
-        }
-        let needToAddStone = false
-        if (shieldNotActive) {
-            for (let i = 0; i < top.frames['d_act'].document.getElementsByTagName('td').length; i++) {
-                let item = top.frames['d_act'].document.getElementsByTagName('td')[i]
-                if (/заряд/.test(item.textContent) && item.textContent.length < 100) {
-                    let text = item.textContent
-                    let newText = text.replace("неактивен, заряд:", "").trim()
-                    console.log(newText)
-                    needToAddStone = newText.startsWith("0")
-                }
-            }
-        }
-
-        if (needToAddStone) {
-            for (let i = 0; i < top.frames['d_act'].document.getElementsByTagName('select').length; i++) {
-                let item = top.frames['d_act'].document.getElementsByTagName('select')[i]
-                if (/gemid/.test(item.name)) {
-                    console.log("Adding one stone")
-                    item.getElementsByTagName('option')[1].selected = 'selected'
-                    top.frames['d_act'].document.forms[0].submit()
-                }
-            }
-        } else {
-            console.log("Not added, reloading...")
-            if (top.frames["d_act"].actReload) {
-                top.frames["d_act"].actReload()
-            }
-        }
-    }
 
     if (!top.frames["d_act"].document.getElementsByTagName("META")[0] &&
         !LocSite("value", "INPUT", "html") && document.CrDemand.act_castle.value == 1) { // meta
@@ -2266,6 +2305,38 @@ var addObs = function () {
     }
     if (OnOffMyfort == 1) { // На форпост напали!
         if (MyTime(1)) {
+            if (!LocSite("value", "input", "Прервать работу") &&
+                !top.frames["d_act"].document.getElementById("buttons")){
+                let cr = new RegExp(castle_room, "g")
+                if (!cr.test(top.frames["d_act"].location)) {
+                    console.log("moving to castle...")
+                    top.frames["d_act"].location = castle_room;
+                } else {
+                    console.log("moved to castle")
+                    const select = top.frames["d_act"].document.querySelector('select[name="actNewMaps-JumpToForpost"]')
+                    const fortName = getAttackedFortName()
+
+                    const elems = top.frames["d_act"].document.getElementsByTagName("input")
+                    let neededElem;
+                    for (let i = elems.length - 1; i >= 0 ; i--) {
+                        if (elems[i].value == "Телепорт") {
+                            neededElem = elems[i]
+                            break;
+                        }
+                    }
+                    if (fortName && select && neededElem) {
+                        for (let i = 0; i < select.options.length; i++) {
+                            // Сравниваем текст каждой опции с заданным названием
+                            if (select.options[i].textContent === fortName) {
+                                // Если текст опции совпадает, устанавливаем её как выбранную
+                                select.selectedIndex = i;
+                                neededElem.click()
+                                break; // Прерываем цикл после нахождения совпадения
+                            }
+                        }
+                    }
+                }
+            }
             asAudio("ReligionConvert.mp3");
         }
     }
@@ -2275,7 +2346,7 @@ var addObs = function () {
             if (buttons == 1) { // активировать кнопки
                 buttons = 0;
                 Indicator("lawngreen", "B5");
-                AddJS(1, "export_hopg62.js");
+                AddJS(1, "export_hopg63.js");
             }
         }
         if (OnOffguard == 1) {
@@ -2283,7 +2354,7 @@ var addObs = function () {
                 guard = 0;
                 guard_act = 1;
                 Indicator("lawngreen", "G");
-                AddJS(1, "export_hopg62.js");
+                AddJS(1, "export_hopg63.js");
             }
         }
     } // end-fight
@@ -2323,6 +2394,96 @@ var addObs = function () {
     } // end-look-castle
     demand = 0;
     setTimeout(addObs, Math.floor(Math.random() * 100000) + 80000);
+}
+
+function isShieldActive() {
+    let shieldNotActive = false;
+    for (let i = 0; i < top.frames['d_act'].document.getElementsByTagName('tr').length; i++) {
+        let item = top.frames['d_act'].document.getElementsByTagName('tr')[i]
+        if (/неактивен/.test(item.innerHTML)) {
+            shieldNotActive = true
+        }
+    }
+    return !shieldNotActive
+}
+
+function isFortAttacked() {
+    return LocSite("value", "input", "Присоединиться")
+}
+
+function getCharge(){
+    for (let i = 0; i < top.frames['d_act'].document.getElementsByTagName('td').length; i++) {
+        let item = top.frames['d_act'].document.getElementsByTagName('td')[i]
+        if (/заряд/.test(item.textContent) && item.textContent.length < 100) {
+            let text = item.textContent
+            let charge = parseChargeStatus(text)
+            return charge
+        }
+    }
+    return
+}
+
+function parseChargeStatus(input) {
+    // Регулярное выражение для поиска часов, минут и секунд
+    const regexHours = /(\d+)\s*ч/;
+    const regexMinutes = /(\d+)\s*мин/;
+    const regexSec = /(\d+)\s*с/;
+
+    // Поиск совпадения в строке
+    const matchHours = input.match(regexHours);
+    const matchMinutes = input.match(regexMinutes);
+    const matchSeconds = input.match(regexSec);
+
+    if (matchHours || matchMinutes || matchSeconds) {
+        // match[1] содержит часы
+        const hours = (matchHours && matchHours[1]) ? parseInt(matchHours[1], 10) : 0;
+
+        // match[2] содержит минуты (если присутствуют)
+        const minutes = (matchMinutes && matchMinutes[1]) ? parseInt(matchMinutes[1], 10) : 0;
+
+        // match[3] содержит секунды (если присутствуют)
+        const seconds = (matchSeconds && matchSeconds[1]) ? parseInt(matchSeconds[1], 10) : 0;
+
+        return {
+            hours,
+            minutes,
+            seconds
+        };
+    } else {
+        // Если совпадения не найдены
+        return null;
+    }
+}
+
+function addStoneAndSubmit(stonePlace, quantity) {
+    const stoneSelect = top.frames["d_act"].document.querySelector('select[name="gemid"]')
+    const quantityElem = LocSiteAndGet("name", "input", "cnt")
+    const submitBtn = LocSiteAndGet("value", "input", "Зарядить")
+
+    if (stoneSelect && submitBtn) {
+        stoneSelect.selectedIndex = stonePlace
+
+        if(quantityElem) {
+            quantityElem.value = quantity
+        }
+        submitBtn.click()
+        return true
+    }
+}
+
+function getAttackedFortName(){
+    const inputString = top.frames["d_chat"].document.getElementById("messages").innerHTML
+    const regExp = new RegExp('Голос<.*> клану</b>: На форпост (.*?) напали', "g");
+    const match = regExp.exec(inputString);
+    if (match && match[1] && select && neededElem) {
+        const extractedWord = match[1];
+        console.log(extractedWord); // Выведет имя
+        return extractedWord
+    } else {
+        console.log("Совпадений не найдено");
+        // Здесь обработайте случай, если совпадений не найдено
+        return
+    }
 }
 
 function healHp(){
