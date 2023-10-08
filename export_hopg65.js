@@ -2346,7 +2346,7 @@ var addObs = function () {
             if (buttons == 1) { // активировать кнопки
                 buttons = 0;
                 Indicator("lawngreen", "B5");
-                AddJS(1, "export_hopg64.js");
+                AddJS(1, "export_hopg65.js");
             }
         }
         if (OnOffguard == 1) {
@@ -2354,7 +2354,7 @@ var addObs = function () {
                 guard = 0;
                 guard_act = 1;
                 Indicator("lawngreen", "G");
-                AddJS(1, "export_hopg64.js");
+                AddJS(1, "export_hopg65.js");
             }
         }
     } // end-fight
@@ -2475,7 +2475,7 @@ function getAttackedFortName(){
     const inputString = top.frames["d_chat"].document.getElementById("messages").innerHTML
     const regExp = new RegExp('Голос<.*> клану</b>: На форпост (.*?) напали', "g");
     const match = regExp.exec(inputString);
-    if (match && match[1] && select && neededElem) {
+    if (match && match[1]) {
         const extractedWord = match[1];
         console.log(extractedWord); // Выведет имя
         return extractedWord
