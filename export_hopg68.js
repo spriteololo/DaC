@@ -40,24 +40,24 @@ var element_limit_hp = ""
     + "</span>";
 
 var MyHome = 0;
-var MyClan = 8;
-var mbClon = 631515;
-var mbHP = 14535;
-var mbDestroy = 631513;
-var mbJump = 631514;
-var mbPower = 660320;
-var mbSniper = 632918;
-var mbPereman = 14541;
+var MyClan = 0;
+var mbClon = 0;
+var mbHP = 0;
+var mbDestroy = 0;
+var mbJump = 0;
+var mbPower = 0;
+var mbSniper = 0;
+var mbPereman = 0;
 
 var mbStone = 0;
 var mbFireBall = 0;
-var mbArmor = 632261;
+var mbArmor = 0;
 var mbFreeze = 0;
 var mbCurse = 0;
 
-var abilityFireDust = 490235;
-var abilityKill = 424561;
-var abilityAbort = 128740;
+var abilityFireDust = 0;
+var abilityKill = 0;
+var abilityAbort = 0;
 var abilityCloneDispel = 0;
 var abilityPet = 0;
 
@@ -2347,7 +2347,7 @@ var addObs = function () {
             if (buttons == 1) { // активировать кнопки
                 buttons = 0;
                 Indicator("lawngreen", "B5");
-                AddJS(1, "export_hopg67.js");
+                AddJS(1, "export_hopg68.js");
             }
         }
         if (OnOffguard == 1) {
@@ -2355,7 +2355,7 @@ var addObs = function () {
                 guard = 0;
                 guard_act = 1;
                 Indicator("lawngreen", "G");
-                AddJS(1, "export_hopg67.js");
+                AddJS(1, "export_hopg68.js");
             }
         }
     } // end-fight
@@ -2603,6 +2603,13 @@ function Run() {
 
     if (b != 2 && b || !b) {
         setTimeout(addact, 100);
+        if (location.host == "newforest.apeha.ru") {
+            if (top.frames["d_act"].window &&
+                top.frames["d_act"].window.global_data &&
+                top.frames["d_act"].window.global_data.my_group) {
+                AddJS(1, "_forest2.js");
+            }
+        }
         if (location.host != "newforest.apeha.ru") { // chat
             parent.document.getElementsByTagName("frameset")[0].rows = "80%,*,31";
             // var itm = top.frames["d_chatact"].document.forms["chat"].elements["filter"];
