@@ -149,6 +149,7 @@ var locatorHistoryHidden = true;
 var autoSearch = false;
 var autoJob = false;
 var autoGo = false;
+var record = false;
 var travnik = false;
 var travMC = false;
 var autoBot = false;
@@ -293,6 +294,7 @@ if (!actIframeDoc.getElementById("ShowCoord") && clickEl) {
     actionsDiv.innerHTML += '<span id="routePointsCount">0</span>';
     actionsDiv.innerHTML += '<input id="resetRouteBtn" value="Сброс" title="Сбросить все точки маршрута" type="button"><br>';
     actionsDiv.innerHTML += '<input id="destGoBtn" value="GO!" type="button">';
+    actionsDiv.innerHTML += '<input id="recordBtn" value="Record!" type="button">';
     actionsDiv.innerHTML += '<input id="forceSaveBtn" value="forceSave" type="button">';
     actionsDiv.innerHTML += '<input id="addRoutePointsBtn" value="+ X.Y." title="Добавить точки для маршрута" type="button">';
     actionsDiv.innerHTML += ' | ';
@@ -387,6 +389,7 @@ if (!actIframeDoc.getElementById("ShowCoord") && clickEl) {
     jQueryPers("#jobBtn").click(toggleJob);
     jQueryPers("#jobLogsBtn").click(toggleJobLogs);
     jQueryPers("#destGoBtn").click(toggleDestGo);
+    jQueryPers("#recordBtn").click(toggleRecord);
     jQueryPers("#forceSaveBtn").click(forceSave);
     jQueryPers("#sundBtn").click(toggleSundOnly);
     jQueryPers("#locHistoryBtn").click(toggleLocatorHistory);
@@ -590,16 +593,32 @@ function toggleDestGo() {
         to4kaGoY = 0;
         distansGoEl.classList.remove("show");
         coorsGoEl.classList.remove("show");
-        startRecord()
+        if(!record) {
+            toggleRecord()
+        }
     } else {
         destGoBtn.value = "Stop";
         to4kaGoX = 0;
         to4kaGoY = 0;
         distansGoEl.classList.add("show");
         coorsGoEl.classList.add("show");
-        stopRecord()
+        if(record) {
+            toggleRecord()
+        }
     }
     autoGo = !autoGo;
+}
+
+function toggleRecord() {
+    var recordBtn = persIframeDoc.getElementById("recordBtn");
+    if (record) {
+        recordBtn.value = "Record!";
+        startRecord()
+    } else {
+        recordBtn.value = "Stop record";
+        stopRecord()
+    }
+    record = !record;
 }
 
 function resetRoute() {
@@ -2180,10 +2199,17 @@ function cellSaver() {
     }
 }
 
-let cellSaverIntervalId
-let downloaderIntervalId
+let cellSaverIntervalId = 0
+let downloaderIntervalId = 0
 function startRecord() {
+    if (cellSaverIntervalId != 0) {
+        clearInterval(cellSaverIntervalId)
+    }
     cellSaverIntervalId = setInterval("cellSaver()", 800)
+
+    if (downloaderIntervalId != 0) {
+        clearInterval(downloaderIntervalId)
+    }
     downloaderIntervalId = setInterval("findAndDownloadFullSquares(false)", 10*60*1000)
 }
 function stopRecord() {
