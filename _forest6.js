@@ -276,7 +276,7 @@ if (!actIframeDoc.getElementById("ShowCoord") && clickEl) {
     // готовим кнопки с действиями
     var actionsDiv = document.createElement('div');
     actionsDiv.id = "activBlock";
-    actionsDiv.innerHTML = '<label title="Показать/Скрыть рамку">Р:<input id="setkaBtn" type="checkbox"></label>';
+    actionsDiv.innerHTML = '<label title="Показать/Скрыть рамку">Р:<input id="setkaBtn" type="checkbox" checked></label>';
     actionsDiv.innerHTML += '<label title="Включить/Выключить автопоиск">П:<input id="searchBtn" type="checkbox"></label><input id="searchLogsBtn" type="checkbox" title="Включить/Выключить логи поиска" disabled checked>';
     actionsDiv.innerHTML += '<label title="Включить/Выключить автодобычу">Д:<input id="jobBtn" type="checkbox"></label><input id="jobLogsBtn" type="checkbox" title="Включить/Выключить логи добычи" disabled checked>';
     actionsDiv.innerHTML += selector() + "<br>";
@@ -284,11 +284,11 @@ if (!actIframeDoc.getElementById("ShowCoord") && clickEl) {
     actionsDiv.innerHTML += '<label title="Вероятность длительной паузы между поисками и добычей">ВП: <input id="bigDelay" placeholder="%" value="1"></label> ';
     actionsDiv.innerHTML += '<label title="Остаток использования инструмента">ОИ: <input id="toolUsageCount" placeholder="кол-во" value="' + getToolUsageCount() + '"></label> ';
     actionsDiv.innerHTML += '<hr>';
-    actionsDiv.innerHTML += '<label title="Собирать траву">Т:<input id="grassBtn" type="checkbox"></label><input id="grassLogsBtn" type="checkbox" title="Включить/Выключить логи сбора травы" disabled checked> ';
-    actionsDiv.innerHTML += '<label title="Брать только ценное">Ц:<input id="travMCBtn" type="checkbox" disabled></label> ';
-    actionsDiv.innerHTML += '<label title="Брать только сундуки">C:<input id="sundBtn" type="checkbox" disabled></label>';
+    actionsDiv.innerHTML += '<label title="Собирать траву">Т:<input id="grassBtn" type="checkbox" checked></label><input id="grassLogsBtn" type="checkbox" title="Включить/Выключить логи сбора травы" checked> ';
+    actionsDiv.innerHTML += '<label title="Брать только ценное">Ц:<input id="travMCBtn" type="checkbox" checked></label> ';
+    actionsDiv.innerHTML += '<label title="Брать только сундуки">C:<input id="sundBtn" type="checkbox" checked></label>';
     actionsDiv.innerHTML += ' | ';
-    actionsDiv.innerHTML += '<label title="Показать логи локатора">Л:<input id="locHistoryBtn" type="checkbox"></label>';
+    actionsDiv.innerHTML += '<label title="Показать логи локатора">Л:<input id="locHistoryBtn" type="checkbox" checked></label>';
     actionsDiv.innerHTML += '<hr>';
     actionsDiv.innerHTML += '<input id="destinationXY" placeholder="X:Y" title="Куда X:Y" value="">';
     actionsDiv.innerHTML += '<span id="routePointsCount">0</span>';
@@ -416,7 +416,6 @@ if (!actIframeDoc.getElementById("ShowCoord") && clickEl) {
 
     toggleSetka()
     toggleGrass()
-    toggleGrassLogs()
     toggleSundOnly()
     toggleLocatorHistory()
     toggleTravMC()
