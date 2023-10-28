@@ -2126,7 +2126,7 @@ function saveCell(loc_id, x, y, baseItemsType, baseItemsSubType, absPosesType, f
 
     const tempX = (x % FULL_LOC_WIDTH) % SQUARE_WIDTH
     if (squares[loc_id][currSquare][tempY][tempX] === undefined) {
-        squares[loc_id][currSquare][tempY][tempX] = {baseItemsType, baseItemsSubType, absPosesType, fortId}
+        squares[loc_id][currSquare][tempY][tempX] = {x, y, baseItemsType, baseItemsSubType, absPosesType, fortId}
     }
 }
 
@@ -2135,7 +2135,7 @@ function getIndexByCoord(x, y) {
 }
 
 function getSquareNumByCoord(x, y) {
-    return Math.ceil(FULL_LOC_WIDTH / SQUARE_WIDTH) * Math.floor(y/SQUARE_HEIGHT) + Math.floor(x/SQUARE_WIDTH)
+    return Math.ceil(FULL_LOC_WIDTH / SQUARE_WIDTH) * Math.floor((y%FULL_LOC_HEIGHT)/SQUARE_HEIGHT) + Math.floor((x%FULL_LOC_WIDTH)/SQUARE_WIDTH)
 }
 
 function downloadSquares(loc_id, squareNum, textToSave) {
@@ -2190,7 +2190,8 @@ function squaresLeft() {
 function cellSaver() {
     if (actIframeWin.global_data &&
         actIframeWin.global_data.base_items &&
-        actIframeWin.global_data.abs_poses) {
+        actIframeWin.global_data.abs_poses &&
+        actIframeWin.global_data.my_group) {
         const persLoc = getPersLocId()
         actIframeWin.global_data.base_items.forEach((item, itemIndex) => {
             if (persLoc == item.loc_id) {
