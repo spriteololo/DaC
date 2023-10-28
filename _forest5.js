@@ -413,6 +413,13 @@ if (!actIframeDoc.getElementById("ShowCoord") && clickEl) {
         e.preventDefault();
         e.stopPropagation();
     });
+
+    toggleSetka()
+    toggleGrass()
+    toggleGrassLogs()
+    toggleSundOnly()
+    toggleLocatorHistory()
+    toggleTravMC()
 }
 
 function selector() {
