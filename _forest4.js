@@ -593,7 +593,7 @@ function toggleDestGo() {
         to4kaGoY = 0;
         distansGoEl.classList.remove("show");
         coorsGoEl.classList.remove("show");
-        if(!record) {
+        if(record) {
             toggleRecord()
         }
     } else {
@@ -602,7 +602,7 @@ function toggleDestGo() {
         to4kaGoY = 0;
         distansGoEl.classList.add("show");
         coorsGoEl.classList.add("show");
-        if(record) {
+        if(!record) {
             toggleRecord()
         }
     }
@@ -613,10 +613,10 @@ function toggleRecord() {
     var recordBtn = persIframeDoc.getElementById("recordBtn");
     if (record) {
         recordBtn.value = "Record!";
-        startRecord()
+        stopRecord()
     } else {
         recordBtn.value = "Stop record";
-        stopRecord()
+        startRecord()
     }
     record = !record;
 }
@@ -2092,8 +2092,8 @@ function clearLocalStorage() {
 
 //}
 
-const SQUARE_WIDTH = 150
-const SQUARE_HEIGHT = 150
+const SQUARE_WIDTH = 75
+const SQUARE_HEIGHT = 25
 const FULL_LOC_WIDTH = 1500
 const FULL_LOC_HEIGHT = 750
 let squares = [] //locId: Array(Math.ceil(FULL_LOC_WIDTH/SQUARE_WIDTH) * Math.ceil(FULL_LOC_HEIGHT/SQUARE_HEIGHT) )
@@ -2151,7 +2151,7 @@ function downloadSquares(loc_id, squareNum, textToSave) {
 function findAndDownloadFullSquares(force) {
     squares.forEach((location, locationIndex) => {
         location.forEach((square, squareIndex) => {
-            if(isSquareFull(square) || force) {
+            if((isSquareFull(square) || force) && square.length != 0) {
                 const textToSave = JSON.stringify(square)
                 downloadSquares(locationIndex, squareIndex, textToSave)
 
@@ -2185,17 +2185,33 @@ function cellSaver() {
     if (actIframeWin.global_data &&
         actIframeWin.global_data.base_items &&
         actIframeWin.global_data.abs_poses) {
+        const persLoc = getPersLocId()
         actIframeWin.global_data.base_items.forEach((item, itemIndex) => {
-            let absPos = actIframeWin.global_data.abs_poses[itemIndex]
-            let absPosType = (absPos && absPos.posx == item.posx && absPos.posy == item.posy) ? absPos.type : ""
-            saveCell(item.loc_id,
-                item.posx,
-                item.posy,
-                item.type,
-                item.sub_type,
-                absPosType,
-                item.fort_id)
+            if (persLoc == item.loc_id) {
+                let absPos = actIframeWin.global_data.abs_poses[itemIndex]
+                let absPosType = (absPos && absPos.posx == item.posx && absPos.posy == item.posy) ? absPos.type : ""
+                saveCell(item.loc_id,
+                    item.posx,
+                    item.posy,
+                    item.type,
+                    item.sub_type,
+                    absPosType,
+                    item.fort_id)
+            }
         })
+    } else {
+        findAndDownloadFullSquares(false)
+    }
+}
+
+function getPersLocId(){
+    const persX = actIframeWin.global_data.my_group.posx
+    const persY = actIframeWin.global_data.my_group.posy
+    const elem = actIframeWin.global_data.base_items.find((element) => element.posx == persX && element.posy == persY)
+    if(elem && elem.loc_id) {
+        return elem.loc_id
+    } else {
+        return -1
     }
 }
 
@@ -2205,12 +2221,12 @@ function startRecord() {
     if (cellSaverIntervalId != 0) {
         clearInterval(cellSaverIntervalId)
     }
-    cellSaverIntervalId = setInterval("cellSaver()", 800)
+    cellSaverIntervalId = setInterval("cellSaver()", 1333)
 
     if (downloaderIntervalId != 0) {
         clearInterval(downloaderIntervalId)
     }
-    downloaderIntervalId = setInterval("findAndDownloadFullSquares(false)", 10*60*1000)
+    downloaderIntervalId = setInterval("findAndDownloadFullSquares(false)", 1333*25)
 }
 function stopRecord() {
     clearInterval(cellSaverIntervalId)
