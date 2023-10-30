@@ -599,9 +599,6 @@ function toggleDestGo() {
         to4kaGoY = 0;
         distansGoEl.classList.remove("show");
         coorsGoEl.classList.remove("show");
-        if(record) {
-            toggleRecord()
-        }
     } else {
         destGoBtn.value = "Stop";
         to4kaGoX = 0;
@@ -2114,17 +2111,17 @@ function saveCell(loc_id, x, y, baseItemsType, baseItemsSubType, absPosesType, f
         return
     }
     if (squares[loc_id][currSquare] === undefined) {
-        const tempHeight = (currSquare >= (Math.floor(FULL_LOC_HEIGHT / SQUARE_HEIGHT) * Math.ceil(FULL_LOC_WIDTH / SQUARE_WIDTH))) ? FULL_LOC_HEIGHT % SQUARE_HEIGHT : SQUARE_HEIGHT
+        const tempHeight = y > (FULL_LOC_HEIGHT - FULL_LOC_HEIGHT % SQUARE_HEIGHT) ? FULL_LOC_HEIGHT % SQUARE_HEIGHT : SQUARE_HEIGHT
         squares[loc_id][currSquare] = new Array(tempHeight)
     }
 
-    const tempY = (y % FULL_LOC_HEIGHT) % SQUARE_HEIGHT
+    const tempY = ((y-1) % FULL_LOC_HEIGHT) % SQUARE_HEIGHT
     if (squares[loc_id][currSquare][tempY] === undefined) {
-        const tempWidth = ((currSquare+1) % Math.ceil(FULL_LOC_WIDTH / SQUARE_WIDTH)) == 0 ? FULL_LOC_WIDTH % SQUARE_WIDTH : SQUARE_WIDTH
+        const tempWidth = x > (FULL_LOC_WIDTH - FULL_LOC_WIDTH % SQUARE_WIDTH) ? FULL_LOC_WIDTH % SQUARE_WIDTH : SQUARE_WIDTH
         squares[loc_id][currSquare][tempY] = new Array(tempWidth)
     }
 
-    const tempX = (x % FULL_LOC_WIDTH) % SQUARE_WIDTH
+    const tempX = ((x-1) % FULL_LOC_WIDTH) % SQUARE_WIDTH
     if (squares[loc_id][currSquare][tempY][tempX] === undefined) {
         squares[loc_id][currSquare][tempY][tempX] = {x, y, baseItemsType, baseItemsSubType, absPosesType, fortId}
     }
@@ -2135,7 +2132,7 @@ function getIndexByCoord(x, y) {
 }
 
 function getSquareNumByCoord(x, y) {
-    return Math.ceil(FULL_LOC_WIDTH / SQUARE_WIDTH) * Math.floor((y%FULL_LOC_HEIGHT)/SQUARE_HEIGHT) + Math.floor((x%FULL_LOC_WIDTH)/SQUARE_WIDTH)
+    return Math.ceil(FULL_LOC_WIDTH / SQUARE_WIDTH) * Math.floor(((y-1)%FULL_LOC_HEIGHT)/SQUARE_HEIGHT) + Math.floor(((x-1)%FULL_LOC_WIDTH)/SQUARE_WIDTH)
 }
 
 function downloadSquares(loc_id, squareNum, textToSave) {
@@ -2175,16 +2172,6 @@ function isSquareFull(square) {
         }
     }
     return true
-}
-
-function squaresLeft() {
-    let indiciesLeft = []
-    squares.forEach((location) => {
-        location.forEach((square, squareIndex) => {
-            if (square.length != 0) indiciesLeft.push(squareIndex)
-        })
-    })
-    return indiciesLeft
 }
 
 function cellSaver() {
@@ -2239,8 +2226,6 @@ function stopRecord() {
     clearInterval(cellSaverIntervalId)
     clearInterval(downloaderIntervalId)
     findAndDownloadFullSquares(false)
-
-    console.log(squaresLeft())
 }
 
 function forceSave() {
