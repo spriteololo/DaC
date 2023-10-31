@@ -2111,13 +2111,13 @@ function saveCell(loc_id, x, y, baseItemsType, baseItemsSubType, absPosesType, f
         return
     }
     if (squares[loc_id][currSquare] === undefined) {
-        const tempHeight = y > (FULL_LOC_HEIGHT - FULL_LOC_HEIGHT % SQUARE_HEIGHT) ? FULL_LOC_HEIGHT % SQUARE_HEIGHT : SQUARE_HEIGHT
+        const tempHeight = ((y-1) % FULL_LOC_HEIGHT) >= (FULL_LOC_HEIGHT - FULL_LOC_HEIGHT % SQUARE_HEIGHT) ? FULL_LOC_HEIGHT % SQUARE_HEIGHT : SQUARE_HEIGHT
         squares[loc_id][currSquare] = new Array(tempHeight)
     }
 
     const tempY = ((y-1) % FULL_LOC_HEIGHT) % SQUARE_HEIGHT
     if (squares[loc_id][currSquare][tempY] === undefined) {
-        const tempWidth = x > (FULL_LOC_WIDTH - FULL_LOC_WIDTH % SQUARE_WIDTH) ? FULL_LOC_WIDTH % SQUARE_WIDTH : SQUARE_WIDTH
+        const tempWidth = ((x-1) % FULL_LOC_WIDTH) >= (FULL_LOC_WIDTH - FULL_LOC_WIDTH % SQUARE_WIDTH) ? FULL_LOC_WIDTH % SQUARE_WIDTH : SQUARE_WIDTH
         squares[loc_id][currSquare][tempY] = new Array(tempWidth)
     }
 
