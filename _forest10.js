@@ -2101,7 +2101,7 @@ const FULL_LOC_WIDTH = 1500
 const FULL_LOC_HEIGHT = 750
 let squares = [] //locId: Array(Math.ceil(FULL_LOC_WIDTH/SQUARE_WIDTH) * Math.ceil(FULL_LOC_HEIGHT/SQUARE_HEIGHT) )
 
-function saveCell(loc_id, x, y, baseItemsType, baseItemsSubType, absPosesType, fortId) {
+function saveCell(loc_id, x, y, baseItemsType, baseItemsSubType, absPosesType, zanyato, fortId) {
     if (squares[loc_id] === undefined) {
         squares[loc_id] = new Array(Math.ceil(FULL_LOC_WIDTH / SQUARE_WIDTH) * Math.ceil(FULL_LOC_HEIGHT / SQUARE_HEIGHT))
     }
@@ -2123,7 +2123,7 @@ function saveCell(loc_id, x, y, baseItemsType, baseItemsSubType, absPosesType, f
 
     const tempX = ((x-1) % FULL_LOC_WIDTH) % SQUARE_WIDTH
     if (squares[loc_id][currSquare][tempY][tempX] === undefined) {
-        squares[loc_id][currSquare][tempY][tempX] = {x, y, baseItemsType, baseItemsSubType, absPosesType, fortId}
+        squares[loc_id][currSquare][tempY][tempX] = {x, y, baseItemsType, baseItemsSubType, absPosesType, zanyato, fortId}
     }
 }
 
@@ -2184,12 +2184,14 @@ function cellSaver() {
             if (persLoc == item.loc_id) {
                 let absPos = actIframeWin.global_data.abs_poses[itemIndex]
                 let absPosType = (absPos && absPos.posx == item.posx && absPos.posy == item.posy) ? absPos.type : ""
+                let absPosZanyato = (absPos && absPos.posx == item.posx && absPos.posy == item.posy) ? absPos.zanyato : ""
                 saveCell(item.loc_id,
                     item.posx,
                     item.posy,
                     item.type,
                     item.sub_type,
                     absPosType,
+                    absPosZanyato,
                     item.fort_id)
             }
         })
