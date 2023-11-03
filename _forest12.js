@@ -2170,7 +2170,7 @@ function downloadSquare(locId, num) {
     squares[locId][num] = []
 }
 
-function makeCoors(locId, fromY, fromX) {
+function makeCoors(locId, fromX, fromY) {
     const LOC_HEIGHT = 750
     const LOC_WIDTH = 1500
     const SCREEN_SIZE_X = 25
@@ -2280,6 +2280,7 @@ function forceGo() {
 
         if(locId && persX && persY) {
             let coors = makeCoors(locId, persX, persY) //string
+            showRoute()
             actIframeDoc.getElementById("myCoorsList").value = coors
             updatePoints()
             persIframeDoc.getElementById("destinationXY").value = persX + ":" + persY;
