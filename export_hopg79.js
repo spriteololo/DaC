@@ -2347,7 +2347,7 @@ var addObs = function () {
             if (buttons == 1) { // активировать кнопки
                 buttons = 0;
                 Indicator("lawngreen", "B5");
-                AddJS(1, "export_hopg78.js");
+                AddJS(1, "export_hopg79.js");
             }
         }
         if (OnOffguard == 1) {
@@ -2355,7 +2355,7 @@ var addObs = function () {
                 guard = 0;
                 guard_act = 1;
                 Indicator("lawngreen", "G");
-                AddJS(1, "export_hopg78.js");
+                AddJS(1, "export_hopg79.js");
             }
         }
     } // end-fight
@@ -2606,7 +2606,7 @@ function Run() {
             if (top.frames["d_act"].window &&
                 top.frames["d_act"].window.global_data &&
                 top.frames["d_act"].window.global_data.my_group) {
-                AddJS(1, "_forest10.js");
+                AddJS(1, "_forest11.js");
             } else {
                 return setTimeout("Run()", 3000);
             }

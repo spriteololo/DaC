@@ -295,7 +295,7 @@ if (!actIframeDoc.getElementById("ShowCoord") && clickEl) {
     actionsDiv.innerHTML += '<input id="resetRouteBtn" value="Сброс" title="Сбросить все точки маршрута" type="button"><br>';
     actionsDiv.innerHTML += '<input id="destGoBtn" value="GO!" type="button">';
     actionsDiv.innerHTML += '<input id="recordBtn" value="Record!" type="button">';
-    actionsDiv.innerHTML += '<input id="forceSaveBtn" value="forceSave" type="button">';
+    actionsDiv.innerHTML += '<input id="forceGoBtn" value="forceGo" type="button">';
     actionsDiv.innerHTML += '<input id="addRoutePointsBtn" value="+ X.Y." title="Добавить точки для маршрута" type="button">';
     actionsDiv.innerHTML += ' | ';
     actionsDiv.innerHTML += '<input id="clearLCBtn" value="Сброс LS" title="Удалить данные из LocalStorage" type="button">';
@@ -390,7 +390,7 @@ if (!actIframeDoc.getElementById("ShowCoord") && clickEl) {
     jQueryPers("#jobLogsBtn").click(toggleJobLogs);
     jQueryPers("#destGoBtn").click(toggleDestGo);
     jQueryPers("#recordBtn").click(toggleRecord);
-    jQueryPers("#forceSaveBtn").click(forceSave);
+    jQueryPers("#forceGoBtn").click(forceGo);
     jQueryPers("#sundBtn").click(toggleSundOnly);
     jQueryPers("#locHistoryBtn").click(toggleLocatorHistory);
     jQueryPers("#travMCBtn").click(toggleTravMC);
@@ -2164,6 +2164,47 @@ function findAndDownloadFullSquares(force) {
     })
 }
 
+function downloadSquare(locId, num) {
+    const textToSave = JSON.stringify(squares[locId][num].map((item) => item.filter((it) => it != undefined)))
+    downloadSquares(locId, num, textToSave)
+    squares[locId][num] = []
+}
+
+function makeCoors(locId, fromY, fromX) {
+    const LOC_HEIGHT = 750
+    const LOC_WIDTH = 1500
+    const SCREEN_SIZE_X = 25
+    const SCREEN_SIZE_Y = 25
+    const startLocX = LOC_WIDTH * ((locId-1) % 4)
+    const startLocY = LOC_HEIGHT * Math.floor((locId-1)/4)
+    const fromYproc = (fromY - (fromY % SCREEN_SIZE_Y)) + Math.floor(SCREEN_SIZE_Y / 2)
+    const startPersMoveY = startLocY + Math.floor(SCREEN_SIZE_Y / 2)
+    const OFFSET_OF_MAP_X = 0
+    const LEFT_TO_RIGHT = true
+    let isOdd = LEFT_TO_RIGHT
+    // const TOP_TO_BOTTOM = true
+    let results = []
+
+    let startingY = fromYproc ? fromYproc : startPersMoveY
+    for(let y = startingY; y <= startLocY + LOC_HEIGHT; y += SCREEN_SIZE_Y) {
+
+        const LEFT_X = startLocX + Math.floor(SCREEN_SIZE_X / 2)
+        const RIGHT_X = startLocX + LOC_WIDTH - Math.floor(SCREEN_SIZE_X / 2) - OFFSET_OF_MAP_X
+        if(((y - startPersMoveY) / SCREEN_SIZE_Y) % 2 == 0) {
+            let startingX = (fromX && y == startingY) ? fromX : LEFT_X
+
+            results.push(startingX + ":" + y)
+            results.push(RIGHT_X + ":" + y)
+        } else {
+            let startingX = (fromX && y == startingY) ? fromX : RIGHT_X
+
+            results.push(startingX + ":" + y)
+            results.push(LEFT_X + ":" + y)
+        }
+    }
+    return results.join('\n')
+}
+
 function isSquareFull(square) {
     for(let y = 0; y < square.length; y++){
         if(square[y] === undefined) return false
@@ -2230,6 +2271,19 @@ function stopRecord() {
     findAndDownloadFullSquares(false)
 }
 
-function forceSave() {
-    findAndDownloadFullSquares(true)
+function forceGo() {
+    if(actIframeWin.global_data.base_items &&
+        actIframeWin.global_data.my_group) {
+        const locId = getPersLocId()
+        const persX = actIframeWin.global_data.my_group.posx
+        const persY = actIframeWin.global_data.my_group.posy
+
+        if(locId && persX && persY) {
+            let coors = makeCoors(locId, persX, persY) //string
+            actIframeDoc.getElementById("myCoorsList").value = coors
+            updatePoints()
+            persIframeDoc.getElementById("destinationXY").value = persX + ":" + persY;
+            toggleDestGo()
+        }
+    }
 }
