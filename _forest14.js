@@ -2179,17 +2179,20 @@ function makeCoors(locId, fromX, fromY) {
     const startLocY = LOC_HEIGHT * Math.floor((locId-1)/4)
     const fromYproc = (fromY - (fromY % SCREEN_SIZE_Y)) + Math.floor(SCREEN_SIZE_Y / 2)
     const startPersMoveY = startLocY + Math.floor(SCREEN_SIZE_Y / 2)
-    const OFFSET_OF_MAP_X = 0
+    const OFFSET_OF_MAP_X_LEFT = ((locId-1) % 4 == 0) ? 14 : 0
+    const OFFSET_OF_MAP_X_RIGHT = (locId % 4 == 0) ? 14 : 0
+    const OFFSET_OF_MAP_Y_TOP = locId < 5 ? 14 : 0
+    const OFFSET_OF_MAP_Y_BOTTOM = locId > 16 ? 14 : 0
     const LEFT_TO_RIGHT = true
     let isOdd = LEFT_TO_RIGHT
     // const TOP_TO_BOTTOM = true
     let results = []
 
     let startingY = fromYproc ? fromYproc : startPersMoveY
-    for(let y = startingY; y <= startLocY + LOC_HEIGHT; y += SCREEN_SIZE_Y) {
+    for(let y = startingY; y <= startLocY + LOC_HEIGHT - OFFSET_OF_MAP_Y_BOTTOM; y += SCREEN_SIZE_Y) {
 
-        const LEFT_X = startLocX + Math.floor(SCREEN_SIZE_X / 2)
-        const RIGHT_X = startLocX + LOC_WIDTH - Math.floor(SCREEN_SIZE_X / 2) - OFFSET_OF_MAP_X
+        const LEFT_X = startLocX + Math.floor(SCREEN_SIZE_X / 2) + OFFSET_OF_MAP_X_LEFT
+        const RIGHT_X = startLocX + LOC_WIDTH - Math.floor(SCREEN_SIZE_X / 2) - OFFSET_OF_MAP_X_RIGHT
         if(((y - startPersMoveY) / SCREEN_SIZE_Y) % 2 == 0) {
             let tempX
 
