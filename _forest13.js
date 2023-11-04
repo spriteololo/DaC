@@ -2191,14 +2191,32 @@ function makeCoors(locId, fromX, fromY) {
         const LEFT_X = startLocX + Math.floor(SCREEN_SIZE_X / 2)
         const RIGHT_X = startLocX + LOC_WIDTH - Math.floor(SCREEN_SIZE_X / 2) - OFFSET_OF_MAP_X
         if(((y - startPersMoveY) / SCREEN_SIZE_Y) % 2 == 0) {
-            let startingX = (fromX && y == startingY) ? fromX : LEFT_X
+            let tempX
 
-            results.push(startingX + ":" + y)
+            if(y == startingY && fromX) {
+                const nearestStartOffset = (fromX % FULL_LOC_WIDTH) % SQUARE_WIDTH
+                if(nearestStartOffset > (SCREEN_SIZE_X / 2) && nearestStartOffset < (SQUARE_WIDTH - SCREEN_SIZE_X / 2)) {
+                    tempX = fromX - nearestStartOffset + Math.floor(SCREEN_SIZE_X / 2)
+                } else {
+                    tempX = fromX
+                }
+            }
+
+            results.push((tempX ? tempX : LEFT_X) + ":" + y)
             results.push(RIGHT_X + ":" + y)
         } else {
-            let startingX = (fromX && y == startingY) ? fromX : RIGHT_X
+            let tempX
+            if(y == startingY && fromX) {
 
-            results.push(startingX + ":" + y)
+                const nearestStartOffset = (fromX % FULL_LOC_WIDTH) % SQUARE_WIDTH
+                if(nearestStartOffset < (SQUARE_WIDTH - SCREEN_SIZE_X / 2) && nearestStartOffset > (SCREEN_SIZE_X / 2)) {
+                    tempX = fromX - nearestStartOffset + SQUARE_WIDTH - Math.floor(SCREEN_SIZE_X / 2)
+                }else {
+                    tempX = fromX
+                }
+            }
+
+            results.push((tempX ? tempX : RIGHT_X) + ":" + y)
             results.push(LEFT_X + ":" + y)
         }
     }
