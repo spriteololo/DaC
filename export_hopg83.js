@@ -945,7 +945,7 @@ function autobat(a) {
                         if (!HandAttention()) {
                             if (ME.id == 202238365) rnd = 3;
                         }//TODO
-                        if(ME.id == 200674992) rnd = Math.round(Math.random()) + 4 //4 or 5
+                        if(ME.id == 200674992 || ME.id == 202436630) rnd = Math.round(Math.random()) + 4 //4 or 5
                         if(ME.id == 203241980) rnd = Math.round(Math.random()) + 6 //6 or 7
                         if(ME.id == 201135707) rnd = 8 //8
                         switch (rnd) { // удар-блок
@@ -1016,7 +1016,7 @@ function autobat(a) {
             byid("status").innerHTML = "B";
             byid("status").style.backgroundColor = "yellow";
             byid("logc").innerHTML = "&#936; <b>БЛОК</b>";//TODO
-            if (ME.id == 200674992) { //block-style
+            if (ME.id == 200674992 || ME.id == 202436630) { //block-style
                 if (Math.round(Math.random()) == 0) {
                     SwitchAttack(1); ubblock(0, 1); ubblock(1, 2); ubblock(0, 3); ubblock(1, 4); MakeTurn(); //голова
                 } else {
@@ -1632,7 +1632,7 @@ var obj_hover_2 = "onmouseover=\"this.style.backgroundColor='gold';\" onmouseout
 var obj_hover_3 = "onmouseover=\"this.style.backgroundColor='skyblue';\" onmouseout=\"this.style.backgroundColor='#E8EEEC';\"";
 
 var addscript = function () {
-    if (ME.id == 200674992 || ME.id == 203241980) { // gar gobl //TODO
+    if (ME.id == 200674992 || ME.id == 203241980 || ME.id == 202436630) { // gar gobl jr //TODO
         var btn_name_0 = "МагУдар";
         var btn_name_1 = "Заморозь";
         var btn_name_2 = "Прокля";
@@ -2347,7 +2347,7 @@ var addObs = function () {
             if (buttons == 1) { // активировать кнопки
                 buttons = 0;
                 Indicator("lawngreen", "B5");
-                AddJS(1, "export_hopg82.js");
+                AddJS(1, "export_hopg83.js");
             }
         }
         if (OnOffguard == 1) {
@@ -2355,7 +2355,7 @@ var addObs = function () {
                 guard = 0;
                 guard_act = 1;
                 Indicator("lawngreen", "G");
-                AddJS(1, "export_hopg82.js");
+                AddJS(1, "export_hopg83.js");
             }
         }
     } // end-fight
@@ -2629,6 +2629,21 @@ function Run() {
             mbFreeze = 11895154;
             mbPereman = 231031;
             mbCurse = 11895148;
+            abilityFireDust = 0;
+            abilityKill = 0;
+            abilityAbort = 0;
+            abilityCloneDispel = 0;
+            abilityPet = 0;
+        }
+        if (ME.id == 202436630) { // jr //TODO
+            mbClon = 844943;
+            mbHP = 839435;
+            mbStone = 839434;
+            mbFireBall = 839448;
+            mbArmor = 844909;
+            mbFreeze = 844897;
+            mbPereman = 1781765;
+            mbCurse = 1030384;
             abilityFireDust = 0;
             abilityKill = 0;
             abilityAbort = 0;
