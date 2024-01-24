@@ -121,17 +121,17 @@ function ChangeAstralLevel(a) { // ASTRAL
         }
     } // end-loading
     if (ready_mb == 0 && astral_id != 0 && a == 0) { // start
-        if (UNBS[ME.id]) {
+        if (UNBS[Window.ME.id]) {
             if(byid("buttons").style.visibility != "hidden") {
-                if (ME.astral_level < 3 && ME.astral > 5 && UNBS[ME.id].flg != 8) {
+                if (Window.ME.astral_level < 3 && Window.ME.astral > 5 && UNBS[Window.ME.id].flg != 8) {
                     ready_mb = 1;
                     clearTimeout(astral_tm);
                     byid("astral1").style.visibility = "hidden";
                     frames["channel_4"].location = "ability.chtml?actBattle-ChangeAstralLevel=" + astral_id + "&level="
-                        + (ME.astral_level + 1);
+                        + (Window.ME.astral_level + 1);
                     setTimeout(""
                         + "byid('astral1').style.visibility='visible';"
-                        + "byid('astral1').innerHTML='astral '+(ME.astral_level+1);", 188000);
+                        + "byid('astral1').innerHTML='astral '+(Window.ME.astral_level+1);", 188000);
                     astral_tm = setTimeout("ChangeAstralLevel(0)", 188000);
                 }
             } else {
@@ -144,12 +144,12 @@ function ChangeAstralLevel(a) { // ASTRAL
         if (OnOffguard == 0) setTimeout("actReload()", 1500);
     }
     if (a == 1) { // a-stop
-        if (ME.astral_level != 0 && DEAD[ME.id] && FLDX + FLDY != 27) {
+        if (Window.ME.astral_level != 0 && DEAD[Window.ME.id] && FLDX + FLDY != 27) {
             frames["channel_4"].location.href = ""
                 + "ability_type_common.chtml?actBattle-ChangeAstralLevel=" + astral_id + "&level="
-                + (ME.astral_level - 1);
+                + (Window.ME.astral_level - 1);
             byid("status").style.backgroundColor = "lime";
-            byid("status").innerHTML = "Astral:" + (ME.astral_level - 1);
+            byid("status").innerHTML = "Astral:" + (Window.ME.astral_level - 1);
             byid("astral1").style.visibility = "hidden";
             return astral_tm = setTimeout("ChangeAstralLevel(1)", 188000);
         }
@@ -250,7 +250,7 @@ function MyTime(a) { // Чат
             var chatRowArray = chatReg.exec(chat_msg);
             // check-messages
             var breq = top.frames["d_chat"].document.getElementById("row" + chatRowArray[1]).innerHTML;
-            var reg = new RegExp("(" + ME.nk + "|На форпост)", "g");
+            var reg = new RegExp("(" + Window.ME.nk + "|На форпост)", "g");
             if (reg.test(breq) && !top.frames["d_pers"].chatRowArray[chatRowArray[1]] && false) {
                 document.getElementById("logb").innerHTML = ""
                     + "<a href=\"#\" onclick=\""
@@ -270,7 +270,7 @@ function MyTime(a) { // Чат
             var chatRowArray = chatReg.exec(chat_msg);
             // clear-messages
             var breq = top.frames["d_chat"].document.getElementById("row" + chatRowArray[1]).innerHTML;
-            var reg = new RegExp("(" + ME.nk + "|На форпост)", "g");
+            var reg = new RegExp("(" + Window.ME.nk + "|На форпост)", "g");
             if (reg.test(breq) && !top.frames["d_pers"].chatRowArray[chatRowArray[1]]) {
                 top.frames["d_pers"].chatRowArray[chatRowArray[1]] = 1;
             }
@@ -333,7 +333,7 @@ function UseMagCast(a, b, id, mb_x, mb_y) { // Magic-Book-Cast
                 frames["channel_2"].location = "magbook.chtml";
             }
         }
-        if (UNBS[ME.id] && UNBS[ME.id].flg != 8) {
+        if (UNBS[Window.ME.id] && UNBS[Window.ME.id].flg != 8) {
             var speed_cast = (f5_mbCast) ? 1000 : 500;
             document.getElementById("status").innerHTML = "OpenMagBook:" + cast_load_count;
             return setTimeout("UseMagCast(mb_parm[0],mb_parm[1],mb_parm[2],mb_parm[3],mb_parm[4])", speed_cast);
@@ -430,7 +430,7 @@ function MapClick(ev) { // js-game
     MyY = EY;
     // move-click
     if (yes_mbCast == 0) move_round++;
-    if (move_round > 0 && UNBS[ME.id] && UNBS[ME.id].flg != 8 &&
+    if (move_round > 0 && UNBS[Window.ME.id] && UNBS[Window.ME.id].flg != 8 &&
         top.frames["d_pers"].document.CrDemand.abMoveClick.value == 1) {
         byid("status").style.backgroundColor = "yellow";
         byid("status").innerHTML = "move";
@@ -867,7 +867,7 @@ function autobat(a) {
     if (a == 0) { // MAKE
         if (canmove1 == "hidden") { // watch-hide
             ab_hide++
-            if (ab_hide > 14 && !DEAD[ME.id] && UNBS[ME.id].flg != 8) {
+            if (ab_hide > 14 && !DEAD[Window.ME.id] && UNBS[Window.ME.id].flg != 8) {
                 ab_hide = 0; actReload();
             }
             byid("status").innerHTML = "AB" + ab_hide;
@@ -878,23 +878,23 @@ function autobat(a) {
         }
         ENEMY = 0; Redraw(); at_stock = 0;
         if (canmove1 == "visible" && ENEMY != 0) {
-            if (UNBS[ENEMY].sd != UNBS[ME.id].sd) {
-                var even1 = UNBS[ME.id].y / 2;
+            if (UNBS[ENEMY].sd != UNBS[Window.ME.id].sd) {
+                var even1 = UNBS[Window.ME.id].y / 2;
                 var even2 = Math.ceil(even1);
                 if (even1 == even2) {
-                    ddx[0] = UNBS[ME.id].x - 1; ddy[0] = UNBS[ME.id].y - 1;
-                    ddx[1] = UNBS[ME.id].x; ddy[1] = UNBS[ME.id].y - 1;
-                    ddx[2] = UNBS[ME.id].x + 1; ddy[2] = UNBS[ME.id].y;
-                    ddx[3] = UNBS[ME.id].x; ddy[3] = UNBS[ME.id].y + 1;
-                    ddx[4] = UNBS[ME.id].x - 1; ddy[4] = UNBS[ME.id].y + 1;
-                    ddx[5] = UNBS[ME.id].x - 1; ddy[5] = UNBS[ME.id].y;
+                    ddx[0] = UNBS[Window.ME.id].x - 1; ddy[0] = UNBS[Window.ME.id].y - 1;
+                    ddx[1] = UNBS[Window.ME.id].x; ddy[1] = UNBS[Window.ME.id].y - 1;
+                    ddx[2] = UNBS[Window.ME.id].x + 1; ddy[2] = UNBS[Window.ME.id].y;
+                    ddx[3] = UNBS[Window.ME.id].x; ddy[3] = UNBS[Window.ME.id].y + 1;
+                    ddx[4] = UNBS[Window.ME.id].x - 1; ddy[4] = UNBS[Window.ME.id].y + 1;
+                    ddx[5] = UNBS[Window.ME.id].x - 1; ddy[5] = UNBS[Window.ME.id].y;
                 } else {
-                    ddx[0] = UNBS[ME.id].x; ddy[0] = UNBS[ME.id].y - 1;
-                    ddx[1] = UNBS[ME.id].x + 1; ddy[1] = UNBS[ME.id].y - 1;
-                    ddx[2] = UNBS[ME.id].x + 1; ddy[2] = UNBS[ME.id].y;
-                    ddx[3] = UNBS[ME.id].x + 1; ddy[3] = UNBS[ME.id].y + 1;
-                    ddx[4] = UNBS[ME.id].x; ddy[4] = UNBS[ME.id].y + 1;
-                    ddx[5] = UNBS[ME.id].x - 1; ddy[5] = UNBS[ME.id].y;
+                    ddx[0] = UNBS[Window.ME.id].x; ddy[0] = UNBS[Window.ME.id].y - 1;
+                    ddx[1] = UNBS[Window.ME.id].x + 1; ddy[1] = UNBS[Window.ME.id].y - 1;
+                    ddx[2] = UNBS[Window.ME.id].x + 1; ddy[2] = UNBS[Window.ME.id].y;
+                    ddx[3] = UNBS[Window.ME.id].x + 1; ddy[3] = UNBS[Window.ME.id].y + 1;
+                    ddx[4] = UNBS[Window.ME.id].x; ddy[4] = UNBS[Window.ME.id].y + 1;
+                    ddx[5] = UNBS[Window.ME.id].x - 1; ddy[5] = UNBS[Window.ME.id].y;
                 }
                 for (var i = 0; i < 6; i++) { // loop
                     var xobjstr0 = "x:" + UNBS[ENEMY].x + ",y:" + UNBS[ENEMY].y;
@@ -910,11 +910,11 @@ function autobat(a) {
                         byid("logc").innerHTML = "&#936; <b>УДАР</b>";
                         var rnd = Math.round(Math.random() * 2);
                         if (!HandAttention()) {
-                            if (ME.id == 202238365) rnd = 3;
+                            if (Window.ME.id == 202238365) rnd = 3;
                         }//TODO
-                        if(ME.id == 200674992) rnd = Math.round(Math.random()) + 4 //4 or 5
-                        if(ME.id == 203241980) rnd = Math.round(Math.random()) + 6 //6 or 7
-                        if(ME.id == 201135707) rnd = Math.round(Math.random()) + 5// 5 or 6
+                        if(Window.ME.id == 200674992) rnd = Math.round(Math.random()) + 4 //4 or 5
+                        if(Window.ME.id == 203241980) rnd = Math.round(Math.random()) + 6 //6 or 7
+                        if(Window.ME.id == 201135707) rnd = Math.round(Math.random()) + 5// 5 or 6
                         switch (rnd) { // удар-блок
                             case 0: SwitchAttack(1); ubkick(0, 0); ubblock(1, 2); ubblock(1, 3); MakeTurn();
                                 byid("status").innerHTML = "K0";
@@ -958,21 +958,21 @@ function autobat(a) {
     if (a == 1) { // BEGIN
         if (canmove1 == "hidden") { // watch-hide
             ab_hide++
-            if (ab_hide > 14 && !DEAD[ME.id] && UNBS[ME.id].flg != 8) {
+            if (ab_hide > 14 && !DEAD[Window.ME.id] && UNBS[Window.ME.id].flg != 8) {
                 ab_hide = 0; actReload();
             }
             byid("status").innerHTML = "AB" + ab_hide;
             return tmID[0] = setTimeout("autobat(1)", 1000);
         } // end-watch-hide
         if (ab_move == 0) {
-            console.log(ab_move, 'M1', UNBS[ME.id].x, UNBS[ME.id].y, '=', EFOBJ[1].x, EFOBJ[1].y);
+            console.log(ab_move, 'M1', UNBS[Window.ME.id].x, UNBS[Window.ME.id].y, '=', EFOBJ[1].x, EFOBJ[1].y);
             begin_round++; cn0 = 0;
             setTimeout("actReload()", 4000);
             return tmID[0] = setTimeout("autotest()", 5000);
         }
-        console.log(ab_move, 'M2', UNBS[ME.id].x, UNBS[ME.id].y, '=', EFOBJ[1].x, EFOBJ[1].y);
-        if (UNBS[ME.id].x == EFOBJ[1].x &&
-            UNBS[ME.id].y == EFOBJ[1].y) {
+        console.log(ab_move, 'M2', UNBS[Window.ME.id].x, UNBS[Window.ME.id].y, '=', EFOBJ[1].x, EFOBJ[1].y);
+        if (UNBS[Window.ME.id].x == EFOBJ[1].x &&
+            UNBS[Window.ME.id].y == EFOBJ[1].y) {
             begin_round++; ab_move = 0; cn0 = 0;
             setTimeout("actReload()", 4000);
             tmID[0] = setTimeout("autotest()", 5000);
@@ -983,14 +983,14 @@ function autobat(a) {
             byid("status").innerHTML = "B";
             byid("status").style.backgroundColor = "yellow";
             byid("logc").innerHTML = "&#936; <b>БЛОК</b>";//TODO
-            if (ME.id == 200674992) { //block-style
+            if (Window.ME.id == 200674992) { //block-style
                 if (Math.round(Math.random()) == 0) {
                     SwitchAttack(1); ubblock(0, 1); ubblock(1, 2); ubblock(0, 3); ubblock(1, 4); MakeTurn(); //голова
                 } else {
                     SwitchAttack(1); ubblock(0, 0); ubblock(1, 1); ubblock(0, 2); ubblock(1, 3); MakeTurn(); //ноги
                 }
             }
-            if (ME.id == 203241980 || ME.id == 201135707) { //block-style
+            if (Window.ME.id == 203241980 || Window.ME.id == 201135707) { //block-style
                 if (Math.round(Math.random()) == 0) {
                     SwitchAttack(1); ubblock(0, 1); ubblock(1, 2); ubblock(0, 3); ubblock(1, 4); MakeTurn(); //голова
                 } else {
@@ -1033,29 +1033,29 @@ function MoveRandom(a, b) {
             UNIS[i] = {
                 x: OBSTACLES[i].x,
                 y: OBSTACLES[i].y,
-                sd: UNBS[ME.id].sd,
+                sd: UNBS[Window.ME.id].sd,
                 flg: 0
             }
         }
         for (i in UNIS) {
             UNISstr += "x:" + UNIS[i].x + ",y:" + UNIS[i].y + ";";
         }
-        var even1 = UNBS[ME.id].y / 2;
+        var even1 = UNBS[Window.ME.id].y / 2;
         var even2 = Math.ceil(even1);
         if (even1 == even2) {
-            ddx[0] = UNBS[ME.id].x - 1; ddy[0] = UNBS[ME.id].y - 1;
-            ddx[1] = UNBS[ME.id].x; ddy[1] = UNBS[ME.id].y - 1;
-            ddx[2] = UNBS[ME.id].x + 1; ddy[2] = UNBS[ME.id].y;
-            ddx[3] = UNBS[ME.id].x; ddy[3] = UNBS[ME.id].y + 1;
-            ddx[4] = UNBS[ME.id].x - 1; ddy[4] = UNBS[ME.id].y + 1;
-            ddx[5] = UNBS[ME.id].x - 1; ddy[5] = UNBS[ME.id].y;
+            ddx[0] = UNBS[Window.ME.id].x - 1; ddy[0] = UNBS[Window.ME.id].y - 1;
+            ddx[1] = UNBS[Window.ME.id].x; ddy[1] = UNBS[Window.ME.id].y - 1;
+            ddx[2] = UNBS[Window.ME.id].x + 1; ddy[2] = UNBS[Window.ME.id].y;
+            ddx[3] = UNBS[Window.ME.id].x; ddy[3] = UNBS[Window.ME.id].y + 1;
+            ddx[4] = UNBS[Window.ME.id].x - 1; ddy[4] = UNBS[Window.ME.id].y + 1;
+            ddx[5] = UNBS[Window.ME.id].x - 1; ddy[5] = UNBS[Window.ME.id].y;
         } else {
-            ddx[0] = UNBS[ME.id].x; ddy[0] = UNBS[ME.id].y - 1;
-            ddx[1] = UNBS[ME.id].x + 1; ddy[1] = UNBS[ME.id].y - 1;
-            ddx[2] = UNBS[ME.id].x + 1; ddy[2] = UNBS[ME.id].y;
-            ddx[3] = UNBS[ME.id].x + 1; ddy[3] = UNBS[ME.id].y + 1;
-            ddx[4] = UNBS[ME.id].x; ddy[4] = UNBS[ME.id].y + 1;
-            ddx[5] = UNBS[ME.id].x - 1; ddy[5] = UNBS[ME.id].y;
+            ddx[0] = UNBS[Window.ME.id].x; ddy[0] = UNBS[Window.ME.id].y - 1;
+            ddx[1] = UNBS[Window.ME.id].x + 1; ddy[1] = UNBS[Window.ME.id].y - 1;
+            ddx[2] = UNBS[Window.ME.id].x + 1; ddy[2] = UNBS[Window.ME.id].y;
+            ddx[3] = UNBS[Window.ME.id].x + 1; ddy[3] = UNBS[Window.ME.id].y + 1;
+            ddx[4] = UNBS[Window.ME.id].x; ddy[4] = UNBS[Window.ME.id].y + 1;
+            ddx[5] = UNBS[Window.ME.id].x - 1; ddy[5] = UNBS[Window.ME.id].y;
         }
         for (var i = 0; i < 6; i++) { // loop
             var xobjstr = "x:" + ddx[i] + ",y:" + ddy[i];
@@ -1066,42 +1066,42 @@ function MoveRandom(a, b) {
                     EFOBJ[0].y = ddy[i];
                     MyX = ddx[i]; MyY = ddy[i]; ab_move = 1;
 
-                    if (UNBS[ME.id].y == 0) mr_move_z = 0;
-                    if (UNBS[ME.id].y == FLDY - 1) mr_move_z = 1;
-                    if (UNBS[ME.id].y == UNBS[ENEMY].y) mr_move_z = 1;
+                    if (UNBS[Window.ME.id].y == 0) mr_move_z = 0;
+                    if (UNBS[Window.ME.id].y == FLDY - 1) mr_move_z = 1;
+                    if (UNBS[Window.ME.id].y == UNBS[ENEMY].y) mr_move_z = 1;
                     if (mr_move_z == 1) {
                         // LINE-X
-                        if (UNBS[ME.id].x > UNBS[ENEMY].x) {
-                            if (ddx[i] == UNBS[ME.id].x - 1 && ddy[i] == UNBS[ME.id].y && UNBS[ME.id].y == UNBS[ENEMY].y) {
+                        if (UNBS[Window.ME.id].x > UNBS[ENEMY].x) {
+                            if (ddx[i] == UNBS[Window.ME.id].x - 1 && ddy[i] == UNBS[Window.ME.id].y && UNBS[Window.ME.id].y == UNBS[ENEMY].y) {
                                 return MoveRandom(1, "M2");
                             }
-                            if (ddx[i] == UNBS[ME.id].x - 1 && ddy[i] != UNBS[ME.id].y && UNBS[ME.id].y != UNBS[ENEMY].y) {
+                            if (ddx[i] == UNBS[Window.ME.id].x - 1 && ddy[i] != UNBS[Window.ME.id].y && UNBS[Window.ME.id].y != UNBS[ENEMY].y) {
                                 return MoveRandom(1, "M2");
                             }
                         }
-                        if (UNBS[ME.id].x < UNBS[ENEMY].x) {
-                            if (ddx[i] == UNBS[ME.id].x + 1 && ddy[i] == UNBS[ME.id].y && UNBS[ME.id].y == UNBS[ENEMY].y) {
+                        if (UNBS[Window.ME.id].x < UNBS[ENEMY].x) {
+                            if (ddx[i] == UNBS[Window.ME.id].x + 1 && ddy[i] == UNBS[Window.ME.id].y && UNBS[Window.ME.id].y == UNBS[ENEMY].y) {
                                 return MoveRandom(1, "M2");
                             }
-                            if (ddx[i] == UNBS[ME.id].x + 1 && ddy[i] != UNBS[ME.id].y && UNBS[ME.id].y != UNBS[ENEMY].y) {
+                            if (ddx[i] == UNBS[Window.ME.id].x + 1 && ddy[i] != UNBS[Window.ME.id].y && UNBS[Window.ME.id].y != UNBS[ENEMY].y) {
                                 return MoveRandom(1, "M2");
                             }
                         }
                         // END-LINE-X
                         // LINE-Y
-                        if (UNBS[ME.id].y > UNBS[ENEMY].y) {
-                            if (ddy[i] == UNBS[ME.id].y - 1 && ddx[i] == UNBS[ME.id].x && UNBS[ME.id].x == UNBS[ENEMY].x) {
+                        if (UNBS[Window.ME.id].y > UNBS[ENEMY].y) {
+                            if (ddy[i] == UNBS[Window.ME.id].y - 1 && ddx[i] == UNBS[Window.ME.id].x && UNBS[Window.ME.id].x == UNBS[ENEMY].x) {
                                 return MoveRandom(1, "M2");
                             }
-                            if (ddy[i] == UNBS[ME.id].y - 1 && ddx[i] == UNBS[ME.id].x && UNBS[ME.id].x != UNBS[ENEMY].x) {
+                            if (ddy[i] == UNBS[Window.ME.id].y - 1 && ddx[i] == UNBS[Window.ME.id].x && UNBS[Window.ME.id].x != UNBS[ENEMY].x) {
                                 return MoveRandom(1, "M2");
                             }
                         }
-                        if (UNBS[ME.id].y < UNBS[ENEMY].y) {
-                            if (ddy[i] == UNBS[ME.id].y + 1 && ddx[i] == UNBS[ME.id].x && UNBS[ME.id].x == UNBS[ENEMY].x) {
+                        if (UNBS[Window.ME.id].y < UNBS[ENEMY].y) {
+                            if (ddy[i] == UNBS[Window.ME.id].y + 1 && ddx[i] == UNBS[Window.ME.id].x && UNBS[Window.ME.id].x == UNBS[ENEMY].x) {
                                 return MoveRandom(1, "M2");
                             }
-                            if (ddy[i] == UNBS[ME.id].y + 1 && ddx[i] == UNBS[ME.id].x && UNBS[ME.id].x != UNBS[ENEMY].x) {
+                            if (ddy[i] == UNBS[Window.ME.id].y + 1 && ddx[i] == UNBS[Window.ME.id].x && UNBS[Window.ME.id].x != UNBS[ENEMY].x) {
                                 return MoveRandom(1, "M2");
                             }
                         }// END-LINE-Y
@@ -1128,7 +1128,7 @@ function MoveRandom(a, b) {
 function EnemyTN() {
     for (i in UNBS) {
         if (!UNBS[i].clr && UNBS[i].tn == 1 &&
-            UNBS[i].sd != UNBS[ME.id].sd && UNBS[i].flg != 8) {
+            UNBS[i].sd != UNBS[Window.ME.id].sd && UNBS[i].flg != 8) {
             return true;
         }
     }
@@ -1141,27 +1141,27 @@ function EnemyFind(a, b) {
         EFOBJ[0].id = -1;
         rndarr = new Array();
         ENEMY = 0; Redraw();
-        var even1 = UNBS[ME.id].y / 2;
+        var even1 = UNBS[Window.ME.id].y / 2;
         var even2 = Math.ceil(even1);
         if (even1 == even2) {
-            ddx[0] = UNBS[ME.id].x - 1; ddy[0] = UNBS[ME.id].y - 1;
-            ddx[1] = UNBS[ME.id].x; ddy[1] = UNBS[ME.id].y - 1;
-            ddx[2] = UNBS[ME.id].x + 1; ddy[2] = UNBS[ME.id].y;
-            ddx[3] = UNBS[ME.id].x; ddy[3] = UNBS[ME.id].y + 1;
-            ddx[4] = UNBS[ME.id].x - 1; ddy[4] = UNBS[ME.id].y + 1;
-            ddx[5] = UNBS[ME.id].x - 1; ddy[5] = UNBS[ME.id].y;
+            ddx[0] = UNBS[Window.ME.id].x - 1; ddy[0] = UNBS[Window.ME.id].y - 1;
+            ddx[1] = UNBS[Window.ME.id].x; ddy[1] = UNBS[Window.ME.id].y - 1;
+            ddx[2] = UNBS[Window.ME.id].x + 1; ddy[2] = UNBS[Window.ME.id].y;
+            ddx[3] = UNBS[Window.ME.id].x; ddy[3] = UNBS[Window.ME.id].y + 1;
+            ddx[4] = UNBS[Window.ME.id].x - 1; ddy[4] = UNBS[Window.ME.id].y + 1;
+            ddx[5] = UNBS[Window.ME.id].x - 1; ddy[5] = UNBS[Window.ME.id].y;
         } else {
-            ddx[0] = UNBS[ME.id].x; ddy[0] = UNBS[ME.id].y - 1;
-            ddx[1] = UNBS[ME.id].x + 1; ddy[1] = UNBS[ME.id].y - 1;
-            ddx[2] = UNBS[ME.id].x + 1; ddy[2] = UNBS[ME.id].y;
-            ddx[3] = UNBS[ME.id].x + 1; ddy[3] = UNBS[ME.id].y + 1;
-            ddx[4] = UNBS[ME.id].x; ddy[4] = UNBS[ME.id].y + 1;
-            ddx[5] = UNBS[ME.id].x - 1; ddy[5] = UNBS[ME.id].y;
+            ddx[0] = UNBS[Window.ME.id].x; ddy[0] = UNBS[Window.ME.id].y - 1;
+            ddx[1] = UNBS[Window.ME.id].x + 1; ddy[1] = UNBS[Window.ME.id].y - 1;
+            ddx[2] = UNBS[Window.ME.id].x + 1; ddy[2] = UNBS[Window.ME.id].y;
+            ddx[3] = UNBS[Window.ME.id].x + 1; ddy[3] = UNBS[Window.ME.id].y + 1;
+            ddx[4] = UNBS[Window.ME.id].x; ddy[4] = UNBS[Window.ME.id].y + 1;
+            ddx[5] = UNBS[Window.ME.id].x - 1; ddy[5] = UNBS[Window.ME.id].y;
         }
         for (i in UNBS) { // loop-rnd
             for (var j = 0; j < 6; j++) {
                 if (UNBS[i].x == ddx[j] && UNBS[i].y == ddy[j] &&
-                    UNBS[i].sd != UNBS[ME.id].sd && EnemyFind(1, UNBS[i].nk)) {
+                    UNBS[i].sd != UNBS[Window.ME.id].sd && EnemyFind(1, UNBS[i].nk)) {
                     nxy++;
                     rndarr[nxy] = { x: ddx[j], y: ddy[j], id: i, clr: UNBS[i].clr };
                     amountFaceToFace++;
@@ -1222,17 +1222,17 @@ function EnemyNum() {
     amountFriendTN = 0;
     amountEnemyTN = 0;
     for (i in UNBS) {
-        if (!UNBS[i].clr && UNBS[i].sd == UNBS[ME.id].sd && UNBS[i].tn == 0 &&
+        if (!UNBS[i].clr && UNBS[i].sd == UNBS[Window.ME.id].sd && UNBS[i].tn == 0 &&
             UNBS[i].flg != 8) amountFriendTN++;
-        if (!UNBS[i].clr && UNBS[i].sd != UNBS[ME.id].sd && UNBS[i].tn == 0 &&
+        if (!UNBS[i].clr && UNBS[i].sd != UNBS[Window.ME.id].sd && UNBS[i].tn == 0 &&
             UNBS[i].flg != 8) amountEnemyTN++;
-        if (!UNBS[i].clr && UNBS[i].sd == UNBS[ME.id].sd &&
+        if (!UNBS[i].clr && UNBS[i].sd == UNBS[Window.ME.id].sd &&
             UNBS[i].flg != 8) amountfriend++;
-        if (!UNBS[i].clr && UNBS[i].sd != UNBS[ME.id].sd &&
+        if (!UNBS[i].clr && UNBS[i].sd != UNBS[Window.ME.id].sd &&
             UNBS[i].flg != 8) amountenemy++;
-        if (UNBS[i].clr && UNBS[i].sd == UNBS[ME.id].sd &&
+        if (UNBS[i].clr && UNBS[i].sd == UNBS[Window.ME.id].sd &&
             UNBS[i].flg != 8) amountFriendClon++;
-        if (UNBS[i].clr && UNBS[i].sd != UNBS[ME.id].sd &&
+        if (UNBS[i].clr && UNBS[i].sd != UNBS[Window.ME.id].sd &&
             UNBS[i].flg != 8) amountEnemyClon++;
     }
     amountAll = amountfriend + amountenemy + amountFriendClon + amountEnemyClon;
@@ -1310,7 +1310,7 @@ function autotest() {
         } // end-limit
         top.frames["d_chatact"].chclear();
         top.frames["d_chatact"].chclear();
-        if (!DEAD[ME.id] && UNBS[ME.id].flg != 8) AddJS(1, "_jsgame_AddData12.js");
+        if (!DEAD[Window.ME.id] && UNBS[Window.ME.id].flg != 8) AddJS(1, "_jsgame_AddData12.js");
         return tmID[0] = setTimeout("autotest()", 5555);
     } // end-control
 
@@ -1361,12 +1361,12 @@ function autotest() {
         return tmID[0] = setTimeout("autotest()", 3000);
     } // end-wait-timeleft
     var condition_hp = top.frames["d_pers"].condition_hp;
-    if (tl_sec > 44 && UNBS[ME.id].hp < ME.mhp / ab_limit_hp) { // hp-bad
+    if (tl_sec > 44 && UNBS[Window.ME.id].hp < Window.ME.mhp / ab_limit_hp) { // hp-bad
         byid("status").innerHTML = "HP";
         byid("status").style.backgroundColor = "red";
         return tmID[0] = setTimeout("autotest()", 7000);
     } // end-hp-bad
-    if (tl_sec < 55 && canmove1 == "visible" && UNBS[ME.id].hp < ME.mhp / ab_limit_hp && yes_mbCast == 1) { // hp-up
+    if (tl_sec < 55 && canmove1 == "visible" && UNBS[Window.ME.id].hp < Window.ME.mhp / ab_limit_hp && yes_mbCast == 1) { // hp-up
         if (top.frames["d_pers"].document.CrDemand.abHP.value == 1) {
             byid("logb").innerHTML = ""
                 + "<span style=\"color:red;\">"
@@ -1405,7 +1405,7 @@ function autotest() {
         return tmID[0] = setTimeout("autotest()", 3000);
     }
     if (amountEnemyClon < 4) {
-        if (tl_min != 0 && EnemyTN() && !EnemyFind(0) && amountenemy > 2 && UNBS[ME.id].mp >= 75) {
+        if (tl_min != 0 && EnemyTN() && !EnemyFind(0) && amountenemy > 2 && UNBS[Window.ME.id].mp >= 75) {
             byid("status").innerHTML = "S";
             byid("status").style.backgroundColor = "white";
             return tmID[0] = setTimeout("autotest()", 7000);
@@ -1429,7 +1429,7 @@ function autotest() {
             nk: "NaN",
             x: OBSTACLES[i].x,
             y: OBSTACLES[i].y,
-            sd: UNBS[ME.id].sd,
+            sd: UNBS[Window.ME.id].sd,
             flg: 0,
             rc: 0,
             clr: 0
@@ -1437,7 +1437,7 @@ function autotest() {
     }
     for (i in UNIS) { // mass
         if (UNIS[i].flg != 8 && UNIS[i].rc != 7) { // only-clon
-            if (UNIS[i].sd != UNBS[ME.id].sd && UNIS[i].clr && !at_stock) {
+            if (UNIS[i].sd != UNBS[Window.ME.id].sd && UNIS[i].clr && !at_stock) {
                 onlyclon++;
             }
         } // end-only-clon
@@ -1445,7 +1445,7 @@ function autotest() {
     } // end-mass
     for (i in UNIS) { // target-all
         if (UNIS[i].flg != 8 && UNIS[i].rc != 7 && EnemyFind(1, UNIS[i].nk)) {
-            if (UNIS[i].sd != UNBS[ME.id].sd && onlyclon == 0) {
+            if (UNIS[i].sd != UNBS[Window.ME.id].sd && onlyclon == 0) {
                 rxy++;
                 xobj[rxy] = { x: UNIS[i].x, y: UNIS[i].y, clr: UNIS[i].clr }; //all
             }
@@ -1453,7 +1453,7 @@ function autotest() {
     } // end-target-all
     for (i in UNIS) { // target-clon
         if (UNIS[i].flg != 8 && UNIS[i].rc != 7 && EnemyFind(1, UNIS[i].nk)) {
-            if (UNIS[i].sd != UNBS[ME.id].sd && UNIS[i].clr && onlyclon > 0) {
+            if (UNIS[i].sd != UNBS[Window.ME.id].sd && UNIS[i].clr && onlyclon > 0) {
                 rxy++;
                 xobj[rxy] = { x: UNIS[i].x, y: UNIS[i].y, clr: UNIS[i].clr }; //clon
             }
@@ -1528,7 +1528,7 @@ function autotest() {
             console.log("face-cast", MyX, MyY);
         }
     } // end-face-cast
-    if (cn0 == 1 && UNBS[ME.id].mp > 75 && canmove1 == "visible" &&
+    if (cn0 == 1 && UNBS[Window.ME.id].mp > 75 && canmove1 == "visible" &&
         yes_mbCast == 1 && logLastRoundID == begin_round) { // clon
         var at_cast = true;
         if (top.frames["d_pers"].document.CrDemand.clonsum.value == 1 &&
@@ -1593,7 +1593,7 @@ var obj_hover_2 = "onmouseover=\"this.style.backgroundColor='gold';\" onmouseout
 var obj_hover_3 = "onmouseover=\"this.style.backgroundColor='skyblue';\" onmouseout=\"this.style.backgroundColor='#E8EEEC';\"";
 
 var addscript = function () {
-    if (ME.id == 203241980) { // gobl
+    if (Window.ME.id == 203241980) { // gobl
         var btn_name_0 = "МагУдар";
         var btn_name_1 = "Заморозь";
         var btn_name_2 = "Прокля";
@@ -1631,7 +1631,7 @@ var addscript = function () {
     //< !----------------------------------------------------->
     //< !------- BATTLEFIELD BUTTONS WARRIOR-------->
     //< !----------------------------------------------------->
-    if (ME.id == 201135707 || ME.id == 202427932) { //hetzer Vitya
+    if (Window.ME.id == 201135707 || Window.ME.id == 202427932) { //hetzer Vitya
         var btn_name_0 = "Разрушить";
         var btn_name_1 = "Напугать";
         var btn_name_2 = "Клич";
@@ -2196,7 +2196,7 @@ var addObs = function () {
             if (buttons == 1) { // активировать кнопки
                 buttons = 0;
                 Indicator("lawngreen", "B5");
-                AddJS(1, "export_hopg28.js");
+                AddJS(1, "export_hopg29.js");
             }
         }
         if (OnOffguard == 1) {
@@ -2204,7 +2204,7 @@ var addObs = function () {
                 guard = 0;
                 guard_act = 1;
                 Indicator("lawngreen", "G");
-                AddJS(1, "export_hopg28.js");
+                AddJS(1, "export_hopg29.js");
             }
         }
     } // end-fight
@@ -2377,7 +2377,7 @@ function Run() {
         } // end-chat
     }
     if (a > 0) { //TODO
-        if (ME.id == 203241980) { // gobl //TODO
+        if (Window.ME.id == 203241980) { // gobl //TODO
             mbClon = 5149707;
             mbHP = 5038084;
             mbStone = 5039175;
@@ -2392,7 +2392,7 @@ function Run() {
             abilityCloneDispel = 9322224;
             abilityPet = 7463396;
         }
-        if (ME.id == 201135707) { // hetzer
+        if (Window.ME.id == 201135707) { // hetzer
             mbClon = 11972363;
             mbHP = 464505;
             mbStone = 11972368;
@@ -2407,7 +2407,7 @@ function Run() {
             abilityCloneDispel = 0;
             abilityPet = 0;
         }
-        if (ME.id == 202427932) { // Vitya
+        if (Window.ME.id == 202427932) { // Vitya
             mbClon = 1041489;
             mbHP = 1042994;
             mbStone = 1042993;
