@@ -2190,8 +2190,7 @@ var addObs = function () {
                 }
             }
         } else {
-            if (top.frames["d_act"].document.getElementById("rollingscroll") &&
-                top.frames["d_act"].document.getElementById("rollingscroll").title.includes("В очень странном месте")) { //прихожая
+            if (LocSiteAndGet("value", "input", "Подать заявку")) { //прихожая
                 const fortName = getAttackedFortName()
                 if (fortName) {
                     const enterFort = LocSiteAndGet("value", "input", fortName)
