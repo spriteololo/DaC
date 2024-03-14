@@ -1651,7 +1651,7 @@ var addscript = function () {
     //< !----------------------------------------------------->
     //< !------- BATTLEFIELD BUTTONS RANGER-------->
     //< !----------------------------------------------------->
-    if (false) { //TODO
+    if (Window.ME.id == 201135707) { //hetzer
         var btn_name_0 = "Разрушить";
         var btn_name_1 = "Точный";
         var btn_name_2 = "Меткий";
@@ -1670,7 +1670,7 @@ var addscript = function () {
     //< !----------------------------------------------------->
     //< !------- BATTLEFIELD BUTTONS WARRIOR-------->
     //< !----------------------------------------------------->
-    if (Window.ME.id == 201135707) { //hetzer
+    if (false) {
         var btn_name_0 = "Разрушить";
         var btn_name_1 = "Напугать";
         var btn_name_2 = "Клич";
@@ -2665,19 +2665,19 @@ function Run() {
             abilityPet = 7463396;
         }
         if (Window.ME.id == 201135707) { // hetzer
-            mbClon = 681194;
+            mbClon = 13108441;
             mbHP = 464505;
-            mbStone = 464506;
-            mbFireBall = 657540;
-            mbArmor = 681193;
-            mbFreeze = 660931;
+            mbDestroy = 13108443;
+            mbPower = 13108446;
+            mbSniper = 13108445;
+            mbArmor = 13108442;
+            mbJump = 13108444;
             mbPereman = 3558028;
-            mbCurse = 3558029;
             abilityFireDust = 10707146;
-            abilityKill = 0;
-            abilityAbort = 0;
+            abilityKill = 11460141;
+            abilityAbort = 11417264;
             abilityCloneDispel = 0;
-            abilityPet = 0;
+            abilityPet = 13111740;
         }
         if (top.frames["d_pers"].guard_act == 1) {
             OnOffguard = 1;
