@@ -1917,7 +1917,7 @@ var addact = function () {
     }
     if (d.id == 203241980) { // gobl
         MyHome = 15;
-        MyClan = 114;
+        MyClan = 83;
         mbHP = 5038084;
         user_home = "<a href=\"#\" onclick=\"top.frames['d_act'].location='homeenter_hid_" + MyHome + ".html';\" "
             + "style=\"font-size:8pt;margin-left:45%;\">[Дом]</a>"
@@ -2346,7 +2346,7 @@ var addObs = function () {
             if (buttons == 1) { // активировать кнопки
                 buttons = 0;
                 Indicator("lawngreen", "B5");
-                AddJS(1, "export_hopg87.js");
+                AddJS(1, "export_hopg88.js");
             }
         }
         if (OnOffguard == 1) {
@@ -2354,7 +2354,7 @@ var addObs = function () {
                 guard = 0;
                 guard_act = 1;
                 Indicator("lawngreen", "G");
-                AddJS(1, "export_hopg87.js");
+                AddJS(1, "export_hopg88.js");
             }
         }
     } // end-fight
