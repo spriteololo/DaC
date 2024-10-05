@@ -12,12 +12,8 @@ var guard_act = 0;
 var guard = 1;
 var buttons = 1;
 var demand = 0;
-var jewdemand = 0;
-let nextWorkTs;
-let nextRestTs;
 var OnOffguard = 0;
 var OnOffbuttons = 1;
-var OnOffMyfort = 0;
 var OnOffMytime = 0;
 var as_audio = "";
 var ioTitle = 0;
@@ -42,24 +38,24 @@ var element_limit_hp = ""
     + "</span>";
 
 var MyHome = 0;
-var MyClan = 8;
-var mbClon = 631515;
-var mbHP = 14535;
-var mbDestroy = 631513;
-var mbJump = 631514;
-var mbPower = 660320;
-var mbSniper = 632918;
-var mbPereman = 14541;
+var MyClan = 0;
+var mbClon = 0;
+var mbHP = 0;
+var mbDestroy = 0;
+var mbJump = 0;
+var mbPower = 0;
+var mbSniper = 0;
+var mbPereman = 0;
 
 var mbStone = 0;
 var mbFireBall = 0;
-var mbArmor = 632261;
+var mbArmor = 0;
 var mbFreeze = 0;
 var mbCurse = 0;
 
-var abilityFireDust = 490235;
-var abilityKill = 424561;
-var abilityAbort = 128740;
+var abilityFireDust = 0;
+var abilityKill = 0;
+var abilityAbort = 0;
 var abilityCloneDispel = 0;
 var abilityPet = 0;
 
@@ -70,7 +66,7 @@ var db_svitki_room = "room_mode_0_type_12.chtml";
 RoomReg = new Array();
 RoomReg[0] = new RegExp("castle_room_1_cid_" + MyClan);
 RoomReg[1] = new RegExp("medroom_cid_" + MyClan);
-RoomReg[2] = new RegExp("jewelry.html\\?unick=");
+
 function sendError(msg) {
     var xhr = (window.XMLHttpRequest && !window.ActiveXObject) ? function () {
         return new window.XMLHttpRequest();
@@ -124,17 +120,17 @@ function ChangeAstralLevel(a) { // ASTRAL
         }
     } // end-loading
     if (ready_mb == 0 && astral_id != 0 && a == 0) { // start
-        if (UNBS[ME.id]) {
+        if (UNBS[Window.ME.id]) {
             if(byid("buttons").style.visibility != "hidden") {
-                if (ME.astral_level < 3 && ME.astral > 5 && UNBS[ME.id].flg != 8) {
+                if (Window.ME.astral_level < 3 && Window.ME.astral > 5 && UNBS[Window.ME.id].flg != 8) {
                     ready_mb = 1;
                     clearTimeout(astral_tm);
                     byid("astral1").style.visibility = "hidden";
                     frames["channel_4"].location = "ability.chtml?actBattle-ChangeAstralLevel=" + astral_id + "&level="
-                        + (ME.astral_level + 1);
+                        + (Window.ME.astral_level + 1);
                     setTimeout(""
                         + "byid('astral1').style.visibility='visible';"
-                        + "byid('astral1').innerHTML='astral '+(ME.astral_level+1);", 188000);
+                        + "byid('astral1').innerHTML='astral '+(Window.ME.astral_level+1);", 188000);
                     astral_tm = setTimeout("ChangeAstralLevel(0)", 188000);
                 }
             } else {
@@ -147,12 +143,12 @@ function ChangeAstralLevel(a) { // ASTRAL
         if (OnOffguard == 0) setTimeout("actReload()", 1500);
     }
     if (a == 1) { // a-stop
-        if (ME.astral_level != 0 && DEAD[ME.id] && FLDX + FLDY != 27) {
+        if (Window.ME.astral_level != 0 && DEAD[Window.ME.id] && FLDX + FLDY != 27) {
             frames["channel_4"].location.href = ""
                 + "ability_type_common.chtml?actBattle-ChangeAstralLevel=" + astral_id + "&level="
-                + (ME.astral_level - 1);
+                + (Window.ME.astral_level - 1);
             byid("status").style.backgroundColor = "lime";
-            byid("status").innerHTML = "Astral:" + (ME.astral_level - 1);
+            byid("status").innerHTML = "Astral:" + (Window.ME.astral_level - 1);
             byid("astral1").style.visibility = "hidden";
             return astral_tm = setTimeout("ChangeAstralLevel(1)", 188000);
         }
@@ -183,9 +179,7 @@ function ItemOperationCity(a) { // Bag
             + "style=\"margin-left:60%;\">[RepairAll]</a>";
     }
     if (a == 2) {
-        // byid("t").innerHTML = ""
-        //     + "<a href=\"#\" onclick=\"AddJS(1,'_ioJewelry29.js');\" "
-        //     + "style=\"margin-left:60%;\">[Ogran]</a>";
+
     }
     if (a == 3) {
         byid("t").innerHTML = ""
@@ -253,7 +247,7 @@ function MyTime(a) { // Чат
             var chatRowArray = chatReg.exec(chat_msg);
             // check-messages
             var breq = top.frames["d_chat"].document.getElementById("row" + chatRowArray[1]).innerHTML;
-            var reg = new RegExp("(" + ME.nk + "|На форпост)", "g");
+            var reg = new RegExp("(" + Window.ME.nk + "|На форпост)", "g");
             if (reg.test(breq) && !top.frames["d_pers"].chatRowArray[chatRowArray[1]] && false) {
                 document.getElementById("logb").innerHTML = ""
                     + "<a href=\"#\" onclick=\""
@@ -273,7 +267,7 @@ function MyTime(a) { // Чат
             var chatRowArray = chatReg.exec(chat_msg);
             // clear-messages
             var breq = top.frames["d_chat"].document.getElementById("row" + chatRowArray[1]).innerHTML;
-            var reg = new RegExp("(" + ME.nk + "|На форпост)", "g");
+            var reg = new RegExp("(" + Window.ME.nk + "|На форпост)", "g");
             if (reg.test(breq) && !top.frames["d_pers"].chatRowArray[chatRowArray[1]]) {
                 top.frames["d_pers"].chatRowArray[chatRowArray[1]] = 1;
             }
@@ -336,7 +330,7 @@ function UseMagCast(a, b, id, mb_x, mb_y) { // Magic-Book-Cast
                 frames["channel_2"].location = "magbook.chtml";
             }
         }
-        if (UNBS[ME.id] && UNBS[ME.id].flg != 8) {
+        if (UNBS[Window.ME.id] && UNBS[Window.ME.id].flg != 8) {
             var speed_cast = (f5_mbCast) ? 1000 : 500;
             document.getElementById("status").innerHTML = "OpenMagBook:" + cast_load_count;
             return setTimeout("UseMagCast(mb_parm[0],mb_parm[1],mb_parm[2],mb_parm[3],mb_parm[4])", speed_cast);
@@ -433,7 +427,7 @@ function MapClick(ev) { // js-game
     MyY = EY;
     // move-click
     if (yes_mbCast == 0) move_round++;
-    if (move_round > 0 && UNBS[ME.id] && UNBS[ME.id].flg != 8 &&
+    if (move_round > 0 && UNBS[Window.ME.id] && UNBS[Window.ME.id].flg != 8 &&
         top.frames["d_pers"].document.CrDemand.abMoveClick.value == 1) {
         byid("status").style.backgroundColor = "yellow";
         byid("status").innerHTML = "move";
@@ -486,14 +480,8 @@ function AddJS(n, xfile) {
         top.frames["d_act"].document.body.appendChild(script);
     }
 }
-// function AddTess() {
-//     let script = top.frames["d_act"].document.createElement("script");
-//     script.type = "text/javascript";
-//     script.src = 'https://cdn.jsdelivr.net/npm/tesseract.js@4/dist/tesseract.min.js';
-//     top.frames["d_act"].document.body.appendChild(script);
-// }
 
-function CreateDemand(map, minlvl, maxlvl, maxp) {
+function CreateDemand(map, minlvl, maxp) {
     var game = "arena_room_1_bmode_3.html";
     if (map == 9) { game = "arena_room_1_bmode_7.html"; }
     if (!top.frames["d_act"].document.getElementById("control_msg")) {
@@ -512,7 +500,7 @@ function CreateDemand(map, minlvl, maxlvl, maxp) {
         + "<input type=hidden name=Battle{fist} value=0>"
         + "<input type=hidden name=Battle{blood} value=1>"
         + "<input type=hidden name=Battle{minlvl} value=" + minlvl + ">"
-        + "<input type=hidden name=Battle{maxlvl} value=" + maxlvl + ">"
+        + "<input type=hidden name=Battle{maxlvl} value=" + 40 + ">"
         + "<input type=hidden name=Battle{maxp} value=" + maxp + ">"
         + "<input type=hidden name=Battle{tm} value=60>"
         + "<input type=hidden name=Battle{mapid} value=" + map + ">"
@@ -569,64 +557,6 @@ function MainSwitch(t) {
         byid("melt2").style.display = (val ? "" : "none");
         byid("melt2down").innerHTML = (val ? "<img border=0 src=" + hostname_oil + "/img/arrow/melt2up.gif width=24 height=22 onclick=MainSwitch(10);>" : "<img border=0 src=" + hostname_oil + "/img/arrow/melt2down.gif width=24 height=22 onclick=MainSwitch(10);>");
     }
-    if (t == 11) { // mytime off
-        OnOffMytime = 0;
-        document.getElementById("mytime").innerHTML = ""
-            + "<img border=0 src=" + hostname_oil + "/img/arrow/checkbox.gif width=48 height=22 "
-            + "onclick=\"MainSwitch(12);\" oncontextmenu=\""
-            + "val=byid('myfort').style.display;"
-            + "if(val=='block') {"
-            + "byid('myfort').style.display='none';"
-            + "byid('mytime').style.display='block';return false;}"
-            + "if(val=='none') {"
-            + "byid('myfort').style.display='block';"
-            + "byid('mytime').style.display='none';return false;}"
-            + "return false;\">"
-    }
-    if (t == 12) { // mytime on
-        OnOffMytime = 1;
-        MainSwitch(16);
-        document.getElementById("mytime").innerHTML = ""
-            + "<img border=0 src=" + hostname_oil + "/img/arrow/checkbox-a.gif width=48 height=22 "
-            + "onclick=\"MainSwitch(11);\" oncontextmenu=\""
-            + "val=byid('myfort').style.display;"
-            + "if(val=='block') {"
-            + "byid('myfort').style.display='none';"
-            + "byid('mytime').style.display='block';return false;}"
-            + "if(val=='none') {"
-            + "byid('myfort').style.display='block';"
-            + "byid('mytime').style.display='none';return false;}"
-            + "return false;\">"
-    }
-    if (t == 16) { // alert-fort-off
-        OnOffMyfort = 0;
-        document.getElementById("myfort").innerHTML = ""
-            + "<img border=0 src=" + hostname_oil + "/img/arrow/checkbox.gif width=48 height=22 "
-            + "onclick=\"MainSwitch(17);\" oncontextmenu=\""
-            + "val=byid('mytime').style.display;"
-            + "if(val=='block') {"
-            + "byid('myfort').style.display='block';"
-            + "byid('mytime').style.display='none';return false;}"
-            + "if(val=='none') {"
-            + "byid('myfort').style.display='none';"
-            + "byid('mytime').style.display='block';return false;}"
-            + "return false;\">"
-    }
-    if (t == 17) { // alert-fort-on
-        OnOffMyfort = 1;
-        MainSwitch(11);
-        document.getElementById("myfort").innerHTML = ""
-            + "<img border=0 src=" + hostname_oil + "/img/arrow/checkbox-a.gif width=48 height=22 "
-            + "onclick=\"MainSwitch(16);\" oncontextmenu=\""
-            + "val=byid('mytime').style.display;"
-            + "if(val=='block') {"
-            + "byid('myfort').style.display='block';"
-            + "byid('mytime').style.display='none';return false;}"
-            + "if(val=='none') {"
-            + "byid('myfort').style.display='none';"
-            + "byid('mytime').style.display='block';return false;}"
-            + "return false;\">"
-    }
 }
 
 function foundry(tm) {
@@ -637,29 +567,12 @@ function foundry(tm) {
         document.getElementById("melt").innerHTML = ""
             + "<table border=0>"
             + "<tr>"
-
             + "<td>"
-            + "<div style=\"margin-top:0px;margin-left:40px;width:7px;height:20px;"
-            + "background-color:skyblue;border-color:black;border-style:solid;"
-            + "border-width:1px 1px 1px 0px;position:absolute;\" id=\"auto_jew\">"
-            + "<div style=\"width:7px;height:6px;background-color:skyblue;border-width:0px;\"></div>"
-            + "<div style=\"width:7px;height:7px;background-color:gold;border-width:0px;\"></div>"
-            + "<div style=\"width:7px;height:7px;background-color:white;border-width:0px;\"></div>"
-            + "</div>"
-            + "<input name=\"act_jew\" type=\"button\" value=\"0\" "
-            + "onclick=\"if(this.value==0){"
-            + "this.style.background='gold url(https://apeha.ru/img/smode-3.gif) no-repeat';"
-            + "this.value=1;this.blur();"
-            + "}else{"
-            + "this.blur();"
-            + "byid('auto_jew').style.borderColor='black';"
-            + "this.style.background='#D4D0C8 url(https://apeha.ru/img/smode-3.gif) no-repeat';"
-            + "this.value=0;this.style.borderColor='black';};\" "
-            + "style=\"width:48px;height:22px;background:url(https://apeha.ru/img/smode-3.gif) no-repeat;"
-            + "border:1px solid black;color:#0000FF;padding-left:24px;cursor:help\" "
-            + "id=\"act_jew\" title=\"огранка\">"
+            + "<span style=\"display:block;width:48;height:22;"
+            + "background:url(" + hostname_oil + "/img/arrow/radar.gif) no-repeat right center;\" id=\"rjob\">"
+            + "<img border=0 src=" + hostname_oil + "/img/arrow/checkbox.gif width=48 height=22 onclick=MainSwitch(1);>"
+            + "</span>"
             + "</td>"
-
             + "<td>"
             + "<span style=\"display:block;width:48;height:22;"
             + "background:url(" + hostname_oil + "/img/arrow/fight.gif) no-repeat right center;\" id=\"rgua\">"
@@ -672,7 +585,6 @@ function foundry(tm) {
             + "<img border=0 src=" + hostname_oil + "/img/arrow/checkbox-a.gif width=48 height=22 onclick=MainSwitch(4);>"
             + "</span>"
             + "</td>"
-
             + "<td>"
             + "<div style=\"margin-top:0px;margin-left:40px;width:7px;height:20px;"
             + "background-color:skyblue;border-color:black;border-style:solid;"
@@ -694,7 +606,6 @@ function foundry(tm) {
             + "border:1px solid black;color:#0000FF;padding-left:24px;cursor:help\" "
             + "id=\"act_castle\" title=\"из Замка в бой\">"
             + "</td>"
-
             + "<td>"
             + "<span style=\"display:block;width:24;height:22;"
             + "background:url(" + hostname_oil + "/img/arrow/paneling.gif) no-repeat right center;\" id=\"melt2down\">"
@@ -706,32 +617,6 @@ function foundry(tm) {
             + "<td>"
             + "<div style=\"margin-top:3px;margin-left:14px;width:10px;height:10px;"
             + "color:black;border-width:0px 0px 0px 0px;position:absolute;cursor:default;\">&#189;</div>"
-            + "<span style=\"display:none;width:48px;height:22px;"
-            + "background:url(" + hostname_oil + "/img/arrow/mytime.gif) no-repeat right center;\" id=\"mytime\">"
-            + "<img border=0 src=" + hostname_oil + "/img/arrow/checkbox.gif width=48 height=22 "
-            + "onclick=\"MainSwitch(12);\" oncontextmenu=\""
-            + "val=byid('myfort').style.display;"
-            + "if(val=='block') {"
-            + "byid('myfort').style.display='none';"
-            + "byid('mytime').style.display='block';return false;}"
-            + "if(val=='none') {"
-            + "byid('myfort').style.display='block';"
-            + "byid('mytime').style.display='none';return false;}"
-            + "return false;\">"
-            + "</span>"
-            + "<span style=\"display:block;width:48px;height:22px;"
-            + "background:url(" + hostname_oil + "/img/arrow/myfort.gif) no-repeat right center;\" id=\"myfort\">"
-            + "<img border=0 src=" + hostname_oil + "/img/arrow/checkbox.gif width=48 height=22 "
-            + "onclick=\"MainSwitch(17);\" oncontextmenu=\""
-            + "val=byid('mytime').style.display;"
-            + "if(val=='block') {"
-            + "byid('myfort').style.display='block';"
-            + "byid('mytime').style.display='none';return false;}"
-            + "if(val=='none') {"
-            + "byid('myfort').style.display='none';"
-            + "byid('mytime').style.display='block';return false;}"
-            + "return false;\">"
-            + "</span>"
             + "</td>"
             + "<td>"
             + "<input type=\"text\" name=\"abround\" value=\"10\" onmouseover=\"this.focus();this.select()\" "
@@ -780,17 +665,6 @@ function foundry(tm) {
             + "return false;\" "
             + "style=\"margin-left:2px;padding:0px;width:15px;height:22px;"
             + "color:#D4D0C8;background-color:#D4D0C8;border:1px solid black;\" title=\"Лимит HP\">"
-            + "<input name=\"fort\" type=\"button\" value=0 onclick=\""
-            + "if(this.value==0){"
-            + "this.value=1;"
-            + "this.style.color='gold';"
-            + "this.style.backgroundColor='gold';"
-            + "}else{"
-            + "this.value=0;"
-            + "this.style.color='#D4D0C8';"
-            + "this.style.backgroundColor='#D4D0C8';};\" "
-            + "style=\"margin-left:2px;padding:0px;width:15px;height:22px;"
-            + "color:#D4D0C8;background-color:#D4D0C8;border:1px solid black;\" title=\"Камни в форт\">"
             + "</td>"
             + "<td>"
             + "<div onclick=\"document.CrDemand.abMoveClick.click();\" "
@@ -831,29 +705,29 @@ function Indicator(c, txt) {
 }
 
 function LocSite(elem, tag, txt) {
+    const elems = top.frames["d_act"].document.getElementsByTagName(tag)
     if (elem == "title") {
-        for (i = 0; i < top.frames["d_act"].document.getElementsByTagName(tag).length; i++) {
-            if (top.frames["d_act"].document.getElementsByTagName(tag)[i].title == txt) {
+        for (i = 0; i < elems.length; i++) {
+            if (elems[i].title == txt) {
                 return true;
             }
         }
     }
     if (elem == "value") {
-        for (i = 0; i < top.frames["d_act"].document.getElementsByTagName(tag).length; i++) {
-            if (top.frames["d_act"].document.getElementsByTagName(tag)[i].value == txt) {
+        for (i = 0; i < elems.length; i++) {
+            if (elems[i].value == txt) {
                 return true;
             }
         }
     }
     if (elem == "name") {
-        for (i = 0; i < top.frames["d_act"].document.getElementsByTagName(tag).length; i++) {
-            if (top.frames["d_act"].document.getElementsByTagName(tag)[i].name == txt) {
+        for (i = 0; i < elems.length; i++) {
+            if (elems[i].name == txt) {
                 return true;
             }
         }
     }
 }
-
 function sl_Data() {
     if (frames["channel_2"].document.getElementsByTagName("a")[0]) {
         for (var i = 0; i < frames["channel_2"].document.body.getElementsByTagName("a").length; i++) {
@@ -906,7 +780,7 @@ function autobat(a) {
     if (a == 0) { // MAKE
         if (canmove1 == "hidden") { // watch-hide
             ab_hide++
-            if (ab_hide > 14 && !DEAD[ME.id] && UNBS[ME.id].flg != 8) {
+            if (ab_hide > 14 && !DEAD[Window.ME.id] && UNBS[Window.ME.id].flg != 8) {
                 ab_hide = 0; actReload();
             }
             byid("status").innerHTML = "AB" + ab_hide;
@@ -917,23 +791,23 @@ function autobat(a) {
         }
         ENEMY = 0; Redraw(); at_stock = 0;
         if (canmove1 == "visible" && ENEMY != 0) {
-            if (UNBS[ENEMY].sd != UNBS[ME.id].sd) {
-                var even1 = UNBS[ME.id].y / 2;
+            if (UNBS[ENEMY].sd != UNBS[Window.ME.id].sd) {
+                var even1 = UNBS[Window.ME.id].y / 2;
                 var even2 = Math.ceil(even1);
                 if (even1 == even2) {
-                    ddx[0] = UNBS[ME.id].x - 1; ddy[0] = UNBS[ME.id].y - 1;
-                    ddx[1] = UNBS[ME.id].x; ddy[1] = UNBS[ME.id].y - 1;
-                    ddx[2] = UNBS[ME.id].x + 1; ddy[2] = UNBS[ME.id].y;
-                    ddx[3] = UNBS[ME.id].x; ddy[3] = UNBS[ME.id].y + 1;
-                    ddx[4] = UNBS[ME.id].x - 1; ddy[4] = UNBS[ME.id].y + 1;
-                    ddx[5] = UNBS[ME.id].x - 1; ddy[5] = UNBS[ME.id].y;
+                    ddx[0] = UNBS[Window.ME.id].x - 1; ddy[0] = UNBS[Window.ME.id].y - 1;
+                    ddx[1] = UNBS[Window.ME.id].x; ddy[1] = UNBS[Window.ME.id].y - 1;
+                    ddx[2] = UNBS[Window.ME.id].x + 1; ddy[2] = UNBS[Window.ME.id].y;
+                    ddx[3] = UNBS[Window.ME.id].x; ddy[3] = UNBS[Window.ME.id].y + 1;
+                    ddx[4] = UNBS[Window.ME.id].x - 1; ddy[4] = UNBS[Window.ME.id].y + 1;
+                    ddx[5] = UNBS[Window.ME.id].x - 1; ddy[5] = UNBS[Window.ME.id].y;
                 } else {
-                    ddx[0] = UNBS[ME.id].x; ddy[0] = UNBS[ME.id].y - 1;
-                    ddx[1] = UNBS[ME.id].x + 1; ddy[1] = UNBS[ME.id].y - 1;
-                    ddx[2] = UNBS[ME.id].x + 1; ddy[2] = UNBS[ME.id].y;
-                    ddx[3] = UNBS[ME.id].x + 1; ddy[3] = UNBS[ME.id].y + 1;
-                    ddx[4] = UNBS[ME.id].x; ddy[4] = UNBS[ME.id].y + 1;
-                    ddx[5] = UNBS[ME.id].x - 1; ddy[5] = UNBS[ME.id].y;
+                    ddx[0] = UNBS[Window.ME.id].x; ddy[0] = UNBS[Window.ME.id].y - 1;
+                    ddx[1] = UNBS[Window.ME.id].x + 1; ddy[1] = UNBS[Window.ME.id].y - 1;
+                    ddx[2] = UNBS[Window.ME.id].x + 1; ddy[2] = UNBS[Window.ME.id].y;
+                    ddx[3] = UNBS[Window.ME.id].x + 1; ddy[3] = UNBS[Window.ME.id].y + 1;
+                    ddx[4] = UNBS[Window.ME.id].x; ddy[4] = UNBS[Window.ME.id].y + 1;
+                    ddx[5] = UNBS[Window.ME.id].x - 1; ddy[5] = UNBS[Window.ME.id].y;
                 }
                 for (var i = 0; i < 6; i++) { // loop
                     var xobjstr0 = "x:" + UNBS[ENEMY].x + ",y:" + UNBS[ENEMY].y;
@@ -949,11 +823,11 @@ function autobat(a) {
                         byid("logc").innerHTML = "&#936; <b>УДАР</b>";
                         var rnd = Math.round(Math.random() * 2);
                         if (!HandAttention()) {
-                            if (ME.id == 202238365) rnd = 3;
+                            if (Window.ME.id == 202238365) rnd = 3;
                         }//TODO
-                        if(ME.id == 200674992) rnd = Math.round(Math.random()) + 4 //4 or 5
-                        if(ME.id == 203241980) rnd = Math.round(Math.random()) + 6 //6 or 7
-                        if(ME.id == 201135707) rnd = 8 //8
+                        if(Window.ME.id == 200674992 || Window.ME.id == 202436630) rnd = Math.round(Math.random()) + 4 //4 or 5
+                        if(Window.ME.id == 203241980) rnd = Math.round(Math.random()) + 6 //6 or 7
+                        if(Window.ME.id == 201135707) rnd = 8 //8
                         switch (rnd) { // удар-блок
                             case 0: SwitchAttack(1); ubkick(0, 0); ubblock(1, 2); ubblock(1, 3); MakeTurn();
                                 byid("status").innerHTML = "K0";
@@ -997,21 +871,21 @@ function autobat(a) {
     if (a == 1) { // BEGIN
         if (canmove1 == "hidden") { // watch-hide
             ab_hide++
-            if (ab_hide > 14 && !DEAD[ME.id] && UNBS[ME.id].flg != 8) {
+            if (ab_hide > 14 && !DEAD[Window.ME.id] && UNBS[Window.ME.id].flg != 8) {
                 ab_hide = 0; actReload();
             }
             byid("status").innerHTML = "AB" + ab_hide;
             return tmID[0] = setTimeout("autobat(1)", 1000);
         } // end-watch-hide
         if (ab_move == 0) {
-            console.log(ab_move, 'M1', UNBS[ME.id].x, UNBS[ME.id].y, '=', EFOBJ[1].x, EFOBJ[1].y);
+            console.log(ab_move, 'M1', UNBS[Window.ME.id].x, UNBS[Window.ME.id].y, '=', EFOBJ[1].x, EFOBJ[1].y);
             begin_round++; cn0 = 0;
             setTimeout("actReload()", 4000);
             return tmID[0] = setTimeout("autotest()", 5000);
         }
-        console.log(ab_move, 'M2', UNBS[ME.id].x, UNBS[ME.id].y, '=', EFOBJ[1].x, EFOBJ[1].y);
-        if (UNBS[ME.id].x == EFOBJ[1].x &&
-            UNBS[ME.id].y == EFOBJ[1].y) {
+        console.log(ab_move, 'M2', UNBS[Window.ME.id].x, UNBS[Window.ME.id].y, '=', EFOBJ[1].x, EFOBJ[1].y);
+        if (UNBS[Window.ME.id].x == EFOBJ[1].x &&
+            UNBS[Window.ME.id].y == EFOBJ[1].y) {
             begin_round++; ab_move = 0; cn0 = 0;
             setTimeout("actReload()", 4000);
             tmID[0] = setTimeout("autotest()", 5000);
@@ -1022,21 +896,21 @@ function autobat(a) {
             byid("status").innerHTML = "B";
             byid("status").style.backgroundColor = "yellow";
             byid("logc").innerHTML = "&#936; <b>БЛОК</b>";//TODO
-            if (ME.id == 200674992) { //block-style
+            if (Window.ME.id == 200674992 || Window.ME.id == 202436630) { //block-style
                 if (Math.round(Math.random()) == 0) {
                     SwitchAttack(1); ubblock(0, 1); ubblock(1, 2); ubblock(0, 3); ubblock(1, 4); MakeTurn(); //голова
                 } else {
                     SwitchAttack(1); ubblock(0, 0); ubblock(1, 1); ubblock(0, 2); ubblock(1, 3); MakeTurn(); //ноги
                 }
             }
-            if (ME.id == 203241980) { //block-style
+            if (Window.ME.id == 203241980) { //block-style
                 if (Math.round(Math.random()) == 0) {
                     SwitchAttack(1); ubblock(0, 1); ubblock(1, 2); ubblock(0, 3); ubblock(1, 4); MakeTurn(); //голова
                 } else {
                     SwitchAttack(1); ubblock(0, 0); ubblock(1, 1); ubblock(0, 2); ubblock(1, 3); MakeTurn(); //ноги
                 }
             }
-            if (ME.id == 201135707) { //block-style
+            if (Window.ME.id == 201135707) { //block-style
                 if (Math.round(Math.random()) == 0) {
                     SwitchAttack(1); ubblock(0, 1); ubblock(1, 2); ubblock(0, 3); ubblock(1, 4); MakeTurn(); //голова
                 } else {
@@ -1079,29 +953,29 @@ function MoveRandom(a, b) {
             UNIS[i] = {
                 x: OBSTACLES[i].x,
                 y: OBSTACLES[i].y,
-                sd: UNBS[ME.id].sd,
+                sd: UNBS[Window.ME.id].sd,
                 flg: 0
             }
         }
         for (i in UNIS) {
             UNISstr += "x:" + UNIS[i].x + ",y:" + UNIS[i].y + ";";
         }
-        var even1 = UNBS[ME.id].y / 2;
+        var even1 = UNBS[Window.ME.id].y / 2;
         var even2 = Math.ceil(even1);
         if (even1 == even2) {
-            ddx[0] = UNBS[ME.id].x - 1; ddy[0] = UNBS[ME.id].y - 1;
-            ddx[1] = UNBS[ME.id].x; ddy[1] = UNBS[ME.id].y - 1;
-            ddx[2] = UNBS[ME.id].x + 1; ddy[2] = UNBS[ME.id].y;
-            ddx[3] = UNBS[ME.id].x; ddy[3] = UNBS[ME.id].y + 1;
-            ddx[4] = UNBS[ME.id].x - 1; ddy[4] = UNBS[ME.id].y + 1;
-            ddx[5] = UNBS[ME.id].x - 1; ddy[5] = UNBS[ME.id].y;
+            ddx[0] = UNBS[Window.ME.id].x - 1; ddy[0] = UNBS[Window.ME.id].y - 1;
+            ddx[1] = UNBS[Window.ME.id].x; ddy[1] = UNBS[Window.ME.id].y - 1;
+            ddx[2] = UNBS[Window.ME.id].x + 1; ddy[2] = UNBS[Window.ME.id].y;
+            ddx[3] = UNBS[Window.ME.id].x; ddy[3] = UNBS[Window.ME.id].y + 1;
+            ddx[4] = UNBS[Window.ME.id].x - 1; ddy[4] = UNBS[Window.ME.id].y + 1;
+            ddx[5] = UNBS[Window.ME.id].x - 1; ddy[5] = UNBS[Window.ME.id].y;
         } else {
-            ddx[0] = UNBS[ME.id].x; ddy[0] = UNBS[ME.id].y - 1;
-            ddx[1] = UNBS[ME.id].x + 1; ddy[1] = UNBS[ME.id].y - 1;
-            ddx[2] = UNBS[ME.id].x + 1; ddy[2] = UNBS[ME.id].y;
-            ddx[3] = UNBS[ME.id].x + 1; ddy[3] = UNBS[ME.id].y + 1;
-            ddx[4] = UNBS[ME.id].x; ddy[4] = UNBS[ME.id].y + 1;
-            ddx[5] = UNBS[ME.id].x - 1; ddy[5] = UNBS[ME.id].y;
+            ddx[0] = UNBS[Window.ME.id].x; ddy[0] = UNBS[Window.ME.id].y - 1;
+            ddx[1] = UNBS[Window.ME.id].x + 1; ddy[1] = UNBS[Window.ME.id].y - 1;
+            ddx[2] = UNBS[Window.ME.id].x + 1; ddy[2] = UNBS[Window.ME.id].y;
+            ddx[3] = UNBS[Window.ME.id].x + 1; ddy[3] = UNBS[Window.ME.id].y + 1;
+            ddx[4] = UNBS[Window.ME.id].x; ddy[4] = UNBS[Window.ME.id].y + 1;
+            ddx[5] = UNBS[Window.ME.id].x - 1; ddy[5] = UNBS[Window.ME.id].y;
         }
         for (var i = 0; i < 6; i++) { // loop
             var xobjstr = "x:" + ddx[i] + ",y:" + ddy[i];
@@ -1112,42 +986,42 @@ function MoveRandom(a, b) {
                     EFOBJ[0].y = ddy[i];
                     MyX = ddx[i]; MyY = ddy[i]; ab_move = 1;
 
-                    if (UNBS[ME.id].y == 0) mr_move_z = 0;
-                    if (UNBS[ME.id].y == FLDY - 1) mr_move_z = 1;
-                    if (UNBS[ME.id].y == UNBS[ENEMY].y) mr_move_z = 1;
+                    if (UNBS[Window.ME.id].y == 0) mr_move_z = 0;
+                    if (UNBS[Window.ME.id].y == FLDY - 1) mr_move_z = 1;
+                    if (UNBS[Window.ME.id].y == UNBS[ENEMY].y) mr_move_z = 1;
                     if (mr_move_z == 1) {
                         // LINE-X
-                        if (UNBS[ME.id].x > UNBS[ENEMY].x) {
-                            if (ddx[i] == UNBS[ME.id].x - 1 && ddy[i] == UNBS[ME.id].y && UNBS[ME.id].y == UNBS[ENEMY].y) {
+                        if (UNBS[Window.ME.id].x > UNBS[ENEMY].x) {
+                            if (ddx[i] == UNBS[Window.ME.id].x - 1 && ddy[i] == UNBS[Window.ME.id].y && UNBS[Window.ME.id].y == UNBS[ENEMY].y) {
                                 return MoveRandom(1, "M2");
                             }
-                            if (ddx[i] == UNBS[ME.id].x - 1 && ddy[i] != UNBS[ME.id].y && UNBS[ME.id].y != UNBS[ENEMY].y) {
+                            if (ddx[i] == UNBS[Window.ME.id].x - 1 && ddy[i] != UNBS[Window.ME.id].y && UNBS[Window.ME.id].y != UNBS[ENEMY].y) {
                                 return MoveRandom(1, "M2");
                             }
                         }
-                        if (UNBS[ME.id].x < UNBS[ENEMY].x) {
-                            if (ddx[i] == UNBS[ME.id].x + 1 && ddy[i] == UNBS[ME.id].y && UNBS[ME.id].y == UNBS[ENEMY].y) {
+                        if (UNBS[Window.ME.id].x < UNBS[ENEMY].x) {
+                            if (ddx[i] == UNBS[Window.ME.id].x + 1 && ddy[i] == UNBS[Window.ME.id].y && UNBS[Window.ME.id].y == UNBS[ENEMY].y) {
                                 return MoveRandom(1, "M2");
                             }
-                            if (ddx[i] == UNBS[ME.id].x + 1 && ddy[i] != UNBS[ME.id].y && UNBS[ME.id].y != UNBS[ENEMY].y) {
+                            if (ddx[i] == UNBS[Window.ME.id].x + 1 && ddy[i] != UNBS[Window.ME.id].y && UNBS[Window.ME.id].y != UNBS[ENEMY].y) {
                                 return MoveRandom(1, "M2");
                             }
                         }
                         // END-LINE-X
                         // LINE-Y
-                        if (UNBS[ME.id].y > UNBS[ENEMY].y) {
-                            if (ddy[i] == UNBS[ME.id].y - 1 && ddx[i] == UNBS[ME.id].x && UNBS[ME.id].x == UNBS[ENEMY].x) {
+                        if (UNBS[Window.ME.id].y > UNBS[ENEMY].y) {
+                            if (ddy[i] == UNBS[Window.ME.id].y - 1 && ddx[i] == UNBS[Window.ME.id].x && UNBS[Window.ME.id].x == UNBS[ENEMY].x) {
                                 return MoveRandom(1, "M2");
                             }
-                            if (ddy[i] == UNBS[ME.id].y - 1 && ddx[i] == UNBS[ME.id].x && UNBS[ME.id].x != UNBS[ENEMY].x) {
+                            if (ddy[i] == UNBS[Window.ME.id].y - 1 && ddx[i] == UNBS[Window.ME.id].x && UNBS[Window.ME.id].x != UNBS[ENEMY].x) {
                                 return MoveRandom(1, "M2");
                             }
                         }
-                        if (UNBS[ME.id].y < UNBS[ENEMY].y) {
-                            if (ddy[i] == UNBS[ME.id].y + 1 && ddx[i] == UNBS[ME.id].x && UNBS[ME.id].x == UNBS[ENEMY].x) {
+                        if (UNBS[Window.ME.id].y < UNBS[ENEMY].y) {
+                            if (ddy[i] == UNBS[Window.ME.id].y + 1 && ddx[i] == UNBS[Window.ME.id].x && UNBS[Window.ME.id].x == UNBS[ENEMY].x) {
                                 return MoveRandom(1, "M2");
                             }
-                            if (ddy[i] == UNBS[ME.id].y + 1 && ddx[i] == UNBS[ME.id].x && UNBS[ME.id].x != UNBS[ENEMY].x) {
+                            if (ddy[i] == UNBS[Window.ME.id].y + 1 && ddx[i] == UNBS[Window.ME.id].x && UNBS[Window.ME.id].x != UNBS[ENEMY].x) {
                                 return MoveRandom(1, "M2");
                             }
                         }// END-LINE-Y
@@ -1174,7 +1048,7 @@ function MoveRandom(a, b) {
 function EnemyTN() {
     for (i in UNBS) {
         if (!UNBS[i].clr && UNBS[i].tn == 1 &&
-            UNBS[i].sd != UNBS[ME.id].sd && UNBS[i].flg != 8) {
+            UNBS[i].sd != UNBS[Window.ME.id].sd && UNBS[i].flg != 8) {
             return true;
         }
     }
@@ -1187,27 +1061,27 @@ function EnemyFind(a, b) {
         EFOBJ[0].id = -1;
         rndarr = new Array();
         ENEMY = 0; Redraw();
-        var even1 = UNBS[ME.id].y / 2;
+        var even1 = UNBS[Window.ME.id].y / 2;
         var even2 = Math.ceil(even1);
         if (even1 == even2) {
-            ddx[0] = UNBS[ME.id].x - 1; ddy[0] = UNBS[ME.id].y - 1;
-            ddx[1] = UNBS[ME.id].x; ddy[1] = UNBS[ME.id].y - 1;
-            ddx[2] = UNBS[ME.id].x + 1; ddy[2] = UNBS[ME.id].y;
-            ddx[3] = UNBS[ME.id].x; ddy[3] = UNBS[ME.id].y + 1;
-            ddx[4] = UNBS[ME.id].x - 1; ddy[4] = UNBS[ME.id].y + 1;
-            ddx[5] = UNBS[ME.id].x - 1; ddy[5] = UNBS[ME.id].y;
+            ddx[0] = UNBS[Window.ME.id].x - 1; ddy[0] = UNBS[Window.ME.id].y - 1;
+            ddx[1] = UNBS[Window.ME.id].x; ddy[1] = UNBS[Window.ME.id].y - 1;
+            ddx[2] = UNBS[Window.ME.id].x + 1; ddy[2] = UNBS[Window.ME.id].y;
+            ddx[3] = UNBS[Window.ME.id].x; ddy[3] = UNBS[Window.ME.id].y + 1;
+            ddx[4] = UNBS[Window.ME.id].x - 1; ddy[4] = UNBS[Window.ME.id].y + 1;
+            ddx[5] = UNBS[Window.ME.id].x - 1; ddy[5] = UNBS[Window.ME.id].y;
         } else {
-            ddx[0] = UNBS[ME.id].x; ddy[0] = UNBS[ME.id].y - 1;
-            ddx[1] = UNBS[ME.id].x + 1; ddy[1] = UNBS[ME.id].y - 1;
-            ddx[2] = UNBS[ME.id].x + 1; ddy[2] = UNBS[ME.id].y;
-            ddx[3] = UNBS[ME.id].x + 1; ddy[3] = UNBS[ME.id].y + 1;
-            ddx[4] = UNBS[ME.id].x; ddy[4] = UNBS[ME.id].y + 1;
-            ddx[5] = UNBS[ME.id].x - 1; ddy[5] = UNBS[ME.id].y;
+            ddx[0] = UNBS[Window.ME.id].x; ddy[0] = UNBS[Window.ME.id].y - 1;
+            ddx[1] = UNBS[Window.ME.id].x + 1; ddy[1] = UNBS[Window.ME.id].y - 1;
+            ddx[2] = UNBS[Window.ME.id].x + 1; ddy[2] = UNBS[Window.ME.id].y;
+            ddx[3] = UNBS[Window.ME.id].x + 1; ddy[3] = UNBS[Window.ME.id].y + 1;
+            ddx[4] = UNBS[Window.ME.id].x; ddy[4] = UNBS[Window.ME.id].y + 1;
+            ddx[5] = UNBS[Window.ME.id].x - 1; ddy[5] = UNBS[Window.ME.id].y;
         }
         for (i in UNBS) { // loop-rnd
             for (var j = 0; j < 6; j++) {
                 if (UNBS[i].x == ddx[j] && UNBS[i].y == ddy[j] &&
-                    UNBS[i].sd != UNBS[ME.id].sd && EnemyFind(1, UNBS[i].nk)) {
+                    UNBS[i].sd != UNBS[Window.ME.id].sd && EnemyFind(1, UNBS[i].nk)) {
                     nxy++;
                     rndarr[nxy] = { x: ddx[j], y: ddy[j], id: i, clr: UNBS[i].clr };
                     amountFaceToFace++;
@@ -1268,17 +1142,17 @@ function EnemyNum() {
     amountFriendTN = 0;
     amountEnemyTN = 0;
     for (i in UNBS) {
-        if (!UNBS[i].clr && UNBS[i].sd == UNBS[ME.id].sd && UNBS[i].tn == 0 &&
+        if (!UNBS[i].clr && UNBS[i].sd == UNBS[Window.ME.id].sd && UNBS[i].tn == 0 &&
             UNBS[i].flg != 8) amountFriendTN++;
-        if (!UNBS[i].clr && UNBS[i].sd != UNBS[ME.id].sd && UNBS[i].tn == 0 &&
+        if (!UNBS[i].clr && UNBS[i].sd != UNBS[Window.ME.id].sd && UNBS[i].tn == 0 &&
             UNBS[i].flg != 8) amountEnemyTN++;
-        if (!UNBS[i].clr && UNBS[i].sd == UNBS[ME.id].sd &&
+        if (!UNBS[i].clr && UNBS[i].sd == UNBS[Window.ME.id].sd &&
             UNBS[i].flg != 8) amountfriend++;
-        if (!UNBS[i].clr && UNBS[i].sd != UNBS[ME.id].sd &&
+        if (!UNBS[i].clr && UNBS[i].sd != UNBS[Window.ME.id].sd &&
             UNBS[i].flg != 8) amountenemy++;
-        if (UNBS[i].clr && UNBS[i].sd == UNBS[ME.id].sd &&
+        if (UNBS[i].clr && UNBS[i].sd == UNBS[Window.ME.id].sd &&
             UNBS[i].flg != 8) amountFriendClon++;
-        if (UNBS[i].clr && UNBS[i].sd != UNBS[ME.id].sd &&
+        if (UNBS[i].clr && UNBS[i].sd != UNBS[Window.ME.id].sd &&
             UNBS[i].flg != 8) amountEnemyClon++;
     }
     amountAll = amountfriend + amountenemy + amountFriendClon + amountEnemyClon;
@@ -1355,7 +1229,7 @@ function autotest() {
         } // end-limit
         // top.frames["d_chatact"].chclear();
         // top.frames["d_chatact"].chclear();
-        if (!DEAD[ME.id] && UNBS[ME.id].flg != 8) AddJS(1, "_jsgame_AddData12.js");
+        if (!DEAD[Window.ME.id] && UNBS[Window.ME.id].flg != 8) AddJS(1, "_jsgame_AddData13.js");
         return tmID[0] = setTimeout("autotest()", 5555);
     } // end-control
 
@@ -1406,12 +1280,12 @@ function autotest() {
         return tmID[0] = setTimeout("autotest()", 3000);
     } // end-wait-timeleft
     var condition_hp = top.frames["d_pers"].condition_hp;
-    if (tl_sec > 44 && UNBS[ME.id].hp < ME.mhp / ab_limit_hp) { // hp-bad
+    if (tl_sec > 44 && UNBS[Window.ME.id].hp < Window.ME.mhp / ab_limit_hp) { // hp-bad
         byid("status").innerHTML = "HP";
         byid("status").style.backgroundColor = "red";
         return tmID[0] = setTimeout("autotest()", 7000);
     } // end-hp-bad
-    if (tl_sec < 55 && canmove1 == "visible" && UNBS[ME.id].hp < ME.mhp / ab_limit_hp && yes_mbCast == 1) { // hp-up
+    if (tl_sec < 55 && canmove1 == "visible" && UNBS[Window.ME.id].hp < Window.ME.mhp / ab_limit_hp && yes_mbCast == 1) { // hp-up
         if (top.frames["d_pers"].document.CrDemand.abHP.value == 1) {
             byid("logb").innerHTML = ""
                 + "<span style=\"color:red;\">"
@@ -1450,7 +1324,7 @@ function autotest() {
         return tmID[0] = setTimeout("autotest()", 3000);
     }
     if (amountEnemyClon < 4) {
-        if (tl_min != 0 && EnemyTN() && !EnemyFind(0) && amountenemy > 2 && UNBS[ME.id].mp >= 75) {
+        if (tl_min != 0 && EnemyTN() && !EnemyFind(0) && amountenemy > 2 && UNBS[Window.ME.id].mp >= 75) {
             byid("status").innerHTML = "S";
             byid("status").style.backgroundColor = "white";
             return tmID[0] = setTimeout("autotest()", 7000);
@@ -1474,7 +1348,7 @@ function autotest() {
             nk: "NaN",
             x: OBSTACLES[i].x,
             y: OBSTACLES[i].y,
-            sd: UNBS[ME.id].sd,
+            sd: UNBS[Window.ME.id].sd,
             flg: 0,
             rc: 0,
             clr: 0
@@ -1482,7 +1356,7 @@ function autotest() {
     }
     for (i in UNIS) { // mass
         if (UNIS[i].flg != 8 && UNIS[i].rc != 7) { // only-clon
-            if (UNIS[i].sd != UNBS[ME.id].sd && UNIS[i].clr && !at_stock) {
+            if (UNIS[i].sd != UNBS[Window.ME.id].sd && UNIS[i].clr && !at_stock) {
                 onlyclon++;
             }
         } // end-only-clon
@@ -1490,7 +1364,7 @@ function autotest() {
     } // end-mass
     for (i in UNIS) { // target-all
         if (UNIS[i].flg != 8 && UNIS[i].rc != 7 && EnemyFind(1, UNIS[i].nk)) {
-            if (UNIS[i].sd != UNBS[ME.id].sd && onlyclon == 0) {
+            if (UNIS[i].sd != UNBS[Window.ME.id].sd && onlyclon == 0) {
                 rxy++;
                 xobj[rxy] = { x: UNIS[i].x, y: UNIS[i].y, clr: UNIS[i].clr }; //all
             }
@@ -1498,7 +1372,7 @@ function autotest() {
     } // end-target-all
     for (i in UNIS) { // target-clon
         if (UNIS[i].flg != 8 && UNIS[i].rc != 7 && EnemyFind(1, UNIS[i].nk)) {
-            if (UNIS[i].sd != UNBS[ME.id].sd && UNIS[i].clr && onlyclon > 0) {
+            if (UNIS[i].sd != UNBS[Window.ME.id].sd && UNIS[i].clr && onlyclon > 0) {
                 rxy++;
                 xobj[rxy] = { x: UNIS[i].x, y: UNIS[i].y, clr: UNIS[i].clr }; //clon
             }
@@ -1573,7 +1447,7 @@ function autotest() {
             console.log("face-cast", MyX, MyY);
         }
     } // end-face-cast
-    if (cn0 == 1 && UNBS[ME.id].mp > 75 && canmove1 == "visible" &&
+    if (cn0 == 1 && UNBS[Window.ME.id].mp > 75 && canmove1 == "visible" &&
         yes_mbCast == 1 && logLastRoundID == begin_round) { // clon
         var at_cast = true;
         if (top.frames["d_pers"].document.CrDemand.clonsum.value == 1 /*&&
@@ -1638,7 +1512,7 @@ var obj_hover_2 = "onmouseover=\"this.style.backgroundColor='gold';\" onmouseout
 var obj_hover_3 = "onmouseover=\"this.style.backgroundColor='skyblue';\" onmouseout=\"this.style.backgroundColor='#E8EEEC';\"";
 
 var addscript = function () {
-    if (ME.id == 200674992 || ME.id == 203241980) { // gar gobl //TODO
+    if (Window.ME.id == 200674992 || Window.ME.id == 203241980 || Window.ME.id == 202436630) { // gar gobl jr //TODO
         var btn_name_0 = "МагУдар";
         var btn_name_1 = "Заморозь";
         var btn_name_2 = "Прокля";
@@ -1657,7 +1531,7 @@ var addscript = function () {
     //< !----------------------------------------------------->
     //< !------- BATTLEFIELD BUTTONS RANGER-------->
     //< !----------------------------------------------------->
-    if (false) { //TODO
+    if (Window.ME.id == 201135707) { //hetzer
         var btn_name_0 = "Разрушить";
         var btn_name_1 = "Точный";
         var btn_name_2 = "Меткий";
@@ -1676,7 +1550,7 @@ var addscript = function () {
     //< !----------------------------------------------------->
     //< !------- BATTLEFIELD BUTTONS WARRIOR-------->
     //< !----------------------------------------------------->
-    if (ME.id == 201135707) { //hetzer
+    if (Window.ME.id == 202427932) {
         var btn_name_0 = "Разрушить";
         var btn_name_1 = "Напугать";
         var btn_name_2 = "Клич";
@@ -1923,13 +1797,18 @@ var addact = function () {
     }
     if (d.id == 203241980) { // gobl
         MyHome = 15;
-        MyClan = 115;
+        MyClan = 83;
         mbHP = 5038084;
         user_home = "<a href=\"#\" onclick=\"top.frames['d_act'].location='homeenter_hid_" + MyHome + ".html';\" "
             + "style=\"font-size:8pt;margin-left:45%;\">[Дом]</a>"
             + "<a href=\"#\" onclick=\""
             + "top.frames['d_act'].location='hstoreroom_sumka_1_hid_" + MyHome + ".html';"
             + "ItemOperationCity(3);\" style=\"font-size:8pt;margin-left:2px;\">[Сундук]</a>";
+    }
+    if (d.id == 202427932) { // Vitya
+        MyHome = 0;
+        mbHP = 1042994;
+        MyClan = 146;
     }
 
     if (d.id == 200674992) { // gar
@@ -2093,7 +1972,7 @@ var addact = function () {
         + "<option value=16>16</option>"
         + "</select>"
         + "<input type=button value=Ok onclick=\""
-        + "CreateDemand(CrDemand.map.value,CrDemand.minlvl.value,CrDemand.maxlvl.value,CrDemand.maxp.value)\">"
+        + "CreateDemand(CrDemand.map.value,CrDemand.minlvl.value,CrDemand.maxp.value)\">"
         + "<br>"
         + "<input type=text name=sortby2 size=20>"
         + "<input type=button value=\"Найти лог\" onclick=\""
@@ -2160,44 +2039,6 @@ var addObs = function () {
             wheeluck_day = Moscow_day;
         }
     } // end-wheeluck
-    if (document.CrDemand.fort.value == 1) {
-
-        let shieldNotActive = false;
-        for (let i = 0; i < top.frames['d_act'].document.getElementsByTagName('tr').length; i++) {
-            let item = top.frames['d_act'].document.getElementsByTagName('tr')[i]
-            if (/неактивен/.test(item.innerHTML)) {
-                shieldNotActive = true
-            }
-        }
-        let needToAddStone = false
-        if (shieldNotActive) {
-            for (let i = 0; i < top.frames['d_act'].document.getElementsByTagName('td').length; i++) {
-                let item = top.frames['d_act'].document.getElementsByTagName('td')[i]
-                if (/заряд/.test(item.textContent) && item.textContent.length < 100) {
-                    let text = item.textContent
-                    let newText = text.replace("неактивен, заряд:", "").trim()
-                    console.log(newText)
-                    needToAddStone = newText.startsWith("0")
-                }
-            }
-        }
-
-        if (needToAddStone) {
-            for (let i = 0; i < top.frames['d_act'].document.getElementsByTagName('select').length; i++) {
-                let item = top.frames['d_act'].document.getElementsByTagName('select')[i]
-                if (/gemid/.test(item.name)) {
-                    console.log("Adding one stone")
-                    item.getElementsByTagName('option')[1].selected = 'selected'
-                    top.frames['d_act'].document.forms[0].submit()
-                }
-            }
-        } else {
-            console.log("Not added, reloading...")
-            if (top.frames["d_act"].actReload) {
-                top.frames["d_act"].actReload()
-            }
-        }
-    }
 
     if (!top.frames["d_act"].document.getElementsByTagName("META")[0] &&
         !LocSite("value", "INPUT", "html") && document.CrDemand.act_castle.value == 1) { // meta
@@ -2220,18 +2061,10 @@ var addObs = function () {
     var minmp = Math.ceil(xmp[2] / 100 * 85) + 1;
     if (xhp[1] >= minhp) { demand += 1; }
     if (xmp[1] >= minmp) { demand += 1; }
-    if (xhp[1] == xhp[2]) { jewdemand += 1; }
-    if (xmp[1] == xmp[2]) { jewdemand += 1; }
-    if (!xhl.test(e3) || d.lvl < 8) { demand += 1; jewdemand += 1; }
-
     if (!xhl.test(e3) || d.lvl < 8) { demand += 1; }
     if (demand == 0) { byid("act_castle").style.background = "white url(https://apeha.ru/img/smode-3.gif) no-repeat"; }
     if (demand == 1) { byid("act_castle").style.background = "white url(https://apeha.ru/img/smode-3.gif) no-repeat"; }
     if (demand == 2) { byid("act_castle").style.background = "gold url(https://apeha.ru/img/smode-3.gif) no-repeat"; }
-    if (jewdemand == 0) { byid("act_jew").style.background = "white url(https://apeha.ru/img/smode-3.gif) no-repeat"; }
-    if (jewdemand == 1) { byid("act_jew").style.background = "white url(https://apeha.ru/img/smode-3.gif) no-repeat"; }
-    if (jewdemand == 2) { byid("act_jew").style.background = "white url(https://apeha.ru/img/smode-3.gif) no-repeat"; }
-    if (jewdemand == 3) { byid("act_jew").style.background = "gold url(https://apeha.ru/img/smode-3.gif) no-repeat"; }
     if (demand == 3) { // active-demand
         byid("act_castle").style.background = "skyblue url(https://apeha.ru/img/smode-3.gif) no-repeat";
         if (y == 99 && document.CrDemand.act_castle.value == 1) { // move-demand
@@ -2244,7 +2077,7 @@ var addObs = function () {
                 text.innerHTML = "msg";
                 element.parentNode.insertBefore(text, element);
                 // end-msg-log
-                AddJS(1, "auto_demand15.js");
+                AddJS(1, "auto_demand16.js");
             }
             if (!LocSite("name", "INPUT", "Battle{vall}") && nform != 0) { // в лечебницу (от бандита)
                 top.frames["d_act"].location = "arena_room_1_bmode_3.html";
@@ -2259,37 +2092,7 @@ var addObs = function () {
                 top.frames["d_pers"].setTimeout("top.frames['d_pers'].frames['channel_3'].location=med_room", 1500);
             }
         } // end-move-demand
-    }
-    // !LocSite("value", "input", "Прервать работу")
-    if (jewdemand == 3) { // active-jewdemand
-        byid("act_jew").style.background = "skyblue url(https://apeha.ru/img/smode-3.gif) no-repeat";
-        if (y == 99 && document.CrDemand.act_jew.value == 1 ) { // move-demand
-            if(!nextWorkTs || new Date() > nextWorkTs) {
-                let myJewLoc = findBy(top.frames['d_act'], "tag", "span", 'innerText', 'Ваши камни')
-
-                if (myJewLoc) {
-                    jewelry()
-                } else {
-                    let stoneLoc = findBy(top.frames['d_act'], "tag", "td", 'innerText', 'Вы готовы') ||
-                        findBy(top.frames["d_act"], "tag", "td", "innerText", "Осталось от текущей") ||
-                        findBy(top.frames["d_act"], "tag", "td", "innerText", "Вы устали")
-                    if(stoneLoc) {
-                        workChecker()
-                    } else {
-                        nextWorkTs = new Date()
-                        top.frames['d_act'].location = 'jewelry.html?unick=' + d.nk + '';
-                    }
-                }
-            }
-            if(nextRestTs && new Date() > nextRestTs) {
-                const element = findBy(top.frames['d_act'], "tag", "button", "title", "Обновить")
-                if(element) {
-                    element.click()
-                    nextRestTs = null;
-                }
-            }
-        }
-    } // end-active-jewdemand
+    } // end-active-demand
     if (y == 99 && document.CrDemand.act_castle.value == 1 &&
         LocSite("value", "INPUT", "Подать заявку")) { // wait-fight
         var e3 = document.all("dinjcell").innerHTML;
@@ -2319,25 +2122,9 @@ var addObs = function () {
                 + "</audio>";*/
         }
     } // end-hand-off
-    if (document.CrDemand.act_jew.value == 1) { // hand-off
-        var rhandd = document.getElementById("IMG_rarm").title;
-        var lhandd = document.getElementById("IMG_larm").title;
-        if (rhandd == "кулаки" && lhandd == "кулаки") {
-            document.CrDemand.act_jew.click();
-            /*byid("t").innerHTML = "РАЗОРУЖЕН"
-                + "<audio autoplay loop>"
-                + "<source src=\"" + hostname_oil + "/audio/pling.mp3\" type=\"audio/mpeg\">"
-                + "</audio>";*/
-        }
-    } // end-hand-off
     if (OnOffMytime == 1) { // Сигнал mytime
         if (MyTime(0)) {
             asAudio("Alarm.mp3");
-        }
-    }
-    if (OnOffMyfort == 1) { // На форпост напали!
-        if (MyTime(1)) {
-            asAudio("ReligionConvert.mp3");
         }
     }
     if (y == 0) { // fight
@@ -2346,7 +2133,7 @@ var addObs = function () {
             if (buttons == 1) { // активировать кнопки
                 buttons = 0;
                 Indicator("lawngreen", "B5");
-                AddJS(1, "export_hopg77.js");
+                AddJS(1, "export_hopg89.js");
             }
         }
         if (OnOffguard == 1) {
@@ -2354,7 +2141,7 @@ var addObs = function () {
                 guard = 0;
                 guard_act = 1;
                 Indicator("lawngreen", "G");
-                AddJS(1, "export_hopg77.js");
+                AddJS(1, "export_hopg89.js");
             }
         }
     } // end-fight
@@ -2383,117 +2170,14 @@ var addObs = function () {
             setTimeout(healInj, 1500)
         } else { // к замку
             // msg-fun-log
-            healHp()
-            setTimeout("if(top.frames['d_act'].drinkMana) top.frames['d_act'].drinkMana(); else console.log('drinkMana doesnt exist');",1777);
-            setTimeout("if(top.frames['d_act'].actReload) top.frames['d_act'].actReload(); else console.log('actReload doesnt exist');",7000);
-            // end-msg-fun-log
+            healHp()// end-msg-fun-log
         }
     } // end-log-back
     if (document.CrDemand.act_castle.value == 0) { // look-castle
         byid("act_castle").style.background = "#D4D0C8 url(https://apeha.ru/img/smode-3.gif) no-repeat";
     } // end-look-castle
     demand = 0;
-    jewdemand = 0;
-    setTimeout(addObs, 10000);
-}
-
-function healHp(){
-    let control_text = ""
-        + "MOVE-"
-        + (d.mp >= 50 ? "<span style=color:red;>HP</span>-" : "HP-")
-        + "<span style=background-color:red;color:white;>CASTLE</span>"
-        + "<input type=hidden value=Log>"
-        + "<img src=magbook.html" + (d.mp >= 50 ? "?actUser-UseCast=" + mbHP : "") + " "
-        + "onError=\"frames[0].location='" + castle_room + "';\" width=1 height=1><br>";
-    top.frames["d_act"].document.getElementById("control_msg").innerHTML = control_text;
-}
-
-function healInj(){
-    let script = top.frames["d_act"].document.createElement("script");
-    let currentFrame = "top.frames['d_pers'].frames[0].document";
-    script.type = "text/javascript";
-    script.text = "function msgBadEvent() {"
-        + "     let inDb = /" + db_svitki_room + "/.test(" + currentFrame +".location);"
-        + "     if(inDb) {"
-        + "         let bad_event=/осталось/.test(top.frames['d_pers'].document.getElementById('dinjcell').innerHTML);"
-        + "         if(bad_event) {"
-        + "             let inj = top.frames['d_pers'].document.getElementById('dinjcell').getElementsByTagName('td')[0].innerHTML;"
-        + "             let injPattern;"
-        + "             if (/Легк/.test(inj)) { injPattern = /легк/ }"
-        + "             if (/Средн/.test(inj)) { injPattern = /средн/ }"
-        + "             if (/Тяжел/.test(inj)) { injPattern = /тяж/ }"
-        + "             if (injPattern) { "
-        + "                 var res;"
-        + "                 for (i = 0; i < " + currentFrame +".getElementsByClassName('item').length; i++) {"
-        + "                     let item = " + currentFrame +".getElementsByClassName('item')[i];"
-        + "                     if (item.tagName == 'TR' && injPattern.test(item.innerHTML)) {"
-        + "                         let searchIn = item.lastChild;"
-
-        + "                         for (j = 0; j < searchIn.getElementsByTagName('input').length; j++){"
-        + "                             var result = searchIn.getElementsByTagName('input')[j];"
-        + "                             if(result.value == 'Использовать'){"
-        + "                                 res = result;"
-        + "                             }"
-        + "                         }"
-        + "                     }"
-        + "                 }"
-        + "                 if(res) res.click();"
-        + "             }"
-        + "             setTimeout('msgBadEvent()',5000);"
-        + "         } else {"
-        + "             document.getElementById('dinjcell2').innerHTML='<span style=background-color:red;color:white;>Inj Healed</span>';"
-        + "             setTimeout('if(top.frames[\"d_pers\"].healHp) top.frames[\"d_pers\"].healHp(); else console.log(\"doesnt exist1\");', 1777);"
-        + "             setTimeout('if(top.frames[\"d_act\"].drinkMana) top.frames[\"d_act\"].drinkMana(); else console.log(\"doesnt exist2\");',2777);"
-        + "             setTimeout('if(top.frames[\"d_act\"].actReload) top.frames[\"d_act\"].actReload(); else console.log(\"doesnt exist3\");', 7777);"
-        + "         }"
-        + "     } else {"
-        + "         " + currentFrame +".location = '" + db_svitki_room + "';"
-        + "         setTimeout('msgBadEvent()',1777);"
-        + "     }"
-        + "}"
-        + "setTimeout('msgBadEvent()',1500);";
-    top.frames["d_act"].document.getElementsByTagName("head")[0].appendChild(script);
-}
-
-function addDrinkMp(){
-    let script = top.frames["d_act"].document.createElement("script");
-    let currentFrame = "top.frames['d_act'].document";
-    script.type = "text/javascript";
-    script.text = "function drinkMana() {"
-        + "     var noNeedToMove = /" + castle_room + "/.test(" + currentFrame + ".location);"
-        + "     if(noNeedToMove) {"
-        + "        if (checkFountainNotEmpty()) {"
-        + "             let result;"
-        + "             for (i = 0; i < " + currentFrame + ".getElementsByTagName('input').length; i++) {"
-        + "                 let item = " + currentFrame + ".getElementsByTagName('input')[i];"
-        + "                 if (/источника маны/.test(item.value)) {"
-        + "                     result = item;"
-        + "                 }"
-        + "             }"
-        + "             if (result) result.click();"
-        + "         }"
-        + "     } else {"
-        + "         console.log('castle');"
-        + "         top.frames['d_act'].document.location='" + castle_room + "';"
-        + "         setTimeout('drinkMana()',1777);"
-        + "     }"
-        + "}"
-        + "function checkFountainNotEmpty() {"
-        + "    let result = false;"
-        + "    for (i = " + currentFrame + ".getElementsByTagName('td').length - 1; i >= 0; i--) {"
-        + "        let item = " + currentFrame + ".getElementsByTagName('td')[i];"
-        + "        if (/^\\d+$/.test(item.innerText.trim())) {"
-        + "            result = +item.innerText.trim() > 0;"
-        + "            break;"
-        + "        }"
-        + "    }"
-        + "    return result;"
-        + "}";
-    top.frames["d_act"].document.getElementsByTagName("head")[0].appendChild(script);
-}
-
-var addtm = function () {
-    AddJS(1, "_Butterfly10.js");
+    setTimeout(addObs, 8000 + Math.random() * 16000);
 }
 
 function Run() {
@@ -2512,15 +2196,17 @@ function Run() {
     } catch (e) { b = 2; }
 
     if (b != 2 && b || !b) {
-        setTimeout(addact, 100);
         if (location.host == "newforest.apeha.ru") {
             if (top.frames["d_act"].window &&
                 top.frames["d_act"].window.global_data &&
                 top.frames["d_act"].window.global_data.my_group) {
-                AddJS(1, "_forest1.js");
+                AddJS(1, "_forest15.js");
+            } else {
+                return setTimeout("Run()", 3000);
             }
         }
         if (location.host != "newforest.apeha.ru") { // chat
+            setTimeout(addact, 100);
             parent.document.getElementsByTagName("frameset")[0].rows = "80%,*,31";
             // var itm = top.frames["d_chatact"].document.forms["chat"].elements["filter"];
             // itm.value = 253; // Сообщения комнаты
@@ -2528,7 +2214,7 @@ function Run() {
         } // end-chat
     }
     if (a > 0) { //TODO
-        if (ME.id == 200674992) { // garr //TODO
+        if (Window.ME.id == 200674992) { // garr //TODO
             mbClon = 11895151;
             mbHP = 111731;
             mbStone = 11895152;
@@ -2543,7 +2229,37 @@ function Run() {
             abilityCloneDispel = 0;
             abilityPet = 0;
         }
-        if (ME.id == 203241980) { // gobl //TODO
+        if (Window.ME.id == 202427932) { // Vitya
+            mbClon = 1041489;
+            mbHP = 1042994;
+            mbStone = 1042993;
+            mbFireBall = 1007628;
+            mbArmor = 1339257;
+            mbFreeze = 1339261;
+            mbPereman = 1339260;
+            mbCurse = 4313820;
+            abilityFireDust = 0;
+            abilityKill = 0;
+            abilityAbort = 0;
+            abilityCloneDispel = 0;
+            abilityPet = 0;
+        }
+        if (Window.ME.id == 202436630) { // jr //TODO
+            mbClon = 844943;
+            mbHP = 839435;
+            mbStone = 839434;
+            mbFireBall = 839448;
+            mbArmor = 844909;
+            mbFreeze = 844897;
+            mbPereman = 1781765;
+            mbCurse = 1030384;
+            abilityFireDust = 0;
+            abilityKill = 0;
+            abilityAbort = 0;
+            abilityCloneDispel = 0;
+            abilityPet = 0;
+        }
+        if (Window.ME.id == 203241980) { // gobl //TODO
             mbClon = 5149707;
             mbHP = 5038084;
             mbStone = 5039175;
@@ -2558,20 +2274,20 @@ function Run() {
             abilityCloneDispel = 9322224;
             abilityPet = 7463396;
         }
-        if (ME.id == 201135707) { // hetzer
-            mbClon = 681194;
+        if (Window.ME.id == 201135707) { // hetzer
+            mbClon = 13108441;
             mbHP = 464505;
-            mbStone = 464506;
-            mbFireBall = 657540;
-            mbArmor = 681193;
-            mbFreeze = 660931;
+            mbDestroy = 13108443;
+            mbPower = 13108446;
+            mbSniper = 13108445;
+            mbArmor = 13108442;
+            mbJump = 13108444;
             mbPereman = 3558028;
-            mbCurse = 3558029;
             abilityFireDust = 10707146;
-            abilityKill = 0;
-            abilityAbort = 0;
+            abilityKill = 11460141;
+            abilityAbort = 11417264;
             abilityCloneDispel = 0;
-            abilityPet = 0;
+            abilityPet = 13111740;
         }
         if (top.frames["d_pers"].guard_act == 1) {
             OnOffguard = 1;
@@ -2585,208 +2301,5 @@ function Run() {
         setTimeout("ChangeAstralLevel(2)", 1000);
         soclanList = top.frames["d_pers"].soclanList;
     }
-    if (a == 0 && b == 2) {
-        setTimeout(addtm, 100);
-    }
 }
 setTimeout("Run()", 100);
-
-
-
-
-
-//------------------------------
-function goOgran(btn) {
-// FORM-Ogran
-    let myId = top.frames['d_pers'].d.id
-    if(myId) {
-        // const chform = btn.form;
-        // console.log("submit")
-        // chform.onsubmit = function(event){
-        //     event.preventDefault()
-        //     const formData = new FormData(chform)
-        //     const data = new URLSearchParams(formData);
-        //     fetch(event.target.action, {
-        //         method: 'POST',
-        //         body: data
-        //     })
-        //         .then(response => response.text())
-        //         .then(function(response){
-        //             console.log(typeof response)
-        //             const searchRegExp = /(https:\/\/kovcheg2\.apeha\.ru\/interface\/captcha\.fpl\/\d*)/gm;
-        //             const replaceWith = '';
-        //             const captcha = response.match(searchRegExp)[0];
-        //             console.log(captcha)
-        //             const result = response.replace(searchRegExp, replaceWith);
-        //
-        //             frames["channel_Jewelry"].document.write(result)
-        //         })
-        // }
-        btn.click();
-// END-FORM-Ogran
-    }
-
-}
-
-function find_Stone() {
-    console.log("find stone")
-    let btn = findBy(top.frames['d_act'], "tag", "input", "value", "Огранить")
-    if(btn) {
-        goOgran(btn);
-    }
-}
-
-function jewelry(){
-    let title = top.frames['d_act'].document.getElementsByClassName("title")[0].innerText.trim()
-    if (top.frames['d_act'].location.host == "forest.apeha.ru" || !/Ваши/.test(title) || !/камни/.test(title)) {
-        top.frames["d_pers"].document.getElementById("t").innerHTML = "Error «Кузница» not found.";
-    } else {
-        // msg-log
-        var element = top.frames['d_act'].document.getElementsByTagName("b")[1];
-        var text = top.frames['d_act'].document.createElement("span");
-        text.id = "control_msg";
-        text.style.background = "white";
-        text.innerHTML = "<br>";
-        element.parentNode.insertBefore(text, element);
-// end-msg-log
-// READY-Ogran
-//     let iframe = document.createElement("iframe");
-//     iframe.name = "channel_Jewelry";
-//     iframe.id = "channel_Jewelry";
-//     iframe.style.width = "200px";
-//     iframe.style.height = "100px";
-//     document.head.appendChild(iframe);
-        find_Stone()
-// END-READY-Ogran
-    }
-}
-
-function findBy(frame, byType, typeName, byAttribute, attributeName){
-    let elements;
-    switch(byType){
-        case("tag"):
-            elements = frame.document.getElementsByTagName(typeName);
-            break;
-
-        case("class"):
-            elements = frame.document.getElementsByClassName(typeName);
-            break;
-
-        case("id"):
-            return  frame.document.getElementById(typeName);
-        default: return;
-    }
-    // console.log(elements)
-    for(let i = 0; i < elements.length; i++) {
-        let element = elements[i];
-        switch(byAttribute){
-            case "innerText":
-                if(element.innerText.includes(attributeName)) {
-                    return element
-                }
-                break;
-            case "value":
-                if(element.value.includes(attributeName)) {
-                    return element
-                }
-                break;
-            case "title":
-                if(element.title.includes(attributeName)) {
-                    return element
-                }
-                break;
-            default: return ;
-        }
-    }
-}
-
-function workChecker(){
-    const _nextWorkTs = nextWorkTimeStamp()
-    if(_nextWorkTs){
-        nextWorkTs = _nextWorkTs
-    } else {
-        asAudio("jungle4.mp3")
-    }
-}
-
-function workType() {
-    const element = findBy(top.frames["d_pers"], "id", "IMG_rarm")
-    if (element && element.title) {
-        if (element.title.includes("огранщика")) {
-            return [2, 48, 0]
-        }
-        if (element.title.includes("кузнеца")) {
-            return [2, 6, 0]
-        }
-    }
-    return [0, 0, 0]
-}
-
-function nextWorkTimeStamp(){
-    const workElement = findBy(top.frames["d_act"], "tag", "td", "innerText", "Осталось от текущей")
-    let element;
-    let timeShifts;
-    if (workElement) {
-        element = workElement
-
-        const restTimeShifts = workType()
-        const workTimeShifts = parseTime(element.innerText.trim())
-        if(workTimeShifts) {
-            const timeStamp = createTimeStampWhenReady(workTimeShifts)
-            if(timeStamp) {
-                nextRestTs = timeStamp
-            }
-        }
-        timeShifts = parseTime(element.innerText.trim()).map(function (value, index, array) {
-            return value + restTimeShifts[index]
-        })
-    } else {
-        const restElement = findBy(top.frames["d_act"], "tag", "td", "innerText", "Вы устали")
-        if (restElement) {
-            element = restElement
-            timeShifts = parseTime(element.innerText.trim())
-        } else {
-            //TODO...
-        }
-    }
-    if (timeShifts) {
-        const timeStamp = createTimeStampWhenReady(timeShifts)
-        console.log(timeStamp)
-        return timeStamp
-    }
-}
-
-function parseTime(timeLeft) {
-    const hourExp = /(\d*)ч/
-    const minExp = /(\d*)мин/
-    const secExp = /(\d*) сек/
-    let hourLeft = 0;
-    let minLeft = 0;
-    let secLeft = 0;
-
-    let hourArr = timeLeft.match(hourExp)
-    if (hourArr) {
-        hourLeft = hourArr.length != 0 ? parseInt(hourArr[hourArr.length - 1]) : 0
-    }
-
-    let minArr = timeLeft.match(minExp)
-    if (minArr) {
-        minLeft = minArr.length != 0 ? parseInt(minArr[minArr.length - 1]) : 0
-    }
-
-    let secArr = timeLeft.match(secExp)
-    if (secArr) {
-        secLeft = secArr.length != 0 ? parseInt(secArr[secArr.length - 1]) : 0
-    }
-
-    console.log("hour = " + hourLeft)
-    console.log("min = " + minLeft)
-    console.log("sec = " + secLeft)
-    return [hourLeft, minLeft, secLeft]
-}
-
-function createTimeStampWhenReady(timeShifts){
-    const stamp = new Date()
-    stamp.setHours(stamp.getHours() + timeShifts[0], stamp.getMinutes() + timeShifts[1], stamp.getSeconds() + timeShifts[2])
-    return stamp
-}

@@ -149,7 +149,6 @@ var locatorHistoryHidden = true;
 var autoSearch = false;
 var autoJob = false;
 var autoGo = false;
-var record = false;
 var travnik = false;
 var travMC = false;
 var autoBot = false;
@@ -294,8 +293,6 @@ if (!actIframeDoc.getElementById("ShowCoord") && clickEl) {
     actionsDiv.innerHTML += '<span id="routePointsCount">0</span>';
     actionsDiv.innerHTML += '<input id="resetRouteBtn" value="Сброс" title="Сбросить все точки маршрута" type="button"><br>';
     actionsDiv.innerHTML += '<input id="destGoBtn" value="GO!" type="button">';
-    actionsDiv.innerHTML += '<input id="recordBtn" value="Record!" type="button">';
-    actionsDiv.innerHTML += '<input id="forceGoBtn" value="forceGo" type="button">';
     actionsDiv.innerHTML += '<input id="addRoutePointsBtn" value="+ X.Y." title="Добавить точки для маршрута" type="button">';
     actionsDiv.innerHTML += ' | ';
     actionsDiv.innerHTML += '<input id="clearLCBtn" value="Сброс LS" title="Удалить данные из LocalStorage" type="button">';
@@ -389,8 +386,6 @@ if (!actIframeDoc.getElementById("ShowCoord") && clickEl) {
     jQueryPers("#jobBtn").click(toggleJob);
     jQueryPers("#jobLogsBtn").click(toggleJobLogs);
     jQueryPers("#destGoBtn").click(toggleDestGo);
-    jQueryPers("#recordBtn").click(toggleRecord);
-    jQueryPers("#forceGoBtn").click(forceGo);
     jQueryPers("#sundBtn").click(toggleSundOnly);
     jQueryPers("#locHistoryBtn").click(toggleLocatorHistory);
     jQueryPers("#travMCBtn").click(toggleTravMC);
@@ -605,23 +600,8 @@ function toggleDestGo() {
         to4kaGoY = 0;
         distansGoEl.classList.add("show");
         coorsGoEl.classList.add("show");
-        if(!record) {
-            toggleRecord()
-        }
     }
     autoGo = !autoGo;
-}
-
-function toggleRecord() {
-    var recordBtn = persIframeDoc.getElementById("recordBtn");
-    if (record) {
-        recordBtn.value = "Record!";
-        stopRecord()
-    } else {
-        recordBtn.value = "Stop record";
-        startRecord()
-    }
-    record = !record;
 }
 
 function resetRoute() {
@@ -2094,218 +2074,3 @@ function clearLocalStorage() {
 /// *************************** ///
 
 //}
-
-const SQUARE_WIDTH = 75
-const SQUARE_HEIGHT = 25
-const FULL_LOC_WIDTH = 1500
-const FULL_LOC_HEIGHT = 750
-let squares = [] //locId: Array(Math.ceil(FULL_LOC_WIDTH/SQUARE_WIDTH) * Math.ceil(FULL_LOC_HEIGHT/SQUARE_HEIGHT) )
-
-function saveCell(loc_id, x, y, baseItemsType, baseItemsSubType, absPosesType, zanyato, fortId) {
-    if (squares[loc_id] === undefined) {
-        squares[loc_id] = new Array(Math.ceil(FULL_LOC_WIDTH / SQUARE_WIDTH) * Math.ceil(FULL_LOC_HEIGHT / SQUARE_HEIGHT))
-    }
-    const currSquare = getSquareNumByCoord(x, y)
-
-    if (squares[loc_id][currSquare] !== undefined && squares[loc_id][currSquare].length == 0) {
-        return
-    }
-    if (squares[loc_id][currSquare] === undefined) {
-        const tempHeight = ((y-1) % FULL_LOC_HEIGHT) >= (FULL_LOC_HEIGHT - FULL_LOC_HEIGHT % SQUARE_HEIGHT) ? FULL_LOC_HEIGHT % SQUARE_HEIGHT : SQUARE_HEIGHT
-        squares[loc_id][currSquare] = new Array(tempHeight)
-    }
-
-    const tempY = ((y-1) % FULL_LOC_HEIGHT) % SQUARE_HEIGHT
-    if (squares[loc_id][currSquare][tempY] === undefined) {
-        const tempWidth = ((x-1) % FULL_LOC_WIDTH) >= (FULL_LOC_WIDTH - FULL_LOC_WIDTH % SQUARE_WIDTH) ? FULL_LOC_WIDTH % SQUARE_WIDTH : SQUARE_WIDTH
-        squares[loc_id][currSquare][tempY] = new Array(tempWidth)
-    }
-
-    const tempX = ((x-1) % FULL_LOC_WIDTH) % SQUARE_WIDTH
-    if (squares[loc_id][currSquare][tempY][tempX] === undefined) {
-        squares[loc_id][currSquare][tempY][tempX] = {x, y, baseItemsType, baseItemsSubType, absPosesType, zanyato, fortId}
-    }
-}
-
-function getIndexByCoord(x, y) {
-    return Math.ceil(FULL_LOC_WIDTH / SQUARE_WIDTH) * Math.floor(y/SQUARE_HEIGHT) + Math.floor(x/SQUARE_WIDTH)
-}
-
-function getSquareNumByCoord(x, y) {
-    return Math.ceil(FULL_LOC_WIDTH / SQUARE_WIDTH) * Math.floor(((y-1)%FULL_LOC_HEIGHT)/SQUARE_HEIGHT) + Math.floor(((x-1)%FULL_LOC_WIDTH)/SQUARE_WIDTH)
-}
-
-function downloadSquares(loc_id, squareNum, textToSave) {
-    var blob = new Blob([textToSave], { type: "application/json" });
-
-    var url = URL.createObjectURL(blob);
-
-    var a = document.createElement("a");
-    a.href = url;
-    a.download = loc_id + "_" + squareNum + ".json"; // Укажите желаемое имя файла
-    document.body.appendChild(a);
-    a.click();
-
-// Очищаем ссылку и URL
-    document.body.removeChild(a);
-    URL.revokeObjectURL(url);
-}
-
-function findAndDownloadFullSquares(force) {
-    squares.forEach((location, locationIndex) => {
-        location.forEach((square, squareIndex) => {
-            if((isSquareFull(square) || force) && square.length != 0) {
-                const textToSave = JSON.stringify(square)
-                downloadSquares(locationIndex, squareIndex, textToSave)
-
-                location[squareIndex] = []
-            }
-        })
-    })
-}
-
-function downloadSquare(locId, num) {
-    const textToSave = JSON.stringify(squares[locId][num].map((item) => item.filter((it) => it != undefined)))
-    downloadSquares(locId, num, textToSave)
-    squares[locId][num] = []
-}
-
-function makeCoors(locId, fromX, fromY) {
-    const LOC_HEIGHT = 750
-    const LOC_WIDTH = 1500
-    const SCREEN_SIZE_X = 25
-    const SCREEN_SIZE_Y = 25
-    const startLocX = LOC_WIDTH * ((locId-1) % 4)
-    const startLocY = LOC_HEIGHT * Math.floor((locId-1)/4)
-    const fromYproc = (fromY - (fromY % SCREEN_SIZE_Y)) + Math.floor(SCREEN_SIZE_Y / 2)
-    const startPersMoveY = startLocY + Math.floor(SCREEN_SIZE_Y / 2)
-    const OFFSET_OF_MAP_X_LEFT = ((locId-1) % 4 == 0) ? 14 : 0
-    const OFFSET_OF_MAP_X_RIGHT = (locId % 4 == 0) ? 14 : 0
-    const OFFSET_OF_MAP_Y_TOP = locId < 5 ? 14 : 0
-    const OFFSET_OF_MAP_Y_BOTTOM = locId > 16 ? 14 : 0
-    const LEFT_TO_RIGHT = true
-    let isOdd = LEFT_TO_RIGHT
-    // const TOP_TO_BOTTOM = true
-    let results = []
-
-    let startingY = fromYproc ? fromYproc : startPersMoveY
-    for(let y = startingY; y <= startLocY + LOC_HEIGHT - OFFSET_OF_MAP_Y_BOTTOM; y += SCREEN_SIZE_Y) {
-
-        const LEFT_X = startLocX + Math.floor(SCREEN_SIZE_X / 2) + OFFSET_OF_MAP_X_LEFT
-        const RIGHT_X = startLocX + LOC_WIDTH - Math.floor(SCREEN_SIZE_X / 2) - OFFSET_OF_MAP_X_RIGHT
-        if(((y - startPersMoveY) / SCREEN_SIZE_Y) % 2 == 0) {
-            let tempX
-
-            if(y == startingY && fromX) {
-                const nearestStartOffset = (fromX % FULL_LOC_WIDTH) % SQUARE_WIDTH
-                if(nearestStartOffset > (SCREEN_SIZE_X / 2) && nearestStartOffset < (SQUARE_WIDTH - SCREEN_SIZE_X / 2)) {
-                    tempX = fromX - nearestStartOffset + Math.floor(SCREEN_SIZE_X / 2)
-                } else {
-                    tempX = fromX
-                }
-            }
-
-            results.push((tempX ? tempX : LEFT_X) + ":" + y)
-            results.push(RIGHT_X + ":" + y)
-        } else {
-            let tempX
-            if(y == startingY && fromX) {
-
-                const nearestStartOffset = (fromX % FULL_LOC_WIDTH) % SQUARE_WIDTH
-                if(nearestStartOffset < (SQUARE_WIDTH - SCREEN_SIZE_X / 2) && nearestStartOffset > (SCREEN_SIZE_X / 2)) {
-                    tempX = fromX - nearestStartOffset + SQUARE_WIDTH - Math.floor(SCREEN_SIZE_X / 2)
-                }else {
-                    tempX = fromX
-                }
-            }
-
-            results.push((tempX ? tempX : RIGHT_X) + ":" + y)
-            results.push(LEFT_X + ":" + y)
-        }
-    }
-    return results.join('\n')
-}
-
-function isSquareFull(square) {
-    for(let y = 0; y < square.length; y++){
-        if(square[y] === undefined) return false
-        for(let x = 0; x < square[y].length; x++) {
-            if(square[y][x] == undefined) return false
-        }
-    }
-    return true
-}
-
-function cellSaver() {
-    if (actIframeWin.global_data &&
-        actIframeWin.global_data.base_items &&
-        actIframeWin.global_data.abs_poses &&
-        actIframeWin.global_data.my_group) {
-        const persLoc = getPersLocId()
-        actIframeWin.global_data.base_items.forEach((item, itemIndex) => {
-            if (persLoc == item.loc_id) {
-                let absPos = actIframeWin.global_data.abs_poses[itemIndex]
-                let absPosType = (absPos && absPos.posx == item.posx && absPos.posy == item.posy) ? absPos.type : ""
-                let absPosZanyato = (absPos && absPos.posx == item.posx && absPos.posy == item.posy) ? absPos.zanyato : ""
-                saveCell(item.loc_id,
-                    item.posx,
-                    item.posy,
-                    item.type,
-                    item.sub_type,
-                    absPosType,
-                    absPosZanyato,
-                    item.fort_id)
-            }
-        })
-    } else {
-        findAndDownloadFullSquares(false)
-    }
-}
-
-function getPersLocId(){
-    const persX = actIframeWin.global_data.my_group.posx
-    const persY = actIframeWin.global_data.my_group.posy
-    const elem = actIframeWin.global_data.base_items.find((element) => element.posx == persX && element.posy == persY)
-    if(elem && elem.loc_id) {
-        return elem.loc_id
-    } else {
-        return -1
-    }
-}
-
-let cellSaverIntervalId = 0
-let downloaderIntervalId = 0
-function startRecord() {
-    if (cellSaverIntervalId != 0) {
-        clearInterval(cellSaverIntervalId)
-    }
-    cellSaverIntervalId = setInterval("cellSaver()", 1333)
-
-    if (downloaderIntervalId != 0) {
-        clearInterval(downloaderIntervalId)
-    }
-    downloaderIntervalId = setInterval("findAndDownloadFullSquares(false)", 1333*25)
-}
-function stopRecord() {
-    clearInterval(cellSaverIntervalId)
-    clearInterval(downloaderIntervalId)
-    findAndDownloadFullSquares(false)
-}
-
-function forceGo() {
-    if(actIframeWin.global_data.base_items &&
-        actIframeWin.global_data.my_group) {
-        const locId = getPersLocId()
-        const persX = actIframeWin.global_data.my_group.posx
-        const persY = actIframeWin.global_data.my_group.posy
-
-        if(locId && persX && persY) {
-            let coors = makeCoors(locId, persX, persY) //string
-            showRoute()
-            actIframeDoc.getElementById("myCoorsList").value = coors
-            updatePoints()
-            persIframeDoc.getElementById("destinationXY").value = persX + ":" + persY;
-            toggleDestGo()
-        }
-    }
-}
