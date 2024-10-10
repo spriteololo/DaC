@@ -2133,7 +2133,7 @@ var addObs = function () {
             if (buttons == 1) { // активировать кнопки
                 buttons = 0;
                 Indicator("lawngreen", "B5");
-                AddJS(1, "export_hopg89.js");
+                AddJS(1, "export_hopg90.js");
             }
         }
         if (OnOffguard == 1) {
@@ -2141,7 +2141,7 @@ var addObs = function () {
                 guard = 0;
                 guard_act = 1;
                 Indicator("lawngreen", "G");
-                AddJS(1, "export_hopg89.js");
+                AddJS(1, "export_hopg90.js");
             }
         }
     } // end-fight
@@ -2158,19 +2158,53 @@ var addObs = function () {
         // end-msg-log
         var e3 = document.all("dinjcell").innerHTML;
         var xhl = new RegExp(health, "g");
-        addDrinkMp()
         if (xhl.test(e3)) { // в лечебницу
             // msg-fun-log
-
-            let control_text = ""
+            var script = top.frames["d_act"].document.createElement("script");
+            script.type = "text/javascript";
+            script.text = "function msgBadEvent() {"
+                + "var bad_event=/осталось/.test(top.frames['d_pers'].document.getElementById('dinjcell').innerHTML);"
+                + "if(bad_event) {"
+                + "document.getElementById('dinjcell2').innerHTML="
+                + "top.frames['d_pers'].document.getElementById('dinjcell').getElementsByTagName('td')[2].innerHTML;"
+                + "setTimeout('msgBadEvent()',1500);"
+                + "} else {"
+                + "document.getElementById('dinjcell2').innerHTML='<span style=background-color:red;color:white;>CASTLE</span>';"
+                + "frames[0].location='" + castle_room + "';"
+                + "}"
+                + "}"
+                + "setTimeout('msgBadEvent()',1500);";
+            top.frames["d_act"].document.getElementsByTagName("head")[0].appendChild(script);
+            // end-msg-fun-log
+            var control_text = ""
                 + "MOVE-<span style=background-color:green;color:white;>MEDROOM</span>"
                 + ":<span style=color:green;>WAIT:<span style=background-color:black;color:white; id=dinjcell2>NaN</span>"
                 + "<input type=hidden value=Log><br>";
             top.frames["d_act"].document.getElementById("control_msg").innerHTML = control_text;
-            setTimeout(healInj, 1500)
+            frames[0].location = med_room;
         } else { // к замку
             // msg-fun-log
-            healHp()// end-msg-fun-log
+            var script = top.frames["d_act"].document.createElement("script");
+            script.type = "text/javascript";
+            script.text = "function msgBadEvent() {"
+                + "var bad_event=/осталось/.test(top.frames['d_pers'].document.getElementById('dinjcell').innerHTML);"
+                + "if(bad_event) {"
+                + "document.location.reload();"
+                + "}"
+                + "}"
+                + "setTimeout('msgBadEvent()',7000);";
+            top.frames["d_act"].document.getElementsByTagName("head")[0].appendChild(script);
+            // end-msg-fun-log
+            var control_text = ""
+                + "MOVE-"
+                + (d.mp >= 50 ? "<span style=color:red;>HP</span>-" : "HP-")
+                + "<span style=background-color:red;color:white;>CASTLE</span>"
+                + "-<span style=color:blue;>MMP:85%:</span><span style=background-color:blue;color:white;>" + minmp + "</span>"
+                + "-<span style=color:#BC2EEA;>MHP:75%:</span><span style=background-color:#BC2EEA;color:white;>" + minhp + "</span>"
+                + "<input type=hidden value=Log>"
+                + "<img src=magbook.html" + (d.mp >= 50 ? "?actUser-UseCast=" + mbHP : "") + " "
+                + "onError=\"frames[0].location='" + castle_room + "';\" width=1 height=1><br>";
+            top.frames["d_act"].document.getElementById("control_msg").innerHTML = control_text;
         }
     } // end-log-back
     if (document.CrDemand.act_castle.value == 0) { // look-castle
