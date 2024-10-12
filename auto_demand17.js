@@ -82,44 +82,44 @@ function CheckPers(d) {
 }
 
 function AddDemand() {
-    for (j = 0; j < document.getElementsByTagName("input").length; j++) {
-        if (document.getElementsByTagName("input")[j].value == "Бой с тенью") {
-            return document.getElementsByTagName("input")[j].click();
-        }
-    }
+//    for (j = 0; j < document.getElementsByTagName("input").length; j++) {
+//        if (document.getElementsByTagName("input")[j].value == "Бой с тенью") {
+//            return document.getElementsByTagName("input")[j].click();
+//        }
+//    }
     maxp = new Array(10, 12, 14, 16);
     minLvl = new Array(9, 10, 11, 12);
     var rnd = Math.round(Math.random() * 3);
-    if (nform >= 1) {
-
-        for (i = 1; i <= nform; i++) {
-            var breq = document.getElementById("breq" + i).innerHTML;
-            var reg = new RegExp(FINDDEM[melvl], "g");
-            if (reg.test(breq) && document.getElementById("breq" + i).getElementsByTagName("a").length >= 4) {
-                if (!CheckPers(i)) {
-                    var control_text = ""
-                        + "<span style=background-color:yellowgreen;color:black;>ПРИНЯТЬ_ЗАЯВКУ_4</span>";
-                    actIframe.document.getElementById("control_msg").innerHTML = control_text + "<br>";
-                    persIframe.document.getElementById("t").innerHTML = control_text;
-                    return document.forms[i].submit();
-                }
-            }
-        }
-
-        for (i = 1; i <= nform; i++) {
-            var breq = document.getElementById("breq" + i).innerHTML;
-            var reg = new RegExp(FINDDEM[melvl], "g");
-            if (reg.test(breq)) {
-                if (!CheckPers(i)) {
-                    var control_text = ""
-                        + "<span style=background-color:yellowgreen;color:black;>ПРИНЯТЬ_ЗАЯВКУ</span>";
-                    actIframe.document.getElementById("control_msg").innerHTML = control_text + "<br>";
-                    persIframe.document.getElementById("t").innerHTML = control_text;
-                    return document.forms[i].submit();
-                }
-            }
-        }
-    }
+//    if (nform >= 1) {
+//
+//        for (i = 1; i <= nform; i++) {
+//            var breq = document.getElementById("breq" + i).innerHTML;
+//            var reg = new RegExp(FINDDEM[melvl], "g");
+//            if (reg.test(breq) && document.getElementById("breq" + i).getElementsByTagName("a").length >= 4) {
+//                if (!CheckPers(i)) {
+//                    var control_text = ""
+//                        + "<span style=background-color:yellowgreen;color:black;>ПРИНЯТЬ_ЗАЯВКУ_4</span>";
+//                    actIframe.document.getElementById("control_msg").innerHTML = control_text + "<br>";
+//                    persIframe.document.getElementById("t").innerHTML = control_text;
+//                    return document.forms[i].submit();
+//                }
+//            }
+//        }
+//
+//        for (i = 1; i <= nform; i++) {
+//            var breq = document.getElementById("breq" + i).innerHTML;
+//            var reg = new RegExp(FINDDEM[melvl], "g");
+//            if (reg.test(breq)) {
+//                if (!CheckPers(i)) {
+//                    var control_text = ""
+//                        + "<span style=background-color:yellowgreen;color:black;>ПРИНЯТЬ_ЗАЯВКУ</span>";
+//                    actIframe.document.getElementById("control_msg").innerHTML = control_text + "<br>";
+//                    persIframe.document.getElementById("t").innerHTML = control_text;
+//                    return document.forms[i].submit();
+//                }
+//            }
+//        }
+//    }
 
     if (melvl >= 19) persIframe.CreateDemand(0, minLvl[rnd], maxp[rnd]);
 }

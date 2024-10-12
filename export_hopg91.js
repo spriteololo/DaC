@@ -2077,7 +2077,7 @@ var addObs = function () {
                 text.innerHTML = "msg";
                 element.parentNode.insertBefore(text, element);
                 // end-msg-log
-                AddJS(1, "auto_demand16.js");
+                AddJS(1, "auto_demand17.js");
             }
             if (!LocSite("name", "INPUT", "Battle{vall}") && nform != 0) { // в лечебницу (от бандита)
                 top.frames["d_act"].location = "arena_room_1_bmode_3.html";
@@ -2133,7 +2133,7 @@ var addObs = function () {
             if (buttons == 1) { // активировать кнопки
                 buttons = 0;
                 Indicator("lawngreen", "B5");
-                AddJS(1, "export_hopg90.js");
+                AddJS(1, "export_hopg91.js");
             }
         }
         if (OnOffguard == 1) {
@@ -2141,7 +2141,7 @@ var addObs = function () {
                 guard = 0;
                 guard_act = 1;
                 Indicator("lawngreen", "G");
-                AddJS(1, "export_hopg90.js");
+                AddJS(1, "export_hopg91.js");
             }
         }
     } // end-fight
