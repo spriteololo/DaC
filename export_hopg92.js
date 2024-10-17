@@ -2133,7 +2133,7 @@ var addObs = function () {
             if (buttons == 1) { // активировать кнопки
                 buttons = 0;
                 Indicator("lawngreen", "B5");
-                AddJS(1, "export_hopg91.js");
+                AddJS(1, "export_hopg92.js");
             }
         }
         if (OnOffguard == 1) {
@@ -2141,7 +2141,7 @@ var addObs = function () {
                 guard = 0;
                 guard_act = 1;
                 Indicator("lawngreen", "G");
-                AddJS(1, "export_hopg91.js");
+                AddJS(1, "export_hopg92.js");
             }
         }
     } // end-fight
@@ -2158,53 +2158,22 @@ var addObs = function () {
         // end-msg-log
         var e3 = document.all("dinjcell").innerHTML;
         var xhl = new RegExp(health, "g");
+        addDrinkMp()
         if (xhl.test(e3)) { // в лечебницу
             // msg-fun-log
-            var script = top.frames["d_act"].document.createElement("script");
-            script.type = "text/javascript";
-            script.text = "function msgBadEvent() {"
-                + "var bad_event=/осталось/.test(top.frames['d_pers'].document.getElementById('dinjcell').innerHTML);"
-                + "if(bad_event) {"
-                + "document.getElementById('dinjcell2').innerHTML="
-                + "top.frames['d_pers'].document.getElementById('dinjcell').getElementsByTagName('td')[2].innerHTML;"
-                + "setTimeout('msgBadEvent()',1500);"
-                + "} else {"
-                + "document.getElementById('dinjcell2').innerHTML='<span style=background-color:red;color:white;>CASTLE</span>';"
-                + "frames[0].location='" + castle_room + "';"
-                + "}"
-                + "}"
-                + "setTimeout('msgBadEvent()',1500);";
-            top.frames["d_act"].document.getElementsByTagName("head")[0].appendChild(script);
-            // end-msg-fun-log
-            var control_text = ""
+
+            let control_text = ""
                 + "MOVE-<span style=background-color:green;color:white;>MEDROOM</span>"
                 + ":<span style=color:green;>WAIT:<span style=background-color:black;color:white; id=dinjcell2>NaN</span>"
                 + "<input type=hidden value=Log><br>";
             top.frames["d_act"].document.getElementById("control_msg").innerHTML = control_text;
-            frames[0].location = med_room;
+            setTimeout(healInj, 1500)
         } else { // к замку
             // msg-fun-log
-            var script = top.frames["d_act"].document.createElement("script");
-            script.type = "text/javascript";
-            script.text = "function msgBadEvent() {"
-                + "var bad_event=/осталось/.test(top.frames['d_pers'].document.getElementById('dinjcell').innerHTML);"
-                + "if(bad_event) {"
-                + "document.location.reload();"
-                + "}"
-                + "}"
-                + "setTimeout('msgBadEvent()',7000);";
-            top.frames["d_act"].document.getElementsByTagName("head")[0].appendChild(script);
+            healHp()
+            setTimeout("if(top.frames['d_act'].drinkMana) top.frames['d_act'].drinkMana(); else console.log('drinkMana doesnt exist');",1777);
+            setTimeout("if(top.frames['d_act'].actReload) top.frames['d_act'].actReload(); else console.log('actReload doesnt exist');",7000);
             // end-msg-fun-log
-            var control_text = ""
-                + "MOVE-"
-                + (d.mp >= 50 ? "<span style=color:red;>HP</span>-" : "HP-")
-                + "<span style=background-color:red;color:white;>CASTLE</span>"
-                + "-<span style=color:blue;>MMP:85%:</span><span style=background-color:blue;color:white;>" + minmp + "</span>"
-                + "-<span style=color:#BC2EEA;>MHP:75%:</span><span style=background-color:#BC2EEA;color:white;>" + minhp + "</span>"
-                + "<input type=hidden value=Log>"
-                + "<img src=magbook.html" + (d.mp >= 50 ? "?actUser-UseCast=" + mbHP : "") + " "
-                + "onError=\"frames[0].location='" + castle_room + "';\" width=1 height=1><br>";
-            top.frames["d_act"].document.getElementById("control_msg").innerHTML = control_text;
         }
     } // end-log-back
     if (document.CrDemand.act_castle.value == 0) { // look-castle
@@ -2212,6 +2181,102 @@ var addObs = function () {
     } // end-look-castle
     demand = 0;
     setTimeout(addObs, 8000 + Math.random() * 16000);
+}
+
+
+function healHp(){
+    let control_text = ""
+        + "MOVE-"
+        + (d.mp >= 50 ? "<span style=color:red;>HP</span>-" : "HP-")
+        + "<span style=background-color:red;color:white;>CASTLE</span>"
+        + "<input type=hidden value=Log>"
+        + "<img src=magbook.html" + (d.mp >= 50 ? "?actUser-UseCast=" + mbHP : "") + " "
+        + "onError=\"frames[0].location='" + castle_room + "';\" width=1 height=1><br>";
+    top.frames["d_act"].document.getElementById("control_msg").innerHTML = control_text;
+}
+
+function healInj(){
+    let script = top.frames["d_act"].document.createElement("script");
+    let currentFrame = "top.frames['d_pers'].frames[0].document";
+    script.type = "text/javascript";
+    script.text = "function msgBadEvent() {"
+        + "     let inDb = /" + db_svitki_room + "/.test(" + currentFrame +".location);"
+        + "     if(inDb) {"
+        + "         let bad_event=/осталось/.test(top.frames['d_pers'].document.getElementById('dinjcell').innerHTML);"
+        + "         if(bad_event) {"
+        + "             let inj = top.frames['d_pers'].document.getElementById('dinjcell').getElementsByTagName('td')[0].innerHTML;"
+        + "             let injPattern;"
+        + "             if (/Легк/.test(inj)) { injPattern = /легк/ }"
+        + "             if (/Средн/.test(inj)) { injPattern = /средн/ }"
+        + "             if (/Тяжел/.test(inj)) { injPattern = /тяж/ }"
+        + "             if (injPattern) { "
+        + "                 var res;"
+        + "                 for (i = 0; i < " + currentFrame +".getElementsByClassName('item').length; i++) {"
+        + "                     let item = " + currentFrame +".getElementsByClassName('item')[i];"
+        + "                     if (item.tagName == 'TR' && injPattern.test(item.innerHTML)) {"
+        + "                         let searchIn = item.lastChild;"
+
+        + "                         for (j = 0; j < searchIn.getElementsByTagName('input').length; j++){"
+        + "                             var result = searchIn.getElementsByTagName('input')[j];"
+        + "                             if(result.value == 'Использовать'){"
+        + "                                 res = result;"
+        + "                             }"
+        + "                         }"
+        + "                     }"
+        + "                 }"
+        + "                 if(res) res.click();"
+        + "             }"
+        + "             setTimeout('msgBadEvent()',5000);"
+        + "         } else {"
+        + "             document.getElementById('dinjcell2').innerHTML='<span style=background-color:red;color:white;>Inj Healed</span>';"
+        + "             setTimeout('if(top.frames[\"d_pers\"].healHp) top.frames[\"d_pers\"].healHp(); else console.log(\"doesnt exist1\");', 1777);"
+        + "             setTimeout('if(top.frames[\"d_act\"].drinkMana) top.frames[\"d_act\"].drinkMana(); else console.log(\"doesnt exist2\");',2777);"
+        + "             setTimeout('if(top.frames[\"d_act\"].actReload) top.frames[\"d_act\"].actReload(); else console.log(\"doesnt exist3\");', 7777);"
+        + "         }"
+        + "     } else {"
+        + "         " + currentFrame +".location = '" + db_svitki_room + "';"
+        + "         setTimeout('msgBadEvent()',1777);"
+        + "     }"
+        + "}"
+        + "setTimeout('msgBadEvent()',1500);";
+    top.frames["d_act"].document.getElementsByTagName("head")[0].appendChild(script);
+}
+
+function addDrinkMp(){
+    let script = top.frames["d_act"].document.createElement("script");
+    let currentFrame = "top.frames['d_act'].document";
+    script.type = "text/javascript";
+    script.text = "function drinkMana() {"
+        + "     var noNeedToMove = /" + castle_room + "/.test(" + currentFrame + ".location);"
+        + "     if(noNeedToMove) {"
+        + "        if (checkFountainNotEmpty()) {"
+        + "             let result;"
+        + "             for (i = 0; i < " + currentFrame + ".getElementsByTagName('input').length; i++) {"
+        + "                 let item = " + currentFrame + ".getElementsByTagName('input')[i];"
+        + "                 if (/источника маны/.test(item.value)) {"
+        + "                     result = item;"
+        + "                 }"
+        + "             }"
+        + "             if (result) result.click();"
+        + "         }"
+        + "     } else {"
+        + "         console.log('castle');"
+        + "         top.frames['d_act'].document.location='" + castle_room + "';"
+        + "         setTimeout('drinkMana()',1777);"
+        + "     }"
+        + "}"
+        + "function checkFountainNotEmpty() {"
+        + "    let result = false;"
+        + "    for (i = " + currentFrame + ".getElementsByTagName('td').length - 1; i >= 0; i--) {"
+        + "        let item = " + currentFrame + ".getElementsByTagName('td')[i];"
+        + "        if (/^\\d+$/.test(item.innerText.trim())) {"
+        + "            result = +item.innerText.trim() > 0;"
+        + "            break;"
+        + "        }"
+        + "    }"
+        + "    return result;"
+        + "}";
+    top.frames["d_act"].document.getElementsByTagName("head")[0].appendChild(script);
 }
 
 function Run() {
