@@ -21,22 +21,18 @@ function sendError(msg) {
 }
 
 AddIFrame("channel_2");
-var cast_load_count = 0;
 var ready_mb = 0;
 var yes_mbCast = 1;
-var move_round = 0;
 var MyX = 0;
 var MyY = 0;
 // READYMB
 var a_iframe = document.getElementsByTagName("iframe")["channel_2"];
 a_iframe.onload = function () {
     top.frames["d_act"].ready_mb = 0;
-    top.frames["d_act"].cast_load_count++;
 };
 // END-READYMB
 function UseMagCast(a, b, id, mb_x, mb_y) { // Magic-Book-Cast
     if (a == 777) {
-        cast_load_count = -1;
         return frames["channel_2"].location = "img/persmanas.gif";
     }
     try { // OpenMagBook
@@ -88,7 +84,6 @@ function UseMagCast(a, b, id, mb_x, mb_y) { // Magic-Book-Cast
     setTimeout("UseMagCast(777)", 1000);
     setTimeout("actReload()", 500);
     yes_mbCast = 0;
-    cast_load_count = 0;
 }
 
 function MapClick(ev) { // js-game
@@ -116,9 +111,6 @@ function MapClick(ev) { // js-game
     byid("mrkr").style.visibility = "visible";
     MyX = EX;
     MyY = EY;
-    // move-click
-    if (yes_mbCast == 0) move_round++;
-
 }
 function UBClick() {
     var nb = this.id;
@@ -176,7 +168,6 @@ var addscript = function () {
     newButton.style.width = '65px';
     newButton.onclick = function() {
         if (yes_mbCast != 0) {
-           move_round=0;
            yes_mbCast=1;
            UseMagCast(1, 0, mbClon, MyX, MyY);
            this.value='Клон';
@@ -193,7 +184,6 @@ var addscript = function () {
     newButton2.style.width = '65px';
     newButton2.onclick = function() {
         ReloadReq = 0;
-        move_round = 0;
         yes_mbCast = 1;
         SwitchAttack(1);
         ubblock(0, 0);
@@ -280,33 +270,19 @@ var addact = function () {
 
     var ddmbox = "<div onmouseover=\"pname='panel';over=true;\" onmouseout=\"over=false;\" "
         + "style=\"width:100%;border-bottom:1px solid #8A492F;background-color:#A75738;color:#FFEEC0;"
-        + "font-size:12px;font-family:Arial Black;text-align:center;cursor:move\">&#8226;Drag&Drop Menu&#8226;</div>"
+        + "font-size:12px;font-family:Arial Black;text-align:center;cursor:move\">Drag&Drop Menu</div>"
         + "<div style=\"width:100%;background-color:#FFEEC0;font-size:13px;font-family:Vardana\">"
-        + "&nbsp;<a href=\"#\" onclick=\"location.reload();\" title=\"Reload\">R</a>"
-
         + "<br>"
-        + "<table border=0 width=100%>"
-        + "<tr>"
-        + "<td>"
         + "<a href=\"javascript:void(0);\" onclick=\"top.frames['d_act'].location='castle_room_1_cid_'+MyClan+'.html';\" "
         + "oncontextmenu=\"top.frames['d_act'].location='medroom_cid_'+MyClan+'.html';return false;\">"
         + "<div style=\"margin-right:4px;width:60px;border:1px solid green;background-color:#FFEEC0;color:green;"
-        + "font-size:12px;font-family:Arial;text-align:center;float:left;cursor:hand;\">&#9824;&nbsp;К&nbsp;замку&#9824;</div></a>"
-        + "</td>"
-        + "<td>"
+        + "font-size:12px;font-family:Arial;text-align:center;float:left;cursor:hand;\">К замку</div></a>"
+        + "<br><br>"
         + "<span style=\"display:block;width:48;height:22;"
         + "background:url(" + hostname_oil + "/img/arrow/battle.gif) no-repeat right center;\" id=\"rbat\">"
         + "<img border=0 src=" + hostname_oil + "/img/arrow/checkbox-a.gif width=48 height=22 onclick=MainSwitch(4);>"
         + "</span>"
-        +" </td>"
-        + "</tr>"
-        + "</table></div>"
-        + "<div style=\"margin-top:0px;margin-left:220px;padding-left:2px;width:25px;height:16px;"
-        + "background-color:#FCE1A3;border-color:#8A492F;border-style:solid;"
-        + "border-width:1px 0px 1px 1px;position:absolute;\" id=\"info_soclan\">K</div>"
-        + "<div style=\"width:100%;height:16px;background-color:#FCE1A3;border-top:1px solid #8A492F;"
-        + "font-color:#33CCAA;font-size:13px;font-family:vardana;\" id=\"infob\">&#182;&nbsp;</span></div>"
-        + "</form>";
+        + "</div>"
 
     var divDDM = document.createElement("div");
     divDDM.id = "panel";
@@ -333,12 +309,12 @@ var addObs = function () {
         if (OnOffbuttons == 1) {
             if (buttons == 1) { // активировать кнопки
                 buttons = 0;
-                AddJS("export_hopg92.js");
+                AddJS("light_horg2.js");
             }
         }
     } // end-fight
 
-    setTimeout(addObs, 8000 + Math.random() * 16000);
+    setTimeout(addObs, 32000 + Math.random() * 16000);
 }
 
 function Run() {
