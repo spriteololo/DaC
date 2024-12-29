@@ -312,7 +312,7 @@ var addObs = function () {
         if (OnOffbuttons == 1) {
             if (buttons == 1) { // активировать кнопки
                 buttons = 0;
-                AddJS("light_horg2.js");
+                AddJS("light_horg3.js");
             }
         }
     } // end-fight
