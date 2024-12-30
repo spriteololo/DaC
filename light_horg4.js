@@ -161,6 +161,31 @@ function MainSwitch(t) {
 var addscript = function () {
     const buttonWrapper = document.querySelector('#buttons > b.button');
 
+    const lineBreak = document.createElement('br'); // Разрыв строки
+    buttonWrapper.appendChild(lineBreak);
+    buttonWrapper.appendChild(lineBreak);
+
+
+    // Создаем новую кнопку
+    const newButton2 = document.createElement('input');
+    newButton2.type = 'button';
+    newButton2.value = 'БлокН';
+    newButton2.style.width = '65px';
+    newButton2.style.marginLeft = '20px';
+    newButton2.onclick = function() {
+        ReloadReq = 0;
+        yes_mbCast = 1;
+        SwitchAttack(1);
+        ubblock(0, 0);
+        ubblock(1, 1);
+        ubblock(0, 2);
+        ubblock(1, 3);
+        MakeTurn();
+        return false;
+    };
+
+    buttonWrapper.appendChild(newButton2);
+
     // Создаем новую кнопку
     const newButton = document.createElement('input');
     newButton.type = 'button';
@@ -177,24 +202,7 @@ var addscript = function () {
 
     buttonWrapper.appendChild(newButton);
 
-    // Создаем новую кнопку
-    const newButton2 = document.createElement('input');
-    newButton2.type = 'button';
-    newButton2.value = 'БлокН';
-    newButton2.style.width = '65px';
-    newButton2.onclick = function() {
-        ReloadReq = 0;
-        yes_mbCast = 1;
-        SwitchAttack(1);
-        ubblock(0, 0);
-        ubblock(1, 1);
-        ubblock(0, 2);
-        ubblock(1, 3);
-        MakeTurn();
-        return false;
-    };
 
-    buttonWrapper.appendChild(newButton2);
 
     // Создаем новую кнопку
     const newButton3 = document.createElement('input');
@@ -312,12 +320,12 @@ var addObs = function () {
         if (OnOffbuttons == 1) {
             if (buttons == 1) { // активировать кнопки
                 buttons = 0;
-                AddJS("light_horg3.js");
+                AddJS("light_horg4.js");
             }
         }
     } // end-fight
 
-    setTimeout(addObs, 32000 + Math.random() * 16000);
+    setTimeout(addObs, 8000 + Math.random() * 8000);
 }
 
 function Run() {
