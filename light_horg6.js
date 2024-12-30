@@ -86,14 +86,18 @@ function UseMagCast(a, b, id, mb_x, mb_y) { // Magic-Book-Cast
     yes_mbCast = 0;
 }
 
-const originalHiLight = HiLight;
-function HiLight(chng) {
-    if (!chng || !chng.unb) return 0;
-    uid = chng.unb;
-    if (REMAP[uid]) { uid = REMAP[uid].id; }
-    if (uid == Window.ME.id || uid == 203784507) return 3;
-
-    return originalHiLight(chng);
+function HiLight(chng)
+{
+	if (!chng || !chng.unb) return 0;
+	uid = chng.unb;
+	if (REMAP[uid]) { uid = REMAP[uid].id; }
+	if (uid == Window.ME.id || uid == 203784507) return 3;
+	var unb = UNBS[uid];
+	if (!unb) unb = DEAD[uid];
+	if (!unb) return 0;
+	if (unb.own && unb.own == Window.ME.id) return 2;
+	if (unb.clr && unb.clr == Window.ME.id && unb.sd == Window.ME.sd) return 1;
+	return 0;
 }
 
 function MapClick(ev) { // js-game
@@ -330,7 +334,7 @@ var addObs = function () {
         if (OnOffbuttons == 1) {
             if (buttons == 1) { // активировать кнопки
                 buttons = 0;
-                AddJS("light_horg5.js");
+                AddJS("light_horg6.js");
             }
         }
     } // end-fight
