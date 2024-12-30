@@ -86,6 +86,16 @@ function UseMagCast(a, b, id, mb_x, mb_y) { // Magic-Book-Cast
     yes_mbCast = 0;
 }
 
+const originalHiLight = HiLight;
+function HiLight(chng) {
+    if (!chng || !chng.unb) return 0;
+    uid = chng.unb;
+    if (REMAP[uid]) { uid = REMAP[uid].id; }
+    if (uid == Window.ME.id || uid == 203784507) return 3;
+
+    return originalHiLight(chng);
+}
+
 function MapClick(ev) { // js-game
     ev = ev || event;
     var x = (ev.x || ev.clientX) + document.body.scrollLeft;
@@ -320,7 +330,7 @@ var addObs = function () {
         if (OnOffbuttons == 1) {
             if (buttons == 1) { // активировать кнопки
                 buttons = 0;
-                AddJS("light_horg4.js");
+                AddJS("light_horg5.js");
             }
         }
     } // end-fight
