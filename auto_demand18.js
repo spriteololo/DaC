@@ -87,7 +87,7 @@ function AddDemand() {
 //            return document.getElementsByTagName("input")[j].click();
 //        }
 //    }
-    maxp = new Array(10, 12, 14, 16);
+    maxp = new Array(8, 10, 12, 14, 16);
     minLvl = new Array(9, 10, 11, 12);
     var rnd = Math.round(Math.random() * 3);
 //    if (nform >= 1) {
@@ -121,7 +121,11 @@ function AddDemand() {
 //        }
 //    }
 
-    if (melvl >= 19) persIframe.CreateDemand(0, minLvl[rnd], maxp[rnd]);
+    if (melvl > 20) {
+        persIframe.CreateDemand(0, minLvl[rnd], 40, maxp[rnd])
+    } else {
+        persIframe.CreateDemand(0, minLvl[rnd], 20, maxp[rnd]);
+    }
 }
 
 AddDemand();

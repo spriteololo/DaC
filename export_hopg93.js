@@ -481,7 +481,7 @@ function AddJS(n, xfile) {
     }
 }
 
-function CreateDemand(map, minlvl, maxp) {
+function CreateDemand(map, minlvl, maxlvl, maxp) {
     var game = "arena_room_1_bmode_3.html";
     if (map == 9) { game = "arena_room_1_bmode_7.html"; }
     if (!top.frames["d_act"].document.getElementById("control_msg")) {
@@ -500,7 +500,7 @@ function CreateDemand(map, minlvl, maxp) {
         + "<input type=hidden name=Battle{fist} value=0>"
         + "<input type=hidden name=Battle{blood} value=1>"
         + "<input type=hidden name=Battle{minlvl} value=" + minlvl + ">"
-        + "<input type=hidden name=Battle{maxlvl} value=" + 40 + ">"
+        + "<input type=hidden name=Battle{maxlvl} value=" + maxlvl + ">"
         + "<input type=hidden name=Battle{maxp} value=" + maxp + ">"
         + "<input type=hidden name=Battle{tm} value=60>"
         + "<input type=hidden name=Battle{mapid} value=" + map + ">"
@@ -1205,11 +1205,11 @@ function autotest() {
             + "}\" id=\"ctrl_btn\">"
             + "<span id=\"logb\">&#153;Слабоумие и отвага</span>";
         div.innerHTML += "&nbsp;";
-        div.innerHTML += "<sapn id=\"logc\"></span>";
-        div.innerHTML += "<sapn id=\"audio\"></span>";
-        div.innerHTML += "<sapn id=\"ad_test\" style=\"display:none\"></span>";
+        div.innerHTML += "<span id=\"logc\"></span>";
+        div.innerHTML += "<span id=\"audio\"></span>";
+        div.innerHTML += "<span id=\"ad_test\" style=\"display:none\"></span>";
         div.innerHTML += "&nbsp;";
-        div.innerHTML += "<sapn id=\"logBW\"></span>";
+        div.innerHTML += "<span id=\"logBW\"></span>";
         document.body.appendChild(div);
         EnemyNum();
         if (FLDX + FLDY == 27 && amountenemy == 1) {
@@ -1248,8 +1248,8 @@ function autotest() {
     // ============
     byid("logBW").innerHTML = ""
         + "<span style=\"background-color:black;color:white;font-size:7pt;\">" + list_black_count + "</span>"
-        + "<sapn style=\"background-color:white;color:black;font-size:7pt;\">" + list_white_count + "</span>"
-        + "<sapn style=\"background-color:#D4D0C8;color:black;font-size:7pt;\">" + ab_fail_list.length + "</span>";
+        + "<span style=\"background-color:white;color:black;font-size:7pt;\">" + list_white_count + "</span>"
+        + "<span style=\"background-color:#D4D0C8;color:black;font-size:7pt;\">" + ab_fail_list.length + "</span>";
     if (top.frames["d_pers"].document.CrDemand.clonsum.value == 1 &&
         amountenemy < startAmountEnemy / 2 && amountEnemyClon < 2) { // limit
         byid("logb").innerHTML = ""
@@ -1972,7 +1972,7 @@ var addact = function () {
         + "<option value=16>16</option>"
         + "</select>"
         + "<input type=button value=Ok onclick=\""
-        + "CreateDemand(CrDemand.map.value,CrDemand.minlvl.value,CrDemand.maxp.value)\">"
+        + "CreateDemand(CrDemand.map.value,CrDemand.minlvl.value,CrDemand.maxlvl.value,CrDemand.maxp.value)\">"
         + "<br>"
         + "<input type=text name=sortby2 size=20>"
         + "<input type=button value=\"Найти лог\" onclick=\""
@@ -2077,7 +2077,7 @@ var addObs = function () {
                 text.innerHTML = "msg";
                 element.parentNode.insertBefore(text, element);
                 // end-msg-log
-                AddJS(1, "auto_demand17.js");
+                AddJS(1, "auto_demand18.js");
             }
             if (!LocSite("name", "INPUT", "Battle{vall}") && nform != 0) { // в лечебницу (от бандита)
                 top.frames["d_act"].location = "arena_room_1_bmode_3.html";
@@ -2133,7 +2133,7 @@ var addObs = function () {
             if (buttons == 1) { // активировать кнопки
                 buttons = 0;
                 Indicator("lawngreen", "B5");
-                AddJS(1, "export_hopg92.js");
+                AddJS(1, "export_hopg93.js");
             }
         }
         if (OnOffguard == 1) {
@@ -2141,7 +2141,7 @@ var addObs = function () {
                 guard = 0;
                 guard_act = 1;
                 Indicator("lawngreen", "G");
-                AddJS(1, "export_hopg92.js");
+                AddJS(1, "export_hopg93.js");
             }
         }
     } // end-fight
